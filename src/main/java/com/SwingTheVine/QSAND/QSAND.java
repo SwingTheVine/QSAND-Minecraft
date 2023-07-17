@@ -17,6 +17,8 @@ public class QSAND {
 	@SidedProxy(clientSide = ModInfo.ClientProxyClass, serverSide = ModInfo.ServerProxyClass)
 	public static CommonProxy proxy;
 	
+	public static final QSAND_Tab QSANDTab = new QSAND_Tab("QSANDTab");
+	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		QSAND_Blocks.init();

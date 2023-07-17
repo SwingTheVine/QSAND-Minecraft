@@ -1,6 +1,7 @@
 package com.SwingTheVine.QSAND.init;
 
 import com.SwingTheVine.QSAND.ModInfo;
+import com.SwingTheVine.QSAND.QSAND;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelResourceLocation;
@@ -11,7 +12,7 @@ public class QSAND_Items {
 	public static Item test_item;
 	
 	public static void init() {
-		test_item = new Item().setUnlocalizedName("test_item");
+		test_item = new Item().setUnlocalizedName("test_item").setCreativeTab(QSAND.QSANDTab);
 	}
 	
 	public static void registerItems() {

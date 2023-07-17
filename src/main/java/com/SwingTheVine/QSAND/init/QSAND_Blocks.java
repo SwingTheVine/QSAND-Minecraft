@@ -1,6 +1,7 @@
 package com.SwingTheVine.QSAND.init;
 
 import com.SwingTheVine.QSAND.ModInfo;
+import com.SwingTheVine.QSAND.QSAND;
 import com.SwingTheVine.QSAND.blocks.BlockTest;
 
 import net.minecraft.block.Block;
@@ -14,7 +15,7 @@ public class QSAND_Blocks {
 	public static Block test_block;
 	
 	public static void init() {
-		test_block = new BlockTest(Material.cloth).setUnlocalizedName("test_block");
+		test_block = new BlockTest(Material.cloth).setUnlocalizedName("test_block").setCreativeTab(QSAND.QSANDTab);
 	}
 	
 	public static void registerBlocks() {
