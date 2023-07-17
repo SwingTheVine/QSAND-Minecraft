@@ -1,5 +1,6 @@
 package com.SwingTheVine.QSAND;
 
+import com.SwingTheVine.QSAND.init.QSAND_Blocks;
 import com.SwingTheVine.QSAND.init.QSAND_Items;
 import com.SwingTheVine.QSAND.proxy.CommonProxy;
 
@@ -18,6 +19,8 @@ public class QSAND {
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+		QSAND_Blocks.init();
+		QSAND_Blocks.registerBlocks();
 		QSAND_Items.init();
 		QSAND_Items.registerItems();
 	}
