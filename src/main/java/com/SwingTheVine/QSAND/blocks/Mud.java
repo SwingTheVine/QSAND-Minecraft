@@ -10,6 +10,7 @@ import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -45,7 +46,71 @@ public class Mud extends Block implements IMetaBlockName {
 	// This is the core of the quicksand calculations
 	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity triggeringEntity) {
 		//triggeringEntity.setInWeb();
+		final double triggEntityPosY = triggeringEntity.posY; // Triggering entity's Y position
+		final double triggEntityPrevPosY = triggeringEntity.prevPosY; // Triggering entity's previous Y position
+		final double triggEntityVelY = triggeringEntity.motionY; // Triggering entity's Y velocity
+		double triggEntitySunk, triggEntitySunk_kof1 = (pos.getY() - triggEntityPosY + 1.0) * -1.0; // How far into the block the entity has sunk (in percent) relative to the top of the block (i.e. sunk 15% from the top of the block is -0.15)
+		double triggEntityPrevSunk, triggEntityPrevSunk_kof2 = Math.max(((pos.getY() - triggEntityPrevPosY + 1.0) * -1.0), 0.0); // How far into the block the entity previously sunk (in percent) to the top of the block
+		double triggEntitySunkMod_kof1m = Math.max(triggEntitySunk_kof1, 0.0); // A modified version of trigger entity sunk
+		final int blockMetadata = state.getValue(SINK).intValue(); // Obtains this block's variant/metadata
 		
+		if (triggeringEntity instanceof EntityLivingBase) {
+			Boolean triggEntityAffected = true; // Should the triggering entity be affected by this block?
+			Boolean triggEntityJumping = false; // Is the triggering entity jumping?
+			Boolean triggEntityMoving = false; // Is the triggering entity moving?
+			Boolean triggEntitySplashing = false; // Is the triggering entity splashing?
+			Boolean triggEntityRotating = false; // Is the triggering entity rotating?
+			final float blockMetadataBumped = (float)(blockMetadata + 1); // Adds 1 to the block's metadata value
+			
+			// These variables are unknown
+			double triggEntityMovingDistance_movDis = 1.0;
+			double triggEntityMovingCoefficient_movCof = 16.0;
+			double triggEntityMovingKoefficientDivider_mofKofDiv = 1.0;
+			final int mr_blackgoo = (int)Math.min(5.0 + Math.floor(Math.max(0.0, Math.pow(blockMetadataBumped * 2.0f * (1.5 - triggEntitySunkMod_kof1m), 2.0))), 145.0);
+			
+			// If the entity moves downwards with a velocity higher than the equation,
+			//    the entity is marked as splashing
+			triggEntitySplashing =
+					(triggeringEntity.motionY < -0.1 / Math.max(1.0f, blockMetadataBumped / 2.0f))
+					? true : false;
+			
+			// If the entity moves upwards with a velocity higher than the equation,
+			//    the entity is marked as jumping
+			triggEntityJumping = 
+					(triggEntityPosY - triggEntityPrevPosY > 0.2)
+					? true : false;
+			
+			// TODO: Complete the second equation.
+			// If the entity is NOT a player, AND the entity has moved their camera along the Yaw axis...
+			// OR if the entity is a player, and this is multiplayer, AND the server instance has detected Yaw axis movement...
+			triggEntityRotating = 
+					((!(triggeringEntity instanceof EntityPlayer) && ((EntityLivingBase)triggeringEntity).prevRotationYaw != ((EntityLivingBase)triggeringEntity).rotationYaw)
+							|| (false))
+					? true : false;
+			
+			// If the entity is marked as rotating, OR the entity has moved farther than 0.001 blocks along the X/Z axis...
+			if (triggEntityRotating || Math.abs(triggeringEntity.prevPosX - triggeringEntity.posX) > 0.001 || Math.abs(triggeringEntity.prevPosZ - triggeringEntity.posZ) > 0.001) {
+				
+				triggEntityMoving = true; // The entity is moving
+				
+				// Finds the hypotenuse of the distance traveled.
+				// This is the actual distance traveled on a radical plane
+				triggEntityMovingDistance_movDis = Math.pow(Math.pow(triggeringEntity.prevPosX - triggeringEntity.posX, 2.0) + Math.pow(triggeringEntity.prevPosZ - triggeringEntity.posZ,  2.0), 0.5);
+				
+				// Unknown. However, it outputs a parabola
+				triggEntityMovingCoefficient_movCof = Math.max(Math.min(32.0 / (1.0 + (triggEntityMovingDistance_movDis * 10.0)), 32.0), 16.0);
+				
+				// Unknown.
+				triggEntityMovingKoefficientDivider_mofKofDiv = 1.0 + triggEntityMovingDistance_movDis * 25.0;
+				
+				// If the distance the entity has sunk into the block (relative to the top of the block) is less than 0.9,
+				//    AND the distance the entity has sunk is not 0.0,
+				//    AND the entity is marked as rotating...
+				if (triggEntitySunkMod_kof1m < 0.9 && triggEntitySunkMod_kof1m != 0.0 && triggEntityRotating) {
+					triggEntityMovingKoefficientDivider_mofKofDiv += mr_blackgoo * 0.005;
+				}
+			}
+		}
 	}
 	
 	// Declares that this block ID has metadata values.
