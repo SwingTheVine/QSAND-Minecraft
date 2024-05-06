@@ -10,11 +10,13 @@ import net.minecraft.util.ResourceLocation;
 public class ClientProxy extends CommonProxy{
 	@Override
 	public void registerRenders() {
-		QSAND_Blocks.registerRenders();
-		QSAND_Items.registerRenders();
+		QSAND_Blocks.registerRenders(); // Registers the renders for the blocks
+		QSAND_Items.registerRenders(); // Registers the renders for the items
 	}
 	
 	public void registerModelQSAND() {
+		
+		// Registers the different renders/skins for each item variant/metadata
 		ModelBakery.registerItemVariants(Item.getItemFromBlock(QSAND_Blocks.test_block),
 				new ResourceLocation("QSAND:test_block"));
 	}
