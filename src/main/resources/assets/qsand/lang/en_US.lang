@@ -5,4 +5,9 @@ tile.test_block_2.name=Test Block 2
 tile.test_block_3.name=Test Block 3
 tile.test_block_4.name=Test Block 4
 
+tile.mud_0.name=Mud
+tile.mud_1.name=Thinnish Mud
+tile.mud_2.name=Deep Mud
+tile.mud_3.name=Bottomless Mud
+
 itemGroup.QSANDTab=QSAND Mod

@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "sink=0": {"model": "qsand:mud"},
+        "sink=1": {"model": "qsand:mud"},
+        "sink=2": {"model": "qsand:mud"},
+        "sink=3": {"model": "qsand:mud"}
+    }
+}
