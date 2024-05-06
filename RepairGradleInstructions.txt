@@ -1,0 +1,5 @@
+Through CMD, run gradlew.bat
+
+Then, run "gradle check"
+
+It will rebuild the missing cache libraries

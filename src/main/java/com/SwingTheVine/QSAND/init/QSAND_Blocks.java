@@ -3,6 +3,7 @@ package com.SwingTheVine.QSAND.init;
 import com.SwingTheVine.QSAND.ModInfo;
 import com.SwingTheVine.QSAND.QSAND;
 import com.SwingTheVine.QSAND.blocks.BlockTest;
+import com.SwingTheVine.QSAND.blocks.ItemBlockMeta;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -15,19 +16,37 @@ public class QSAND_Blocks {
 	public static Block test_block;
 	
 	public static void init() {
-		test_block = new BlockTest(Material.cloth).setUnlocalizedName("test_block").setCreativeTab(QSAND.QSANDTab);
+		test_block = new BlockTest(Material.ground).setUnlocalizedName("test_block").setCreativeTab(QSAND.QSANDTab);
 	}
 	
 	public static void registerBlocks() {
-		GameRegistry.registerBlock(test_block, test_block.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(test_block, ItemBlockMeta.class, test_block.getUnlocalizedName().substring(5));
+		
 	}
 	
 	public static void registerRenders() {
-		registerRenderInventory(test_block);
+		// Registers the inventory image. Block to render, number of metadata types, should one texture be used
+		registerRenderInventory(test_block, ((BlockTest)test_block).getTypes(), ((BlockTest)test_block).getUseOneTexture());
 	}
 	
-	public static void registerRenderInventory(Block block) {
-		Item item = Item.getItemFromBlock(block);
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, 0, new ModelResourceLocation(ModInfo.ID + ":" + item.getUnlocalizedName().substring(5), "inventory"));
+	// numMeta = number of metadata values to render
+	public static void registerRenderInventory(Block block, String[] types, Boolean useOneTexture) {
+		Item item = Item.getItemFromBlock(block); // Makes an item from this block
+		
+		// If the block should only use one texture...
+		if (useOneTexture) {
+			
+			// Every metadata uses the same texture file
+			for (int indexMeta = 0; indexMeta < types.length; indexMeta++) {
+				Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, indexMeta, new ModelResourceLocation(ModInfo.ID + ":" + item.getUnlocalizedName().substring(5) + "", "inventory"));
+			}
+		}
+		else {
+			
+			// Every metadata uses its own texture file
+			for (int indexMeta = 0; indexMeta < types.length; indexMeta++) {
+				Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, indexMeta, new ModelResourceLocation(ModInfo.ID + ":" + item.getUnlocalizedName().substring(5) + "_" + types[indexMeta], "inventory"));
+			}
+		}
 	}
 }

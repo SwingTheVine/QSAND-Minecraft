@@ -1,5 +1,9 @@
 {
     "variants": {
-        "normal": {"model": "qsand:test_block"}
+        "sink=0": {"model": "qsand:test_block"},
+        "sink=1": {"model": "qsand:test_block"},
+        "sink=2": {"model": "qsand:test_block"},
+        "sink=3": {"model": "qsand:test_block"},
+        "sink=4": {"model": "qsand:test_block"}
     }
 }

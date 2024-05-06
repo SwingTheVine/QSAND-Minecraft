@@ -30,6 +30,7 @@ public class QSAND {
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		proxy.registerRenders();
+		proxy.registerModelQSAND();
 	}
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {

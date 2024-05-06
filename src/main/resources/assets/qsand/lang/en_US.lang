@@ -1,4 +1,8 @@
 item.test_item.name=Test Item
-tile.test_block.name=Test Block
+tile.test_block_0.name=Test Block 0
+tile.test_block_1.name=Test Block 1
+tile.test_block_2.name=Test Block 2
+tile.test_block_3.name=Test Block 3
+tile.test_block_4.name=Test Block 4
 
 itemGroup.QSANDTab=QSAND Mod

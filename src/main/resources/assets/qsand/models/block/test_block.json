@@ -1,6 +1,6 @@
 {
     "parent": "block/cube_all",
     "textures": {
-        "all": "qsand:blocks/test_block"
+        "all": "qsand:blocks/test_block_0"
     }
 }
