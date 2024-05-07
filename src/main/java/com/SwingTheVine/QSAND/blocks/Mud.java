@@ -61,10 +61,23 @@ public class Mud extends Block implements IMetaBlockName {
 			triggEntityPrevSunk = Math.max(((pos.getY() - triggEntityPrevPosY - 0.5) * -1.0), 0.0); // How far into the block the entity previously sunk (in percent) to the top of the block
 		}
 		
-		double triggEntitySunk_kof1 = triggEntitySunk;
+		double triggEntitySunk_kof1 = triggEntitySunk; // Percentage of entity NOT sunk into block???
 		double triggEntityPrevSunk_kof2 = triggEntityPrevSunk;
 		double triggEntitySunkMod_kof1m = Math.max(triggEntitySunk_kof1, 0.0); // A modified version of trigger entity sunk
 		final int blockMetadata = state.getValue(SINK).intValue(); // Obtains this block's variant/metadata
+		
+		// Player data
+		// kof1 = how far into the block the player has sunk
+		// kof2 = 0
+		// kof1m = 0
+		
+		// Item data
+		// kof1 & kof1m start at 1.5 and approaches 0
+		// kof2 starts at 1.8 and approaches 0
+		// kof1; kof2; kof1m = 1.15 at rest at bottom of metadata 0
+		// kof1; kof2; kof1m = 1.0 at rest at bottom of metadata 1
+		// kof1; kof2; kof1m = 0.75 at rest at bottom of metadata 2
+		// kof1; kof2; kof1m = 0.5 at rest at bottom of metadata 3
 		
 		if (triggeringEntity instanceof EntityLivingBase) {
 			Boolean triggEntityAffected = true; // Should the triggering entity be affected by this block?
@@ -79,6 +92,24 @@ public class Mud extends Block implements IMetaBlockName {
 			double triggEntityMovingCoefficient_movCof = 16.0;
 			double triggEntityMovingKoefficientDivider_mofKofDiv = 1.0;
 			final int mr_blackgoo = (int)Math.min(5.0 + Math.floor(Math.max(0.0, Math.pow(blockMetadataBumped * 2.0f * (1.5 - triggEntitySunkMod_kof1m), 2.0))), 145.0);
+			
+			// Player data
+			// movDis = 1.0 when entity at rest
+			// movDis = 0.0049 when walking
+			// movDis = 0.0063 when sprinting
+			
+			// movCof = 16.0 when at rest
+			// movCof = 31.64 when walking
+			// movCof = 31.14 when sprinting
+			
+			// mofKofDiv = 1.5 when at rest
+			// mofKofDiv = 1.68 when walking
+			// mofKofDiv = 1.73 when sprinting
+			
+			// mr_blackgoo = 14 when metadata = 0
+			// mr_blackgoo = 41 when metadata = 1
+			// mr_blackgoo = 86 when metadata = 2
+			// mr_blackgoo = 145 when metadata = 3
 			
 			// TODO: Add entity is Muddy Blob
 			
@@ -427,6 +458,11 @@ public class Mud extends Block implements IMetaBlockName {
             	
             	triggeringEntity.setInWeb();
             }
+            /*
+            System.out.println("triggEntityMovingDistance_movDis: " + triggEntityMovingDistance_movDis);
+            System.out.println("triggEntityMovingCoefficient_movCof: " + triggEntityMovingCoefficient_movCof);
+            System.out.println("triggEntityMovingKoefficientDivider_mofKofDiv: " + triggEntityMovingKoefficientDivider_mofKofDiv);
+            System.out.println("mr_blackgoo: " + mr_blackgoo);*/
 		} else {
 			
 			if (triggEntitySunk_kof1 < 1.45) {
@@ -435,6 +471,9 @@ public class Mud extends Block implements IMetaBlockName {
 			
 			// TODO: handle mud tentacles
 		}
+		System.out.println("triggEntitySunk_kof1: " + triggEntitySunk_kof1);
+        System.out.println("triggEntityPrevSunk_kof2: " + triggEntityPrevSunk_kof2);
+        System.out.println("triggEntitySunkMod_kof1m: " + triggEntitySunkMod_kof1m);
 	}
 	
 	// Declares that this block ID has metadata values.
