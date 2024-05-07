@@ -110,6 +110,288 @@ public class Mud extends Block implements IMetaBlockName {
 					triggEntityMovingKoefficientDivider_mofKofDiv += mr_blackgoo * 0.005;
 				}
 			}
+			
+			// This is the part that makes the entity sink.
+            // This is done either at set intervals (based on world time), or faster set intervals when the player is moving
+            // If the remainder of the current world time divided by 128 is zero,
+            //     OR the entity is marked as moving, AND the remainder of the current world time divided by a number that decreases the more the player moves is zero,
+            //     OR the entity is marked as jumping, AND the remainder of the current world time divided by 8 is zero,
+            //     OR the entity is splashing...
+			if (world.getTotalWorldTime() % 128L == 0L
+					|| (triggEntityMoving && world.getTotalWorldTime() % Math.max((int)Math.floor(triggEntityMovingCoefficient_movCof), 1) == 0L)
+					|| (triggEntityJumping && world.getTotalWorldTime() % 8L == 0L)
+					|| triggEntitySplashing) {
+				
+				// If the triggering entity is splashing...
+				if (triggEntitySplashing) {
+					
+					// ...AND the previous sunk percentage is greater than 1.5 blocks
+					if (triggEntityPrevSunk_kof2 > 1.5) {
+						world.playSoundEffect(triggeringEntity.posX, triggEntityPosY, triggeringEntity.posZ, "game.player.swim", 0.15f, world.rand.nextFloat() * 0.25f + 0.1f); // Play sound
+					}
+					
+					// ...AND the entity is a player, AND the number in the world's random number generator sequence is 0 (1/3 chance)...
+					if (triggeringEntity instanceof EntityPlayer && world.rand.nextInt(3) == 0) {
+						// TODO: Add body bubbles
+					}
+				}
+				
+				// If the entity is NOT splashing, AND the entity is moving...
+				if (!triggEntitySplashing && triggEntityMoving) {
+					
+					// ...AND the number in the world's random number generator sequence equals 0 (1/2 chance)...
+                    if (world.rand.nextInt(2) == 0) {
+                        world.playSoundEffect(triggeringEntity.posX, triggEntityPosY, triggeringEntity.posZ, "mob.silverfish.step", 0.25f, world.rand.nextFloat() * 0.15f + 0.1f); // Play sound
+                    }
+                    
+                    // ...AND the number in the world's random number generator sequence equals 0 (1/7 chance)...
+                    if (world.rand.nextInt(7) == 0) {
+                    	// TODO: Add body bubble
+                    }
+				}
+				
+				// If the entity is jumping...
+				if (triggEntityJumping) {
+					world.playSoundEffect(triggeringEntity.posX, triggEntityPosY, triggeringEntity.posZ, "mob.slime.attack", 0.25f, world.rand.nextFloat() * 0.25f + 0.25f); // Play sound
+					
+					// ...AND the entity is a player, AND the number in the world's random number generator sequence equals 0 (1/5 chance)...
+                    if (triggeringEntity instanceof EntityPlayer && world.rand.nextInt(5) == 0) {
+                    	// TODO: Add body bubbles
+                    }
+				}
+				
+				// If the entity is NOT jumping, AND the entity is NOT moving, AND the entity is NOT splashing, AND the number in the world's random number generator sequence equals 0 (1/5 chance)...
+                if (!triggEntityJumping && !triggEntityMoving && !triggEntitySplashing && world.rand.nextInt(5) == 0) {
+                	
+                	// ...AND the number in the world's random number generator equals 0 (1/5 chance)...
+                    if (world.rand.nextInt(5) == 0) {
+                        world.playSoundEffect(triggeringEntity.posX, triggEntityPosY, triggeringEntity.posZ, "liquid.water", 0.5f, world.rand.nextFloat() * 0.15f + 0.1f); // Play sound
+                    }
+                    else {
+                        world.playSoundEffect(triggeringEntity.posX, triggEntityPosY, triggeringEntity.posZ, "mob.silverfish.step", 0.25f, world.rand.nextFloat() * 0.15f + 0.1f); // Plaay sound
+                    }
+                    
+                    // If the varient of the block is greater than 2, AND the remainder of the total world time divided by 32 is 0, AND the number in the world's random number generator sequence equals 0 (1/20 chance)...
+                    if (blockMetadata > 2 && world.getTotalWorldTime() % 32L == 0L && world.rand.nextInt(20) == 0) {
+                        // TODO: Add body bubble
+                    }
+                }
+			}
+                
+            triggeringEntity.motionX = 0.0; // Make the entity stop moving
+            triggeringEntity.motionZ = 0.0; // Make the entity stop moving
+            
+            // TODO: add boots dont float
+            
+            // If the entity is moving upwards...
+            if (triggeringEntity.motionY > -0.1) {
+            	triggeringEntity.motionY = 0.0; // Make the entity stop moving
+            } else {
+            	triggeringEntity.motionY /= 1.5; // Slow the downwards motion of the entity by 50%
+            }
+            
+            // If the block above this one is NOT the same as this block,
+            //    OR the block above this one is the same as this block, AND the block 2 blocks above this one is the same as this block...
+            if (world.getBlockState(pos.up(1)) != this || (world.getBlockState(pos.up(1)) == this && world.getBlockState(pos.up(2)) == this)) {
+
+                // If the block above this one is the same as this block, AND the block 2 blocks above this one is the same as this block...
+                if (world.getBlockState(pos.up(1)) == this && world.getBlockState(pos.up(2)) == this) {
+                	triggEntitySunk_kof1 = 0.001;
+                }
+                
+                // If the if statment above runs, this one will not run
+                // In other words, this will only run if:
+                // The block above this one is NOT the same as this block AND...
+                // ...something unknown...
+                if (triggEntitySunk_kof1 > 0.9) {
+                	
+                	// If the entity is marked as moving, AND something unknown...
+                	if (triggEntityMoving && triggEntityMovingKoefficientDivider_mofKofDiv > 2.75) {
+                		triggEntityMoving = false;
+                		triggEntityMovingKoefficientDivider_mofKofDiv = 0.0;
+                		
+                		// If the entity is NOT in water, AND something unknown...
+                		if (!triggeringEntity.isInWater() && triggEntitySunk_kof1 < 1.3) {
+                			triggeringEntity.motionY += 0.025 * Math.max(Math.min((1.3 - triggEntitySunk_kof1) / 0.3, 1.0), 0.0);
+                		}
+                	}
+                	triggEntityMovingKoefficientDivider_mofKofDiv *= 1.125;
+                } else {
+                	triggEntityMovingKoefficientDivider_mofKofDiv *= 1.5;
+                }
+                
+                double mystery = 0.0;
+                
+                // TODO: non-player function
+                
+                // TODO: Fix this
+                /*
+                if (triggEntityJumping && false) {
+                	triggeringEntity.motionY -= 0.05 * blockMetadataBumped * (Math.min(0.75, triggEntitySunkMod_kof1m) + 1.0); // Subtract some unknown modifier to the entity's Y velocity
+                    world.playSound(triggeringEntity.posX, triggEntityPosY, triggeringEntity.posZ, "mob.magmacube.jump", 0.25f, 0.25f + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.4f, false); // Play sound
+                }*/
+                
+                if (triggEntitySunk_kof1 >= 1.2) {
+                	
+                	if (!triggEntitySplashing) {
+
+	                	// TODO: More boot code
+	                	if (false) {
+	                		
+	                	} else {
+	                		
+	                		// If the remainder of the total world time divided by the bumped metadata value equals 0...
+	                		// ...then the value is the first one. Otherwise, it is the second one
+	                		double a1 = 
+	                				(world.getTotalWorldTime() % Math.max(8.0f - blockMetadataBumped, 1.0f) == 0.0f)
+	                				? 0.07485 : 0.075;
+	                		
+	                		triggeringEntity.motionY += a1 / Math.max((triggEntityMovingKoefficientDivider_mofKofDiv - 1.0) * (Math.max(triggEntitySunkMod_kof1m - 0.5, 0.75) * 1.6), 1.0) / Math.pow(Math.max(triggEntitySunkMod_kof1m / 1.25, 1.0), 2.0);
+	                		
+	                		triggeringEntity.onGround = false; // The entity is marked as NOT on the ground
+	                		triggeringEntity.fallDistance = 0.0f; // The entity takes no fall damage
+	                		
+	                		// If the number in the world's random number generator sequence modified by some unknown modifer equals 0...
+                            if (world.rand.nextInt((int)Math.floor(Math.max(triggEntitySunkMod_kof1m * 20.0, 1.0))) == 0) {
+                                triggeringEntity.setInWeb(); // The entity is marked as in a web
+                            }
+                            
+                            // If the next integer in the world's random number generator sequence modified by some unknown modifer equals 0...
+                            if (world.rand.nextInt(Math.max((int)Math.floor(2.0f + blockMetadataBumped - Math.pow(Math.max(triggEntitySunkMod_kof1m, 0.0), 1.5)), 1)) == 0) {
+                                triggeringEntity.onGround = true; // The entity is marked as on the ground
+                            }
+	                	}
+                	}
+                	
+                } else {
+                	
+                	// TODO: Suction check function
+                	
+                	if (triggEntitySunk_kof1 >= 0.9) {
+                		
+                		// If the remainder of the total world time divided by the block's metadata value plus 1 equals 0...
+                		// ...it is set to the first value. Otherwise, it is set to the second value
+                		double a1 = 
+                				(world.getTotalWorldTime() % Math.max(8.0f - blockMetadataBumped, 1.0f) == 0.0f)
+                				? 0.07485 : 0.075 + mystery;
+                		
+                		triggeringEntity.motionY += a1 / Math.max((triggEntityMovingKoefficientDivider_mofKofDiv - 1.0) * (Math.max(triggEntitySunkMod_kof1m - 0.5, 0.75) * 1.6), 1.0) / Math.pow(Math.max(triggEntitySunkMod_kof1m / 1.25, 1.0), 2.0);
+                		// TODO: set stuck effect
+                		triggeringEntity.fallDistance = 0.0f;
+                		
+                		// If the entity is a player...
+                		if (triggeringEntity instanceof EntityPlayer) {
+                			
+                			// ...AND the number in the world's random number generator sequence at some unknown index equals 0...
+                            if (world.rand.nextInt(Math.max((int)Math.floor(4.0f + blockMetadataBumped - Math.pow(Math.max(triggEntitySunkMod_kof1m, 0.0), 1.5)), 1)) == 0) {
+                            	triggeringEntity.onGround = true;
+                            }
+                		} else {
+                			final double mrs_blackgoo = 1 + mr_blackgoo / 10;
+                			
+                			triggeringEntity.setPosition(triggeringEntity.prevPosX + (triggeringEntity.posX - triggeringEntity.prevPosX) / mrs_blackgoo, triggEntityPosY, triggeringEntity.prevPosZ + (triggeringEntity.posZ - triggeringEntity.prevPosZ) / mrs_blackgoo);
+                		}
+                		
+                		// If the number in the world's random number generator sequence at some unknown index equals 0...
+                        if (world.rand.nextInt((int)Math.floor(Math.max(triggEntitySunkMod_kof1m * 10.0 / blockMetadataBumped, 1.0))) == 0) {
+                            triggeringEntity.setInWeb(); // The entity is marked as in a web
+                        }
+                	} else {
+                		double a2 = 
+                				(world.getTotalWorldTime() % (int)Math.floor(Math.min(16.0, Math.max(16.0 - triggEntitySunk_kof1 * blockMetadataBumped * 3.0, 1.0))) == 0L)
+                				? 1.01 : 1.05;
+                		
+                		// If the entity is a player...
+                        if (triggeringEntity instanceof EntityPlayer) {
+
+                            // ...AND the number in the world's random number generator sequence at some unknown index equals 0...
+                            if (world.rand.nextInt(Math.max((int)Math.floor(7.0f + blockMetadataBumped * 5.0f - Math.pow(Math.max(triggEntitySunkMod_kof1m, 0.0), 1.5)), 1)) == 0) {
+                                triggeringEntity.onGround = true; // The entity is marked as on the ground
+                            }
+                        } else {
+                        	final double mrs_blackgoo = 1 + mr_blackgoo / 10;
+                        	
+                        	// I suspect this is the line of code that sucks the player along the X-Z grid towards the center of the block
+                            triggeringEntity.setPosition(triggeringEntity.prevPosX + (triggeringEntity.posX - triggeringEntity.prevPosX) / mrs_blackgoo, triggEntityPosY, triggeringEntity.prevPosZ + (triggeringEntity.posZ - triggeringEntity.prevPosZ) / mrs_blackgoo); // Unknown
+
+                            // If the next integer in the world's random number generator sequence at some unknown index equals 0...
+                            if (world.rand.nextInt(Math.max((int)Math.floor(7.0f + blockMetadataBumped * 5.0f - Math.pow(Math.max(triggEntitySunkMod_kof1m, 0.0), 1.5)), 1)) == 0) {
+                                triggeringEntity.onGround = true; // The entity is marked as on the ground
+                            }
+                        }
+                        
+                        // TODO: is truly sink
+                        
+                        triggeringEntity.fallDistance = 0.0f;
+                        
+                        if (triggEntitySunk_kof1 >= 0.5) {
+                        	
+                        	// ...AND the number in the world's random number generation sequence equals 0...
+                            if (world.rand.nextInt((int)Math.floor(Math.max(triggEntitySunkMod_kof1m * 5.0 / blockMetadataBumped, 1.0))) == 0) {
+                                triggeringEntity.setInWeb(); // The entity is marked as in a web
+
+                                // If the entity is NOT marked as moving...
+                                if (!triggEntityMoving) {
+                                    triggeringEntity.motionY += (0.0725 + mystery) * a2; // Unknown modifier to entity's Y velocity
+                                }
+                                else {
+                                    triggeringEntity.motionY += (0.0725 + mystery) * a2 / (triggEntityMovingKoefficientDivider_mofKofDiv + 0.025); // Unknown modifier to entity's Y velocity
+                                }
+                            } // ...if the entity is NOT marked as moving...
+                            else if (!triggEntityMoving) {
+                                triggeringEntity.motionY += (0.075 + mystery) * a2; // Unknown modifer to entity's Y velocity
+                            }
+                            else {
+                                triggeringEntity.motionY += (0.075 + mystery) * a2 / (triggEntityMovingKoefficientDivider_mofKofDiv + 0.025); // Unknown modifer to entity's Y velocity
+                            }
+                        } else {
+                        	triggeringEntity.setInWeb();
+                        	
+                        	// If the entity is marked as in water, OR the block above this one is water...
+                            if (triggeringEntity.isInWater() || world.getBlockState(pos.up()).getBlock().getMaterial() == Material.water) {
+                                a2 = 1.01; // Something unkown
+                            } // ...if something unknown...
+                            else if (triggEntitySunk_kof1 < 0.475) {
+                                a2 = 1.05;
+                            }
+
+                            // If the entity is marked as not moving...
+                            if (!triggEntityMoving) {
+                                triggeringEntity.motionY += (0.0725 + mystery) * a2; // Unknown modifier to entity's Y velocity
+                            }
+                            else {
+                                triggeringEntity.motionY += (0.0725 + mystery) * a2 / (triggEntityMovingKoefficientDivider_mofKofDiv + 0.025); // Unknown modifier to entity's Y velocity
+                            }
+
+                            // TODO: truly sink function
+                        }
+                	}
+                }
+                
+                // If the entity is marked as in water...
+                if (triggeringEntity.isInWater()) {
+
+                    // ...AND the entity is moving upward...
+                    if (triggeringEntity.motionY > 0.0) {
+                        triggeringEntity.motionY = 0.0; // Set the entity's velocity to 0
+                    }
+
+                    triggeringEntity.motionY -= 0.01; // Modify the entity's velocity by -0.01
+                }
+                
+                // TODO: anti hold jump script
+            } else {
+            	// TODO: set stuck effect
+            	
+            	triggeringEntity.setInWeb();
+            }
+		} else {
+			
+			if (triggEntitySunk_kof1 < 1.45) {
+				triggeringEntity.setInWeb();
+			}
+			
+			// TODO: handle mud tentacles
 		}
 	}
 	
