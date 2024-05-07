@@ -261,9 +261,12 @@ public class Mud extends Block implements IMetaBlockName {
                 
                 double mystery = 0.0;
                 
-                // TODO: non-player function
+                // If the entity is NOT a player...
+                if (!(triggeringEntity instanceof EntityPlayer)) {
+                    mystery = -0.0; // Unknown
+                }
                 
-                // TODO: Fix this
+                // TODO: Fix this; suction check
                 /*
                 if (triggEntityJumping && false) {
                 	triggeringEntity.motionY -= 0.05 * blockMetadataBumped * (Math.min(0.75, triggEntitySunkMod_kof1m) + 1.0); // Subtract some unknown modifier to the entity's Y velocity
