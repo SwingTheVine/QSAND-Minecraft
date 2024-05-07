@@ -49,8 +49,20 @@ public class Mud extends Block implements IMetaBlockName {
 		final double triggEntityPosY = triggeringEntity.posY; // Triggering entity's Y position
 		final double triggEntityPrevPosY = triggeringEntity.prevPosY; // Triggering entity's previous Y position
 		final double triggEntityVelY = triggeringEntity.motionY; // Triggering entity's Y velocity
-		double triggEntitySunk, triggEntitySunk_kof1 = (pos.getY() - triggEntityPosY + 1.0) * -1.0; // How far into the block the entity has sunk (in percent) relative to the top of the block (i.e. sunk 15% from the top of the block is -0.15)
-		double triggEntityPrevSunk, triggEntityPrevSunk_kof2 = Math.max(((pos.getY() - triggEntityPrevPosY + 1.0) * -1.0), 0.0); // How far into the block the entity previously sunk (in percent) to the top of the block
+		double triggEntitySunk, triggEntityPrevSunk;
+		
+		// If the entity is a player...
+		if (triggeringEntity instanceof EntityPlayer) {
+			triggEntitySunk = (pos.getY() - triggEntityPosY + 1.0) * -1.0; // How far into the block the entity has sunk (in percent) relative to the top of the block (i.e. sunk 15% from the top of the block is -0.15)
+			triggEntityPrevSunk = Math.max(((pos.getY() - triggEntityPrevPosY + 1.0) * -1.0), 0.0); // How far into the block the entity previously sunk (in percent) to the top of the block
+			
+		} else {
+			triggEntitySunk = (pos.getY() - triggEntityPosY - 0.5) * -1.0; // How far into the block the entity has sunk (in percent) relative to the top of the block (i.e. sunk 15% from the top of the block is -0.15)
+			triggEntityPrevSunk = Math.max(((pos.getY() - triggEntityPrevPosY - 0.5) * -1.0), 0.0); // How far into the block the entity previously sunk (in percent) to the top of the block
+		}
+		
+		double triggEntitySunk_kof1 = triggEntitySunk;
+		double triggEntityPrevSunk_kof2 = triggEntityPrevSunk;
 		double triggEntitySunkMod_kof1m = Math.max(triggEntitySunk_kof1, 0.0); // A modified version of trigger entity sunk
 		final int blockMetadata = state.getValue(SINK).intValue(); // Obtains this block's variant/metadata
 		
@@ -67,6 +79,12 @@ public class Mud extends Block implements IMetaBlockName {
 			double triggEntityMovingCoefficient_movCof = 16.0;
 			double triggEntityMovingKoefficientDivider_mofKofDiv = 1.0;
 			final int mr_blackgoo = (int)Math.min(5.0 + Math.floor(Math.max(0.0, Math.pow(blockMetadataBumped * 2.0f * (1.5 - triggEntitySunkMod_kof1m), 2.0))), 145.0);
+			
+			// TODO: Add entity is Muddy Blob
+			
+			// TODO: Add check entity under
+			
+			// TODO: Add boot calculations
 			
 			// If the entity moves downwards with a velocity higher than the equation,
 			//    the entity is marked as splashing
@@ -110,6 +128,27 @@ public class Mud extends Block implements IMetaBlockName {
 					triggEntityMovingKoefficientDivider_mofKofDiv += mr_blackgoo * 0.005;
 				}
 			}
+			
+			// TODO: not wearing boots function
+			
+			if (blockMetadata == 0) {
+				if (!(triggeringEntity instanceof EntityPlayer) && triggEntitySunk_kof1 < 1.25) {
+					triggeringEntity.motionY = 0.0; // The entity stops moving on the Y axis
+					
+					triggeringEntity.motionY += 0.08 + Math.min((1.25 - triggEntitySunk_kof1) / 100.0, 0.005); // Add Y velocity to the entity based on a modifier that goes between 0.005 and 0.000...
+	                // The upwards motion of the entity reduces the further into the block the entity is sunk:
+	                // 125% sunk is 0.08 velocity upwards
+	                // 100% sunk is 0.0825 velocity upwards
+	                // 75% and less sunk is 0.085 velocity upwards
+					
+					triggeringEntity.onGround = true; // The entity is flagged as on the ground
+					triggeringEntity.fallDistance = 0.0f; // The entity does not take fall damage
+				}
+			}
+			
+			// TODO: entity instanceof muddy blob
+			
+			// TODO: not player; not affected
 			
 			// This is the part that makes the entity sink.
             // This is done either at set intervals (based on world time), or faster set intervals when the player is moving
