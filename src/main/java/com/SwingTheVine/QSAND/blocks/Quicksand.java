@@ -211,11 +211,11 @@ public class Quicksand extends Block implements IMetaBlockName {
                 
                 // TODO: Changes. if (triggEntitySunk_kof1 > 0.9) removed
                 
-                double mystery = 0.0;
+                double sinkRateMod_mys = 0.0;
                 
                 // If the entity is NOT a player...
                 if (!(triggeringEntity instanceof EntityPlayer)) {
-                    mystery = 0.0; // Unknown
+                    sinkRateMod_mys = 0.0; // Unknown
                 }
                 
                 // TODO: Fix this; suction check
@@ -258,7 +258,7 @@ public class Quicksand extends Block implements IMetaBlockName {
                 		// ...it is set to the first value. Otherwise, it is set to the second value
                 		double a1 = 
                 				(world.getTotalWorldTime() % Math.max(8.0f - blockMetadataBumped, 1.0f) == 0.0f)
-                				? 0.0748 : 0.075 + mystery; // TODO: Changed
+                				? 0.0748 : 0.075 + sinkRateMod_mys; // TODO: Changed
                 		
                 		triggeringEntity.motionY += a1 / Math.max((triggEntityMovingKoefficientDivider_mofKofDiv - 1.0) * (Math.max(triggEntitySunkMod_kof1m - 0.5, 0.75) * 1.6), 1.0) / Math.pow(Math.max(triggEntitySunkMod_kof1m / 1.25, 1.0), 2.0);
                 		// TODO: set stuck effect
@@ -297,17 +297,17 @@ public class Quicksand extends Block implements IMetaBlockName {
 
                                 // If the entity is NOT marked as moving...
                                 if (!triggEntityMoving) {
-                                    triggeringEntity.motionY += (0.0725 + mystery) * a2; // Unknown modifier to entity's Y velocity
+                                    triggeringEntity.motionY += (0.0725 + sinkRateMod_mys) * a2; // Unknown modifier to entity's Y velocity
                                 }
                                 else {
-                                    triggeringEntity.motionY += (0.0725 + mystery) * a2 / (triggEntityMovingKoefficientDivider_mofKofDiv + 0.075); // Unknown modifier to entity's Y velocity TODO: Changed
+                                    triggeringEntity.motionY += (0.0725 + sinkRateMod_mys) * a2 / (triggEntityMovingKoefficientDivider_mofKofDiv + 0.075); // Unknown modifier to entity's Y velocity TODO: Changed
                                 }
                             } // ...if the entity is NOT marked as moving...
                             else if (!triggEntityMoving) {
-                                triggeringEntity.motionY += (0.075 + mystery) * a2; // Unknown modifer to entity's Y velocity
+                                triggeringEntity.motionY += (0.075 + sinkRateMod_mys) * a2; // Unknown modifer to entity's Y velocity
                             }
                             else {
-                                triggeringEntity.motionY += (0.075 + mystery) * a2 / (triggEntityMovingKoefficientDivider_mofKofDiv + 0.075); // Unknown modifer to entity's Y velocity TODO: Changed
+                                triggeringEntity.motionY += (0.075 + sinkRateMod_mys) * a2 / (triggEntityMovingKoefficientDivider_mofKofDiv + 0.075); // Unknown modifer to entity's Y velocity TODO: Changed
                             }
                         } else {
                         	triggeringEntity.setInWeb();
@@ -317,10 +317,10 @@ public class Quicksand extends Block implements IMetaBlockName {
 
                             // If the entity is marked as not moving...
                             if (!triggEntityMoving) {
-                                triggeringEntity.motionY += (0.0725 + mystery) * a2; // Unknown modifier to entity's Y velocity
+                                triggeringEntity.motionY += (0.0725 + sinkRateMod_mys) * a2; // Unknown modifier to entity's Y velocity
                             }
                             else {
-                                triggeringEntity.motionY += (0.0725 + mystery) * a2 / (triggEntityMovingKoefficientDivider_mofKofDiv + 0.025); // Unknown modifier to entity's Y velocity
+                                triggeringEntity.motionY += (0.0725 + sinkRateMod_mys) * a2 / (triggEntityMovingKoefficientDivider_mofKofDiv + 0.025); // Unknown modifier to entity's Y velocity
                             }
 
                             // TODO: truly sink function
