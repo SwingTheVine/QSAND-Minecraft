@@ -29,9 +29,8 @@ public class Quicksand extends Block implements IMetaBlockName {
 	// This function changes the height of the block to make the entity "sink" into the block by the "sinkType" value corresponding to the metadata value of the block. (i.e. meta=0 means reduce height by 0.35)
 	@Override
 	public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state) {
-        // TODO: return null;
-		return new AxisAlignedBB((double)pos.getX() + this.minX, (double)pos.getY() + this.minY, (double)pos.getZ() + this.minZ, (double)pos.getX() + this.maxX, (double)pos.getY() + this.maxY, (double)pos.getZ() + this.maxZ);
-    }
+        return null;
+	}
 	
 	// What to do when an entity is INSIDE the block
 	// This is the core of the quicksand calculations
