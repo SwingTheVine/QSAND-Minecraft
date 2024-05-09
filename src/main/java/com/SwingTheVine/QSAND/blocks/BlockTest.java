@@ -55,7 +55,6 @@ public class BlockTest extends Block implements IMetaBlockName {
 	// THIS FUNCTION IS NEEDED FOR BLOCK DECLARATION
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		System.out.println(state.toString());
         return (Integer)state.getValue(SINK).intValue();
     }
 	

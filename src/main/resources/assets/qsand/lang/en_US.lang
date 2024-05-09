@@ -10,4 +10,6 @@ tile.mud_1.name=Thinnish Mud
 tile.mud_2.name=Deep Mud
 tile.mud_3.name=Bottomless Mud
 
+tile.quicksand_0.name=Quicksand
+
 itemGroup.QSANDTab=QSAND Mod

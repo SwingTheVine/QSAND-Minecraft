@@ -5,6 +5,7 @@ import com.SwingTheVine.QSAND.QSAND;
 import com.SwingTheVine.QSAND.blocks.BlockTest;
 import com.SwingTheVine.QSAND.blocks.ItemBlockMeta;
 import com.SwingTheVine.QSAND.blocks.Mud;
+import com.SwingTheVine.QSAND.blocks.Quicksand;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -16,6 +17,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class QSAND_Blocks {
 	public static Block test_block;
 	public static Block mud;
+	public static Block quicksand;
 	// Test World Seed: 1637864495647481288
 	
 	public static void init() {
@@ -23,6 +25,7 @@ public class QSAND_Blocks {
 		// Constructs all blocks with their names and tab
 		test_block = new BlockTest(Material.ground).setUnlocalizedName("test_block").setCreativeTab(QSAND.QSANDTab);
 		mud = new Mud(Material.ground).setUnlocalizedName("mud").setCreativeTab(QSAND.QSANDTab);
+		quicksand = new Quicksand(Material.ground).setUnlocalizedName("quicksand").setCreativeTab(QSAND.QSANDTab);
 	}
 	
 	public static void registerBlocks() {
@@ -30,6 +33,7 @@ public class QSAND_Blocks {
 		// Registers the blocks with the Game Registry
 		GameRegistry.registerBlock(test_block, ItemBlockMeta.class, test_block.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mud, ItemBlockMeta.class, mud.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(quicksand, ItemBlockMeta.class, quicksand.getUnlocalizedName().substring(5));
 	}
 	
 	public static void registerRenders() {
@@ -37,6 +41,7 @@ public class QSAND_Blocks {
 		// Registers the inventory image. Block to render, number of metadata types, should one texture be used
 		registerRenderInventory(test_block, ((BlockTest)test_block).getTypes(), ((BlockTest)test_block).getUseOneTexture());
 		registerRenderInventory(mud, ((Mud)mud).getTypes(), ((Mud)mud).getUseOneTexture());
+		registerRenderInventory(quicksand, ((Quicksand)quicksand).getTypes(), ((Quicksand)quicksand).getUseOneTexture());
 	}
 	
 	// Registers the inventory image for all block variants
