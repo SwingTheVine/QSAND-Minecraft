@@ -72,7 +72,7 @@ public class Quicksand extends Block implements IMetaBlockName {
 			
 			// These variables are unknown
 			double triggEntityMovingDistance_movDis = 1.0;
-			double triggEntityMovingCoefficient_movCof = 16.0;
+			double forceBubbleSpawn_movCof = 16.0;
 			double triggEntityMovingKoefficientDivider_mofKofDiv = 1.0;
 			final int mr_blackgoo = (int)Math.min(5.0 + Math.floor(Math.max(0.0, Math.pow(blockMetadataBumped * 10.0f * (1.5 - triggEntitySunkMod_kof1m), 2.0))), 145.0); // TODO: Changed
 			
@@ -106,7 +106,7 @@ public class Quicksand extends Block implements IMetaBlockName {
 				triggEntityMovingDistance_movDis = Math.pow(Math.pow(triggeringEntity.prevPosX - triggeringEntity.posX, 2.0) + Math.pow(triggeringEntity.prevPosZ - triggeringEntity.posZ,  2.0), 0.5);
 				
 				// Unknown. However, it outputs a parabola
-				triggEntityMovingCoefficient_movCof = Math.max(Math.min(32.0 / (1.0 + (triggEntityMovingDistance_movDis * 10.0)), 32.0), 16.0);
+				forceBubbleSpawn_movCof = Math.max(Math.min(32.0 / (1.0 + (triggEntityMovingDistance_movDis * 10.0)), 32.0), 16.0);
 				
 				// Unknown.
 				triggEntityMovingKoefficientDivider_mofKofDiv = 1.0 + triggEntityMovingDistance_movDis / 2.0; // TODO: Changed
@@ -136,7 +136,7 @@ public class Quicksand extends Block implements IMetaBlockName {
             //     OR the entity is marked as jumping, AND the remainder of the current world time divided by 8 is zero,
             //     OR the entity is splashing...
 			if (world.getTotalWorldTime() % 128L == 0L
-					|| (triggEntityMoving && world.getTotalWorldTime() % Math.max((int)Math.floor(triggEntityMovingCoefficient_movCof), 1) == 0L)
+					|| (triggEntityMoving && world.getTotalWorldTime() % Math.max((int)Math.floor(forceBubbleSpawn_movCof), 1) == 0L)
 					|| (triggEntityJumping && world.getTotalWorldTime() % 8L == 0L)
 					|| triggEntitySplashing) {
 				

@@ -67,7 +67,7 @@ public class Mud extends Block implements IMetaBlockName {
 		final int blockMetadata = state.getValue(SINK).intValue(); // Obtains this block's variant/metadata
 		
 		// Player data
-		// kof1 = how far into the block the player has sunk
+		// kof1 = how far into the block the player has sunk (in blocks)
 		// kof2 = 0
 		// kof1m = 0
 		
@@ -86,11 +86,11 @@ public class Mud extends Block implements IMetaBlockName {
 			Boolean triggEntitySplashing = false; // Is the triggering entity splashing?
 			Boolean triggEntityRotating = false; // Is the triggering entity rotating?
 			final float blockMetadataBumped = (float)(blockMetadata + 1); // Adds 1 to the block's metadata value
-			
-			// These variables are unknown
 			double triggEntityMovingDistance_movDis = 1.0;
-			double triggEntityMovingCoefficient_movCof = 16.0;
-			double triggEntityMovingKoefficientDivider_mofKofDiv = 1.0;
+			double forceBubbleSpawn_movCof = 16.0; // Forces the block to attempt to spawn bubbles. This value is used when the entity is not moving
+			
+			// This variable is unknown
+			double triggEntityMovingKoefficientDivider_mofKofDiv = 100.0;
 			
 			// EQUATION BEACON. 1st complex
 			// https://www.desmos.com/calculator/wgkirt9ra1
@@ -149,8 +149,9 @@ public class Mud extends Block implements IMetaBlockName {
 				// This is the actual distance traveled on a radical plane
 				triggEntityMovingDistance_movDis = Math.pow(Math.pow(triggeringEntity.prevPosX - triggeringEntity.posX, 2.0) + Math.pow(triggeringEntity.prevPosZ - triggeringEntity.posZ,  2.0), 0.5);
 				
-				// Unknown. However, it outputs a parabola
-				triggEntityMovingCoefficient_movCof = Math.max(Math.min(32.0 / (1.0 + (triggEntityMovingDistance_movDis * 10.0)), 32.0), 16.0);
+				// Unknown. However, it outputs a parabola. Outputs a number between 16 and 32
+				forceBubbleSpawn_movCof = Math.max(Math.min(32.0 / (1.0 + (triggEntityMovingDistance_movDis * 10.0)), 32.0), 16.0);
+				forceBubbleSpawn_movCof = 1.0;
 				
 				// Unknown.
 				triggEntityMovingKoefficientDivider_mofKofDiv = 1.0 + triggEntityMovingDistance_movDis * 25.0;
@@ -186,14 +187,14 @@ public class Mud extends Block implements IMetaBlockName {
 			// TODO: not player; not affected
 			
 			// STATEMENT BEACON 1
-			// This is the part that makes the entity sink.
+			// This is the part that makes most of the bubbles
             // This is done either at set intervals (based on world time), or faster set intervals when the player is moving
             // If the remainder of the current world time divided by 128 is zero,
             //     OR the entity is marked as moving, AND the remainder of the current world time divided by a number that decreases the more the player moves is zero,
             //     OR the entity is marked as jumping, AND the remainder of the current world time divided by 8 is zero,
             //     OR the entity is splashing...
 			if (world.getTotalWorldTime() % 128L == 0L
-					|| (triggEntityMoving && world.getTotalWorldTime() % Math.max((int)Math.floor(triggEntityMovingCoefficient_movCof), 1) == 0L)
+					|| (triggEntityMoving && world.getTotalWorldTime() % Math.max((int)Math.floor(forceBubbleSpawn_movCof), 1) == 0L)
 					|| (triggEntityJumping && world.getTotalWorldTime() % 8L == 0L)
 					|| triggEntitySplashing) {
 				
@@ -491,11 +492,11 @@ public class Mud extends Block implements IMetaBlockName {
             	
             	triggeringEntity.setInWeb();
             }
-            /*
+            
             System.out.println("triggEntityMovingDistance_movDis: " + triggEntityMovingDistance_movDis);
-            System.out.println("triggEntityMovingCoefficient_movCof: " + triggEntityMovingCoefficient_movCof);
+            System.out.println("forceBubbleSpawn_movCof: " + forceBubbleSpawn_movCof);
             System.out.println("triggEntityMovingKoefficientDivider_mofKofDiv: " + triggEntityMovingKoefficientDivider_mofKofDiv);
-            System.out.println("mr_blackgoo: " + mr_blackgoo);*/
+            System.out.println("mr_blackgoo: " + mr_blackgoo);
 		} else {
 			
 			if (triggEntitySunk_kof1 < 1.45) {
@@ -503,10 +504,10 @@ public class Mud extends Block implements IMetaBlockName {
 			}
 			
 			// TODO: handle mud tentacles
-		}/*
+		}
 		System.out.println("triggEntitySunk_kof1: " + triggEntitySunk_kof1);
         System.out.println("triggEntityPrevSunk_kof2: " + triggEntityPrevSunk_kof2);
-        System.out.println("triggEntitySunkMod_kof1m: " + triggEntitySunkMod_kof1m);*/
+        System.out.println("triggEntitySunkMod_kof1m: " + triggEntitySunkMod_kof1m);
 	}
 	
 	// Declares that this block ID has metadata values.
