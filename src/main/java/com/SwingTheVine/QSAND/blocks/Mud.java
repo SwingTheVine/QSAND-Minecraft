@@ -61,7 +61,7 @@ public class Mud extends Block implements IMetaBlockName {
 			triggEntityPrevSunk = Math.max(((pos.getY() - triggEntityPrevPosY - 0.5) * -1.0), 0.0); // How far into the block the entity previously sunk (in percent) to the top of the block
 		}
 		
-		double triggEntitySunk_kof1 = triggEntitySunk; // Percentage of entity NOT sunk into block???
+		double triggEntitySunk_kof1 = triggEntitySunk * -1.0; // Percentage of entity NOT sunk into block???
 		double triggEntityPrevSunk_kof2 = triggEntityPrevSunk;
 		double triggEntitySunkMod_kof1m = Math.max(triggEntitySunk_kof1, 0.0); // A modified version of trigger entity sunk
 		final int blockMetadata = state.getValue(SINK).intValue(); // Obtains this block's variant/metadata
@@ -90,7 +90,7 @@ public class Mud extends Block implements IMetaBlockName {
 			double forceBubbleSpawn_movCof = 16.0; // Forces the block to attempt to spawn bubbles. This value is used when the entity is not moving
 			
 			// This variable is unknown
-			double triggEntityMovingKoefficientDivider_mofKofDiv = 100.0;
+			double triggEntityMovingKoefficientDivider_mofKofDiv = 1.0;
 			
 			// EQUATION BEACON. 1st complex
 			// https://www.desmos.com/calculator/wgkirt9ra1
@@ -390,6 +390,9 @@ public class Mud extends Block implements IMetaBlockName {
                             triggeringEntity.setInWeb(); // The entity is marked as in a web
                         }
                 	} else {
+                		
+                		// This is true more frequently the further the player is in the block
+                		// https://www.desmos.com/calculator/0g4mgwzpmh
                 		double a2 = 
                 				(world.getTotalWorldTime() % (int)Math.floor(Math.min(16.0, Math.max(16.0 - triggEntitySunk_kof1 * blockMetadataBumped * 3.0, 1.0))) == 0L)
                 				? 1.01 : 1.05;
