@@ -522,8 +522,7 @@ public class Mud extends Block implements IMetaBlockName {
                             } // ...if the entity has sunk less than 0.475 blocks...
                             else if (triggEntitySunk_kof1 < 0.475) {
                             	
-                            	thicknessHigher = 10.0;
-                                //thicknessHigher = 1.05; // Changes the amplifier to 1.05
+                            	thicknessHigher = 1.05; // Changes the amplifier to 1.05
                             }
                             
                             // If the entity is marked as not moving...
