@@ -43,42 +43,35 @@ public class Mud extends Block implements IMetaBlockName {
 		return new AxisAlignedBB((double)pos.getX() + this.minX, (double)pos.getY() + this.minY, (double)pos.getZ() + this.minZ, (double)pos.getX() + this.maxX, (double)pos.getY() + this.maxY - sinkTypes[state.getValue(SINK).intValue()], (double)pos.getZ() + this.maxZ);
     }
 	
+	// Entities fall at a rate of 0.076125 blocks
+	
 	// What to do when an entity is INSIDE the block
 	// This is the core of the quicksand calculations
 	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity triggeringEntity) {
 		final double triggEntityPosY = triggeringEntity.posY; // Triggering entity's Y position
 		final double triggEntityPrevPosY = triggeringEntity.prevPosY; // Triggering entity's previous Y position
 		final double triggEntityVelY = triggeringEntity.motionY; // Triggering entity's Y velocity
-		double triggEntitySunk, triggEntityPrevSunk;
 		
-		// If the entity is a player...
-		if (triggeringEntity instanceof EntityPlayer) {
-			triggEntitySunk = (pos.getY() - triggEntityPosY + 1.0) * -1.0; // How far into the block the entity has sunk (in percent) relative to the top of the block (i.e. sunk 15% from the top of the block is -0.15)
-			triggEntityPrevSunk = Math.max(((pos.getY() - triggEntityPrevPosY + 1.0) * -1.0), 0.0); // How far into the block the entity previously sunk (in percent) to the top of the block
-			
-		} else {
-			triggEntitySunk = (pos.getY() - triggEntityPosY - 0.5) * -1.0; // How far into the block the entity has sunk (in percent) relative to the top of the block (i.e. sunk 15% from the top of the block is -0.15)
-			triggEntityPrevSunk = Math.max(((pos.getY() - triggEntityPrevPosY - 0.5) * -1.0), 0.0); // How far into the block the entity previously sunk (in percent) to the top of the block
-		}
-		
-		double triggEntitySunk_kof1 = triggEntitySunk * -1.0; // Percentage of entity NOT sunk into block???
-		double triggEntityPrevSunk_kof2 = triggEntityPrevSunk;
+		// Triggering entity's distance sunk into the block.
+		// First statement is when the entity is a player.
+		// Second statement is when the entity is NOT a player
+		double triggEntitySunk, triggEntitySunk_kof1 = 
+				(triggeringEntity instanceof EntityPlayer)
+				? (pos.getY() - triggEntityPosY + 1.0)
+				: (pos.getY() - triggEntityPosY - 0.5); 
+
+		// Triggering entity's distance previously sunk into the block
+		// First statement is when the entity is a player.
+		// Second statement is when the entity is NOT a player
+		double triggEntityPrevSunk, triggEntityPrevSunk_kof2 = 
+				(triggeringEntity instanceof EntityPlayer)
+				? Math.max((pos.getY() - triggEntityPrevPosY + 1.0), 0.0)
+				: Math.max((pos.getY() - triggEntityPrevPosY - 0.5), 0.0); 
+					
 		double triggEntitySunkMod_kof1m = Math.max(triggEntitySunk_kof1, 0.0); // A modified version of trigger entity sunk
 		final int blockMetadata = state.getValue(SINK).intValue(); // Obtains this block's variant/metadata
 		
-		// Player data
-		// kof1 = how far into the block the player has sunk (in blocks)
-		// kof2 = 0
-		// kof1m = 0
-		
-		// Item data
-		// kof1 & kof1m start at 1.5 and approaches 0
-		// kof2 starts at 1.8 and approaches 0
-		// kof1; kof2; kof1m = 1.15 at rest at bottom of metadata 0
-		// kof1; kof2; kof1m = 1.0 at rest at bottom of metadata 1
-		// kof1; kof2; kof1m = 0.75 at rest at bottom of metadata 2
-		// kof1; kof2; kof1m = 0.5 at rest at bottom of metadata 3
-		
+		// If the triggering entity is living (as opposed to a death animation)...
 		if (triggeringEntity instanceof EntityLivingBase) {
 			Boolean triggEntityAffected = true; // Should the triggering entity be affected by this block?
 			Boolean triggEntityJumping = false; // Is the triggering entity jumping?
@@ -88,31 +81,15 @@ public class Mud extends Block implements IMetaBlockName {
 			final float blockMetadataBumped = (float)(blockMetadata + 1); // Adds 1 to the block's metadata value
 			double triggEntityMovingDistance_movDis = 1.0;
 			double forceBubbleSpawn_movCof = 16.0; // Forces the block to attempt to spawn bubbles. This value is used when the entity is not moving
-			
-			// This variable is unknown
-			double triggEntityMovingKoefficientDivider_mofKofDiv = 1.0;
+			double movementPunish_mofKofDiv = 1.0; // Punishes the entity for moving. Makes them sink faster.
 			
 			// EQUATION BEACON. 1st complex
+			// Increases the punishment value the LESS the entity is sunk in the block
+			// Starts at a specified number not exceeding 145 and hits 0 when player sunk 1.2 blocks.
+			// Then, mr_blackgoo goes back up towards 145.
+			// It is parabolic in nature.
 			// https://www.desmos.com/calculator/wgkirt9ra1
 			final int mr_blackgoo = (int)Math.min(5.0 + Math.floor(Math.max(0.0, Math.pow(blockMetadataBumped * 2.0f * (1.5 - triggEntitySunkMod_kof1m), 2.0))), 145.0);
-			
-			// Player data
-			// movDis = 1.0 when entity at rest
-			// movDis = 0.0049 when walking
-			// movDis = 0.0063 when sprinting
-			
-			// movCof = 16.0 when at rest
-			// movCof = 31.64 when walking
-			// movCof = 31.14 when sprinting
-			
-			// mofKofDiv = 1.5 when at rest
-			// mofKofDiv = 1.68 when walking
-			// mofKofDiv = 1.73 when sprinting
-			
-			// mr_blackgoo = 14 when metadata = 0
-			// mr_blackgoo = 41 when metadata = 1
-			// mr_blackgoo = 86 when metadata = 2
-			// mr_blackgoo = 145 when metadata = 3
 			
 			// TODO: Add entity is Muddy Blob
 			
@@ -120,19 +97,21 @@ public class Mud extends Block implements IMetaBlockName {
 			
 			// TODO: Add boot calculations
 			
-			// If the entity moves downwards with a velocity higher than the equation,
-			//    the entity is marked as splashing
+			// If the entity moves downwards with a high velocity, they are marked as splashing.
+			//    metadata 1 = -0.100 or faster (Mud)
+			//    metadata 2 = -0.100 or faster (Thinnish Mud)
+			//    metadata 3 = -0.067 or faster (Deep Mud)
+			//    metadata 4 = -0.050 or faster (Bottomless Mud)
 			triggEntitySplashing =
 					(triggeringEntity.motionY < -0.1 / Math.max(1.0f, blockMetadataBumped / 2.0f))
 					? true : false;
 			
-			// If the entity moves upwards with a velocity higher than the equation,
-			//    the entity is marked as jumping
+			// If the entity moves upwards with a high velocity, they are marked as jumping.
 			triggEntityJumping = 
 					(triggEntityPosY - triggEntityPrevPosY > 0.2)
 					? true : false;
 			
-			// TODO: Complete the second equation.
+			// TODO: Complete the second equation. Requires Air block event
 			// If the entity is NOT a player, AND the entity has moved their camera along the Yaw axis...
 			// OR if the entity is a player, and this is multiplayer, AND the server instance has detected Yaw axis movement...
 			triggEntityRotating = 
@@ -149,29 +128,34 @@ public class Mud extends Block implements IMetaBlockName {
 				// This is the actual distance traveled on a radical plane
 				triggEntityMovingDistance_movDis = Math.pow(Math.pow(triggeringEntity.prevPosX - triggeringEntity.posX, 2.0) + Math.pow(triggeringEntity.prevPosZ - triggeringEntity.posZ,  2.0), 0.5);
 				
-				// Unknown. However, it outputs a parabola. Outputs a number between 16 and 32
+				// Exponentially increases the chance of a bubble spawn event the more the entity moves forwards.
+				// Outputs as a number between 16 and 32. Lower number equals higher chance
+				// https://www.desmos.com/calculator/rxdyif2tis
 				forceBubbleSpawn_movCof = Math.max(Math.min(32.0 / (1.0 + (triggEntityMovingDistance_movDis * 10.0)), 32.0), 16.0);
-				forceBubbleSpawn_movCof = 1.0;
 				
-				// Unknown.
-				triggEntityMovingKoefficientDivider_mofKofDiv = 1.0 + triggEntityMovingDistance_movDis * 25.0;
+				// Base punishment for punishing the player for moving.
+				// This value will be modified later
+				movementPunish_mofKofDiv = 1.0 + triggEntityMovingDistance_movDis * 25.0;
 				
-				// If the distance the entity has sunk into the block (relative to the top of the block) is less than 0.9,
-				//    AND the distance the entity has sunk is not 0.0,
+				// If the entity has sunk less than 0.9 blocks,
+				//    AND the entity HAS sunk into the block,
 				//    AND the entity is marked as rotating...
 				if (triggEntitySunkMod_kof1m < 0.9 && triggEntitySunkMod_kof1m != 0.0 && triggEntityRotating) {
-					triggEntityMovingKoefficientDivider_mofKofDiv += mr_blackgoo * 0.005;
+					movementPunish_mofKofDiv += mr_blackgoo * 0.005; // Amplify the punishment value by 0.005
 				}
 			}
 			
 			// TODO: not wearing boots function
 			
+			// If the block variant is 0 (Mud)...
 			if (blockMetadata == 0) {
+				
+				// ... AND if the entity is NOT a player, AND the entity has sunk less than 1.25 blocks...
 				if (!(triggeringEntity instanceof EntityPlayer) && triggEntitySunk_kof1 < 1.25) {
-					System.out.println("MotionY Beacon 1");
-					triggeringEntity.motionY = 0.0; // The entity stops moving on the Y axis
 					
-					triggeringEntity.motionY += 0.08 + Math.min((1.25 - triggEntitySunk_kof1) / 100.0, 0.005); // Add Y velocity to the entity based on a modifier that goes between 0.005 and 0.000...
+					System.out.println("MotionY Beacon 1");
+					triggeringEntity.motionY = 0.0; // Set the entity's velocity to 0
+					triggeringEntity.motionY += 0.08 + Math.min((1.25 - triggEntitySunk_kof1) / 100.0, 0.005); // Add Y velocity to the entity
 	                // The upwards motion of the entity reduces the further into the block the entity is sunk:
 	                // 125% sunk is 0.08 velocity upwards
 	                // 100% sunk is 0.0825 velocity upwards
@@ -187,32 +171,32 @@ public class Mud extends Block implements IMetaBlockName {
 			// TODO: not player; not affected
 			
 			// STATEMENT BEACON 1
-			// This is the part that makes most of the bubbles
-            // This is done either at set intervals (based on world time), or faster set intervals when the player is moving
             // If the remainder of the current world time divided by 128 is zero,
-            //     OR the entity is marked as moving, AND the remainder of the current world time divided by a number that decreases the more the player moves is zero,
+            //     OR the entity is marked as moving, AND the remainder of the current world time divided by a number that decreases the more the entity moves is zero,
             //     OR the entity is marked as jumping, AND the remainder of the current world time divided by 8 is zero,
-            //     OR the entity is splashing...
+            //     OR the entity is marked as splashing...
 			if (world.getTotalWorldTime() % 128L == 0L
 					|| (triggEntityMoving && world.getTotalWorldTime() % Math.max((int)Math.floor(forceBubbleSpawn_movCof), 1) == 0L)
 					|| (triggEntityJumping && world.getTotalWorldTime() % 8L == 0L)
 					|| triggEntitySplashing) {
+				// This is the part that makes most of the bubbles
+	            // This is done either at set intervals (based on world time), or faster set intervals when the player is moving
 				
-				// If the triggering entity is splashing...
+				// ...AND if the triggering entity is splashing...
 				if (triggEntitySplashing) {
 					
-					// ...AND the previous sunk percentage is greater than 1.5 blocks
+					// ...AND if the previous sunk distance is greater than 1.5 blocks...
 					if (triggEntityPrevSunk_kof2 > 1.5) {
 						world.playSoundEffect(triggeringEntity.posX, triggEntityPosY, triggeringEntity.posZ, "game.player.swim", 0.15f, world.rand.nextFloat() * 0.25f + 0.1f); // Play sound
 					}
 					
-					// ...AND the entity is a player, AND the number in the world's random number generator sequence is 0 (1/3 chance)...
+					// If the entity is a player, AND the number in the world's random number generator sequence is 0 (1/3 chance)...
 					if (triggeringEntity instanceof EntityPlayer && world.rand.nextInt(3) == 0) {
 						// TODO: Add body bubbles
 					}
 				}
 				
-				// If the entity is NOT splashing, AND the entity is moving...
+				// If the entity is marked as NOT splashing, AND the entity is marked as moving...
 				if (!triggEntitySplashing && triggEntityMoving) {
 					
 					// ...AND the number in the world's random number generator sequence equals 0 (1/2 chance)...
@@ -226,17 +210,21 @@ public class Mud extends Block implements IMetaBlockName {
                     }
 				}
 				
-				// If the entity is jumping...
+				// If the entity is marked as jumping...
 				if (triggEntityJumping) {
+					
 					world.playSoundEffect(triggeringEntity.posX, triggEntityPosY, triggeringEntity.posZ, "mob.slime.attack", 0.25f, world.rand.nextFloat() * 0.25f + 0.25f); // Play sound
 					
-					// ...AND the entity is a player, AND the number in the world's random number generator sequence equals 0 (1/5 chance)...
+					// If the entity is a player, AND the number in the world's random number generator sequence equals 0 (1/5 chance)...
                     if (triggeringEntity instanceof EntityPlayer && world.rand.nextInt(5) == 0) {
                     	// TODO: Add body bubbles
                     }
 				}
 				
-				// If the entity is NOT jumping, AND the entity is NOT moving, AND the entity is NOT splashing, AND the number in the world's random number generator sequence equals 0 (1/5 chance)...
+				// If the entity is marked as NOT jumping,
+				//    AND the entity is marked as NOT moving,
+				//    AND the entity is marked as NOT splashing,
+				//    AND the number in the world's random number generator sequence equals 0 (1/5 chance)...
                 if (!triggEntityJumping && !triggEntityMoving && !triggEntitySplashing && world.rand.nextInt(5) == 0) {
                 	
                 	// ...AND the number in the world's random number generator equals 0 (1/5 chance)...
@@ -247,7 +235,9 @@ public class Mud extends Block implements IMetaBlockName {
                         world.playSoundEffect(triggeringEntity.posX, triggEntityPosY, triggeringEntity.posZ, "mob.silverfish.step", 0.25f, world.rand.nextFloat() * 0.15f + 0.1f); // Plaay sound
                     }
                     
-                    // If the variant of the block is greater than 2, AND the remainder of the total world time divided by 32 is 0, AND the number in the world's random number generator sequence equals 0 (1/20 chance)...
+                    // If the variant of the block is greater than 2 (Bottomless Mud),
+                    //    AND the remainder of the total world time divided by 32 is 0,
+                    //    AND the number in the world's random number generator sequence equals 0 (1/20 chance)...
                     if (blockMetadata > 2 && world.getTotalWorldTime() % 32L == 0L && world.rand.nextInt(20) == 0) {
                         // TODO: Add body bubble
                     }
@@ -259,9 +249,9 @@ public class Mud extends Block implements IMetaBlockName {
             
             // TODO: add boots dont float
             
-            // If the entity's velocity is greater than -0.1
-            // This only happens when the entity is NOT moving downwards very fast
+            // If the entity's velocity is greater than -0.1...
             if (triggeringEntity.motionY > -0.1) {
+                // This only happens when the entity is NOT moving downwards very fast
             	System.out.println("MotionY Beacon 2.1: " + triggeringEntity.motionY);
             	triggeringEntity.motionY = 0.0; // Make the entity stop moving
             } else {
@@ -276,36 +266,42 @@ public class Mud extends Block implements IMetaBlockName {
 
                 // If the block above this one is the same as this block, AND the block 2 blocks above this one is the same as this block...
                 if (world.getBlockState(pos.up(1)) == this && world.getBlockState(pos.up(2)) == this) {
-                	triggEntitySunk_kof1 = 0.001;
+                	triggEntitySunk_kof1 = 0.001; // Mark the distance the entity has sunk as 0.001 blocks
                 }
                 
-                // If the if statment above runs, this one will not run
+                // If the if statement above runs, this one will not run
                 // In other words, this will only run if:
-                // The block above this one is NOT the same as this block AND...
-                // ...something unknown...
+                // The block above this one is NOT the same as this block,
+                //    AND the entity has sunk is greater than 0.9 blocks...
                 if (triggEntitySunk_kof1 > 0.9) {
                 	
-                	// If the entity is marked as moving, AND something unknown...
-                	if (triggEntityMoving && triggEntityMovingKoefficientDivider_mofKofDiv > 2.75) {
-                		triggEntityMoving = false;
-                		triggEntityMovingKoefficientDivider_mofKofDiv = 0.0;
+                	// ...AND if the entity is marked as moving, AND the punishment value is greater than 2.75...
+                	if (triggEntityMoving && movementPunish_mofKofDiv > 2.75) {
+                		triggEntityMoving = false; // Mark the entity as not moving
+                		movementPunish_mofKofDiv = 0.0; // Reset the punishment value to 0
                 		
-                		// If the entity is NOT in water, AND something unknown...
+                		// If the entity is NOT in water, AND the entity has sunk less than 1.3 blocks...
                 		if (!triggeringEntity.isInWater() && triggEntitySunk_kof1 < 1.3) {
                 			System.out.println("MotionY Beacon 5");
+                			// Dramatically increases the rate the entity sinks right before it is submerged.
+                			// Adds an upwards velocity to combat the effect of gravity.
+                			// 0 to 1 blocks sunk has a velocity of 0.025 added.
+                			// 1 to 1.3 blocks sunk has an added velocity that decreases at a constant rate.
+                			// 1.3 blocks onwards has a velocity of 0 added.
+                			// Note that the "constant rate" compounds on itself, making it seem exponential
                 			triggeringEntity.motionY += 0.025 * Math.max(Math.min((1.3 - triggEntitySunk_kof1) / 0.3, 1.0), 0.0);
                 		}
                 	}
-                	triggEntityMovingKoefficientDivider_mofKofDiv *= 1.125;
+                	movementPunish_mofKofDiv *= 1.125; // Amplifies the punishment value by 1.125 (this does nothing if the if statement above is run)
                 } else {
-                	triggEntityMovingKoefficientDivider_mofKofDiv *= 1.5;
+                	movementPunish_mofKofDiv *= 1.5; // Amplifies the punishment value by 1.5
                 }
                 
                 double sinkRateMod_mys = 0.0; // Modifies how fast the entity sinks into the block. Units are blocks. Negative is down.
                 
                 // If the entity is NOT a player...
                 if (!(triggeringEntity instanceof EntityPlayer)) {
-                    sinkRateMod_mys = 0.0; // Makes the entity sink faster than players
+                    sinkRateMod_mys = 0.0; // Makes the non-player entity sink faster when negative
                 }
                 
                 // TODO: Fix this; suction check
@@ -315,8 +311,10 @@ public class Mud extends Block implements IMetaBlockName {
                     world.playSound(triggeringEntity.posX, triggEntityPosY, triggeringEntity.posZ, "mob.magmacube.jump", 0.25f, 0.25f + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.4f, false); // Play sound
                 }*/
                 
+                // If the entity has sunk greater than or equal to 1.2 blocks...
                 if (triggEntitySunk_kof1 >= 1.2) {
                 	
+                	// ...AND the entity is NOT marked as splashing...
                 	if (!triggEntitySplashing) {
 
 	                	// TODO: More boot code
@@ -326,26 +324,40 @@ public class Mud extends Block implements IMetaBlockName {
 	                		
 	                		// If the remainder of the total world time divided by the bumped metadata value equals 0...
 	                		// ...then the value is the first one. Otherwise, it is the second one
+	                		// This triggers more frequently the higher the metadata value is. (1/7 to 1/4 chance)
 	                		double a1 = 
 	                				(world.getTotalWorldTime() % Math.max(8.0f - blockMetadataBumped, 1.0f) == 0.0f)
 	                				? 0.07485 : 0.075;
 	                		
 	                		// EQUATION BEACON. 2nd complex
-	                		// https://www.desmos.com/calculator/da7mbys8ov
+	                		// Makes the entity sink extremely fast
+	                		// This equation is really complicated.
+	                		// Basically, "a1" is the maximum value, and the further the player has sunk, the closer it approaches 0.
+	                		// After a while (happens sooner the higher the punishment value is), the rate it approaches 0 changes and becomes faster
+	                		// https://www.desmos.com/calculator/klpmbgz7je
 	                		System.out.println("MotionY Beacon 6");
-	                		triggeringEntity.motionY += a1 / Math.max((triggEntityMovingKoefficientDivider_mofKofDiv - 1.0) * (Math.max(triggEntitySunkMod_kof1m - 0.5, 0.75) * 1.6), 1.0) / Math.pow(Math.max(triggEntitySunkMod_kof1m / 1.25, 1.0), 2.0);
-	                		System.out.println("Equation Beacon 2: " + a1 / Math.max((triggEntityMovingKoefficientDivider_mofKofDiv - 1.0) * (Math.max(triggEntitySunkMod_kof1m - 0.5, 0.75) * 1.6), 1.0) / Math.pow(Math.max(triggEntitySunkMod_kof1m / 1.25, 1.0), 2.0));
+	                		triggeringEntity.motionY += a1 / Math.max((movementPunish_mofKofDiv - 1.0) * (Math.max(triggEntitySunkMod_kof1m - 0.5, 0.75) * 1.6), 1.0) / Math.pow(Math.max(triggEntitySunkMod_kof1m / 1.25, 1.0), 2.0);
+	                		System.out.println("Equation Beacon 2: " + a1 / Math.max((movementPunish_mofKofDiv - 1.0) * (Math.max(triggEntitySunkMod_kof1m - 0.5, 0.75) * 1.6), 1.0) / Math.pow(Math.max(triggEntitySunkMod_kof1m / 1.25, 1.0), 2.0));
 	                		
 	                		triggeringEntity.onGround = false; // The entity is marked as NOT on the ground
 	                		triggeringEntity.fallDistance = 0.0f; // The entity takes no fall damage
 	                		
-	                		// If the number in the world's random number generator sequence modified by some unknown modifer equals 0...
+	                		// If the number in the world's random number generator sequence equals 0...
                             if (world.rand.nextInt((int)Math.floor(Math.max(triggEntitySunkMod_kof1m * 20.0, 1.0))) == 0) {
+                            	// Happens more frequently the less the entity is sunk in the block (1/24 to 1/56 chance)
                                 triggeringEntity.setInWeb(); // The entity is marked as in a web
                             }
                             
-                            // If the next integer in the world's random number generator sequence modified by some unknown modifer equals 0...
+                            // If the next integer in the world's random number generator sequence equals 0...
                             if (world.rand.nextInt(Math.max((int)Math.floor(2.0f + blockMetadataBumped - Math.pow(Math.max(triggEntitySunkMod_kof1m, 0.0), 1.5)), 1)) == 0) {
+                            	// Happens more frequently the more the entity is sunk in the block.
+                            	// However, this only triggers when the entity is sunk more than 1.2 blocks
+                            	// That means this only happens on metadata 4 (Bottomless Mud).
+                            	// 1.40-1.58 blocks has a 1/4 chance
+                            	// 1.59-2.08 blocks has a 1/3 chance
+                            	// 2.09-2.51 blocks has a 1/2 chance
+                            	// 2.52-2.80 blocks has a 1/1 chance
+                            	
                                 triggeringEntity.onGround = true; // The entity is marked as on the ground
                             }
 	                	}
@@ -355,43 +367,61 @@ public class Mud extends Block implements IMetaBlockName {
                 	
                 	// TODO: Suction check function
                 	
+                	// If the entity has sunk greater than 0.9 blocks...
                 	if (triggEntitySunk_kof1 >= 0.9) {
+                		// Note: will never be greater than or equal to 1.2
                 		
-                		// If the remainder of the total world time divided by the block's metadata value plus 1 equals 0...
-                		// ...it is set to the first value. Otherwise, it is set to the second value
+                		// If the remainder of the total world time divided by the bumped metadata value equals 0...
+                		// ...then the value is the first one. Otherwise, it is the second one
+                		// This triggers more frequently the higher the metadata value is. (1/7 to 1/4 chance)
                 		double a1 = 
                 				(world.getTotalWorldTime() % Math.max(8.0f - blockMetadataBumped, 1.0f) == 0.0f)
                 				? 0.07485 : 0.075 + sinkRateMod_mys;
                 		
                 		// EQUATION BEACON 3. 2nd complex
-                		triggeringEntity.motionY += a1 / Math.max((triggEntityMovingKoefficientDivider_mofKofDiv - 1.0) * (Math.max(triggEntitySunkMod_kof1m - 0.5, 0.75) * 1.6), 1.0) / Math.pow(Math.max(triggEntitySunkMod_kof1m / 1.25, 1.0), 2.0);
-                		System.out.println("Equation Beacon 3: " + a1 / Math.max((triggEntityMovingKoefficientDivider_mofKofDiv - 1.0) * (Math.max(triggEntitySunkMod_kof1m - 0.5, 0.75) * 1.6), 1.0) / Math.pow(Math.max(triggEntitySunkMod_kof1m / 1.25, 1.0), 2.0));
+                		triggeringEntity.motionY += a1 / Math.max((movementPunish_mofKofDiv - 1.0) * (Math.max(triggEntitySunkMod_kof1m - 0.5, 0.75) * 1.6), 1.0) / Math.pow(Math.max(triggEntitySunkMod_kof1m / 1.25, 1.0), 2.0);
+                		System.out.println("Equation Beacon 3: " + a1 / Math.max((movementPunish_mofKofDiv - 1.0) * (Math.max(triggEntitySunkMod_kof1m - 0.5, 0.75) * 1.6), 1.0) / Math.pow(Math.max(triggEntitySunkMod_kof1m / 1.25, 1.0), 2.0));
                 		
                 		
                 		// TODO: set stuck effect
-                		triggeringEntity.fallDistance = 0.0f;
+                		triggeringEntity.fallDistance = 0.0f; // Resets the accumulated fall distance to 0
                 		
                 		// If the entity is a player...
                 		if (triggeringEntity instanceof EntityPlayer) {
                 			
-                			// ...AND the number in the world's random number generator sequence at some unknown index equals 0...
+                			// ...AND the number in the world's random number generator sequence equals 0...
                             if (world.rand.nextInt(Math.max((int)Math.floor(4.0f + blockMetadataBumped - Math.pow(Math.max(triggEntitySunkMod_kof1m, 0.0), 1.5)), 1)) == 0) {
-                            	triggeringEntity.onGround = true;
+                            	// Happens more frequently the more the entity is sunk in the block.
+                            	// However, this only triggers when the entity is sunk more than 1.2 blocks
+                            	// That means this only happens on metadata 4 (Bottomless Mud).
+                            	// 0.90-1.00 blocks is 1/7 chance
+                            	// 1.01-1.20 blocks is 1/6 chance
+                            	
+                            	triggeringEntity.onGround = true; // Marks the entity as on the ground
                             }
                 		} else {
+                			
+                			// Sucks the entity back towards where they came from on the X/Z axis when moving.
+                			// More intense the further they sink.
                 			final double mrs_blackgoo = 1 + mr_blackgoo / 10;
                 			
                 			System.out.println("Set Position Beacon 1: " + triggeringEntity.prevPosX + (triggeringEntity.posX - triggeringEntity.prevPosX) / mrs_blackgoo + ", " + triggeringEntity.prevPosZ + (triggeringEntity.posZ - triggeringEntity.prevPosZ) / mrs_blackgoo);
+                			// Sucks the entity back towards where they came from. Only partially though
                 			triggeringEntity.setPosition(triggeringEntity.prevPosX + (triggeringEntity.posX - triggeringEntity.prevPosX) / mrs_blackgoo, triggEntityPosY, triggeringEntity.prevPosZ + (triggeringEntity.posZ - triggeringEntity.prevPosZ) / mrs_blackgoo);
                 		}
                 		
-                		// If the number in the world's random number generator sequence at some unknown index equals 0...
+                		// If the number in the world's random number generator sequence equals 0...
                         if (world.rand.nextInt((int)Math.floor(Math.max(triggEntitySunkMod_kof1m * 10.0 / blockMetadataBumped, 1.0))) == 0) {
+                        	// Happens more frequently the less the entity is sunk in the block (1/2 to 1/3 chance)
+                        	
                             triggeringEntity.setInWeb(); // The entity is marked as in a web
                         }
                 	} else {
                 		
-                		// This is true more frequently the further the player is in the block
+                		// If the remainder of the total world time divided by the bumped metadata value equals 0...
+                		// ...then the value is the first one. Otherwise, it is the second one
+                		// This triggers more frequently the higher the metadata value is. (1/16 to 1/5 chance)
+                		// This stops the entity from sinking for a tick TODO: Research this claim
                 		// https://www.desmos.com/calculator/0g4mgwzpmh
                 		double a2 = 
                 				(world.getTotalWorldTime() % (int)Math.floor(Math.min(16.0, Math.max(16.0 - triggEntitySunk_kof1 * blockMetadataBumped * 3.0, 1.0))) == 0L)
@@ -400,16 +430,34 @@ public class Mud extends Block implements IMetaBlockName {
                 		// If the entity is a player...
                         if (triggeringEntity instanceof EntityPlayer) {
 
-                            // ...AND the number in the world's random number generator sequence at some unknown index equals 0...
+                            // ...AND the number in the world's random number generator sequence equals 0...
                             if (world.rand.nextInt(Math.max((int)Math.floor(7.0f + blockMetadataBumped * 5.0f - Math.pow(Math.max(triggEntitySunkMod_kof1m, 0.0), 1.5)), 1)) == 0) {
-                                triggeringEntity.onGround = true; // The entity is marked as on the ground
+                            	// Happens more frequently the more the entity is sunk in the block.
+                            	// However, this only triggers when the entity is sunk more than 1.2 blocks
+                            	// Metadata 0... (Mud)
+                            	// 0 has a 1/12 chance
+                            	// 0.10-0.35 has a 1/11 chance
+                            	// Metadata 1... (Thinnish Mud)
+                            	// 0 has a 1/17 chance
+                            	// 0.10-0.55 has a 1/16 chance
+                            	// Metadata 2... (Deep Mud)
+                            	// 0 has a 1/22 chance
+                            	// 0.10-0.75 has a 1/21 chance
+                            	// Metadata 3... (Bottomless Mud)
+                            	// 0 has a 1/27 chance
+                            	// 0.10-0.90 has a 1/26 chance
+                            	
+                            	triggeringEntity.onGround = true; // The entity is marked as on the ground
                             }
                         } else {
+                        	
+                        	// Sucks the entity back towards where they came from on the X/Z axis when moving.
+                        	// More intense the further they sink
                         	final double mrs_blackgoo = 1 + mr_blackgoo / 10;
                         	
-                        	// I suspect this is the line of code that sucks the player along the X-Z grid towards the center of the block
                             System.out.println("Set Position Beacon 2: " + triggeringEntity.prevPosX + (triggeringEntity.posX - triggeringEntity.prevPosX) / mrs_blackgoo + ", " + triggeringEntity.prevPosZ + (triggeringEntity.posZ - triggeringEntity.prevPosZ) / mrs_blackgoo);
-                        	triggeringEntity.setPosition(triggeringEntity.prevPosX + (triggeringEntity.posX - triggeringEntity.prevPosX) / mrs_blackgoo, triggEntityPosY, triggeringEntity.prevPosZ + (triggeringEntity.posZ - triggeringEntity.prevPosZ) / mrs_blackgoo); // Unknown
+                            // Sucks the entity along the X-Z grid back towards where they came from. Only partially though
+                            triggeringEntity.setPosition(triggeringEntity.prevPosX + (triggeringEntity.posX - triggeringEntity.prevPosX) / mrs_blackgoo, triggEntityPosY, triggeringEntity.prevPosZ + (triggeringEntity.posZ - triggeringEntity.prevPosZ) / mrs_blackgoo); // Unknown
 
                             // If the next integer in the world's random number generator sequence at some unknown index equals 0...
                             if (world.rand.nextInt(Math.max((int)Math.floor(7.0f + blockMetadataBumped * 5.0f - Math.pow(Math.max(triggEntitySunkMod_kof1m, 0.0), 1.5)), 1)) == 0) {
@@ -419,55 +467,80 @@ public class Mud extends Block implements IMetaBlockName {
                         
                         // TODO: is truly sink
                         
-                        triggeringEntity.fallDistance = 0.0f;
+                        triggeringEntity.fallDistance = 0.0f; // Resets the accumulated fall distance to 0
                         
+                        // If the entity has sunk greater than or equal to 0.5 blocks...
                         if (triggEntitySunk_kof1 >= 0.5) {
                         	
                         	// ...AND the number in the world's random number generation sequence equals 0...
                             if (world.rand.nextInt((int)Math.floor(Math.max(triggEntitySunkMod_kof1m * 5.0 / blockMetadataBumped, 1.0))) == 0) {
-                            	// EQUATION BEACON 4. 3rd complex
-                            	System.out.println("Equation Beacon 4");
+                            	// Happens more frequently the less the entity is sunk in the block
+                            	// 1/1 to 1/2 chance (Bottomless Mud)
+                            	// 1/1 to 1/3 chance (Deep Mud)
+                            	// 1/2 to 1/4 chance (Thinnish Mud)
+                            	// 1/5 to 1/9 chance (Mud)
                             	
                                 triggeringEntity.setInWeb(); // The entity is marked as in a web
 
-                                System.out.println("MotionY Beacon 8");
                                 // If the entity is NOT marked as moving...
                                 if (!triggEntityMoving) {
-                                    triggeringEntity.motionY += (0.0725 + sinkRateMod_mys) * a2; // Unknown modifier to entity's Y velocity
+                                    System.out.println("MotionY Beacon 8.1");
+                                    // Bumps the entity downwards slightly.
+                                    // 0.0725 (plus a modifer) amplified by "a2". If a2 is 1.05, the entity does not sink
+                                    triggeringEntity.motionY += (0.0725 + sinkRateMod_mys) * a2;
                                 }
                                 else {
-                                    triggeringEntity.motionY += (0.0725 + sinkRateMod_mys) * a2 / (triggEntityMovingKoefficientDivider_mofKofDiv + 0.025); // Unknown modifier to entity's Y velocity
+                                    System.out.println("MotionY Beacon 8.2");
+                                    // Bumps the entity downwards slightly.
+                                    // 0.0725 (plus a modifier) amplified by "a2". If a2 is 1.05, the entity does not sink
+                                    // Then, it is divided by the punishment value plus 0.025
+                                    // If the punishment value is below 1.87, the entity goes upwards
+                                    triggeringEntity.motionY += (0.0725 + sinkRateMod_mys) * a2 / (movementPunish_mofKofDiv + 0.025);
                                 }
                             } // ...if the entity is NOT marked as moving...
                             else if (!triggEntityMoving) {
                             	System.out.println("MotionY Beacon 9");
+                            	// Moves the entity downwards slightly.
+                                // 0.075 (plus a modifer) amplified by "a2". If a2 is 1.05, the entity goes upwards for a tick
                                 triggeringEntity.motionY += (0.075 + sinkRateMod_mys) * a2; // Unknown modifer to entity's Y velocity
                             }
                             else {
                             	System.out.println("MotionY Beacon 10");
-                                triggeringEntity.motionY += (0.075 + sinkRateMod_mys) * a2 / (triggEntityMovingKoefficientDivider_mofKofDiv + 0.025); // Unknown modifer to entity's Y velocity
+                            	// Bumps the entity downwards slightly.
+                                // 0.075 (plus a modifier) amplified by "a2". If a2 is 1.05, the entity goes upwards for a tick
+                                // Then, it is divided by the punishment value plus 0.025
+                            	// If the punishment value is below 1.87, the entity goes upwards
+                                triggeringEntity.motionY += (0.075 + sinkRateMod_mys) * a2 / (movementPunish_mofKofDiv + 0.025); // Unknown modifer to entity's Y velocity
                             }
                         } else {
                         	triggeringEntity.setInWeb();
                         	
                         	// If the entity is marked as in water, OR the block above this one is water...
                             if (triggeringEntity.isInWater() || world.getBlockState(pos.up()).getBlock().getMaterial() == Material.water) {
-                                a2 = 1.01; // Something unkown
-                            } // ...if something unknown...
+                            	
+                            	a2 = 0.07485;
+                            	//a2 = 1.01; // Changes the amplifier to 1.01
+                            } // ...if the entity has sunk less than 0.475 blocks...
                             else if (triggEntitySunk_kof1 < 0.475) {
-                                a2 = 1.05;
+                            	
+                            	a2 = 0.075;
+                                //a2 = 1.05; // Changes the amplifier to 1.05
                             }
-
-                            // CORE BEACON. Core code fragment. This makes the player "sink"
+                            
                             // If the entity is marked as not moving...
                             if (!triggEntityMoving) {
                             	System.out.println("MotionY Beacon 11.1: " + (0.0725 + sinkRateMod_mys) * a2);
-                                triggeringEntity.motionY += (0.0725 + sinkRateMod_mys) * a2; // Unknown modifier to entity's Y velocity
-                                // Entities fall at a rate of 0.076125 blocks. Whatever the modifier is, it decreases the rate that the entity falls at
+                            	// Moves the entity downwards slightly.
+                                // 0.0725 (plus a modifer) amplified by "a2". If a2 is 1.05, the entity does not sink
+                                triggeringEntity.motionY += (0.0725 + sinkRateMod_mys) * a2;
                             }
                             else {
-                            	System.out.println("MotionY Beacon 11.2: " + (0.0725 + sinkRateMod_mys) * a2 / (triggEntityMovingKoefficientDivider_mofKofDiv + 0.025));
-                                triggeringEntity.motionY += (0.0725 + sinkRateMod_mys) * a2 / (triggEntityMovingKoefficientDivider_mofKofDiv + 0.025); // Unknown modifier to entity's Y velocity
+                            	System.out.println("MotionY Beacon 11.2: " + (0.0725 + sinkRateMod_mys) * a2 / (movementPunish_mofKofDiv + 0.025));
+                            	// Bumps the entity downwards slightly.
+                                // 0.0725 (plus a modifier) amplified by "a2". If a2 is 1.05, the entity does not sink
+                                // Then, it is divided by the punishment value plus 0.025
+                            	// If the punishment value is below 1.87, the entity goes upwards
+                                triggeringEntity.motionY += (0.0725 + sinkRateMod_mys) * a2 / (movementPunish_mofKofDiv + 0.025); // Unknown modifier to entity's Y velocity
                             }
 
                             // TODO: truly sink function
@@ -478,14 +551,11 @@ public class Mud extends Block implements IMetaBlockName {
                 // If the entity is marked as in water...
                 if (triggeringEntity.isInWater()) {
 
-                	
                     // ...AND the entity is moving upward...
                     if (triggeringEntity.motionY > 0.0) {
-                    	System.out.println("MotionY Beacon 3");
                     	triggeringEntity.motionY = 0.0; // Set the entity's velocity to 0
                     }
 
-                    System.out.println("MotionY Beacon 4");
                     triggeringEntity.motionY -= 0.01; // Modify the entity's velocity by -0.01
                 }
                 
@@ -495,11 +565,11 @@ public class Mud extends Block implements IMetaBlockName {
             	
             	triggeringEntity.setInWeb();
             }
-            
+            /*
             System.out.println("triggEntityMovingDistance_movDis: " + triggEntityMovingDistance_movDis);
             System.out.println("forceBubbleSpawn_movCof: " + forceBubbleSpawn_movCof);
-            System.out.println("triggEntityMovingKoefficientDivider_mofKofDiv: " + triggEntityMovingKoefficientDivider_mofKofDiv);
-            System.out.println("mr_blackgoo: " + mr_blackgoo);
+            System.out.println("movementPunish_mofKofDiv: " + movementPunish_mofKofDiv);
+            System.out.println("mr_blackgoo: " + mr_blackgoo);*/
 		} else {
 			
 			if (triggEntitySunk_kof1 < 1.45) {
@@ -508,9 +578,9 @@ public class Mud extends Block implements IMetaBlockName {
 			
 			// TODO: handle mud tentacles
 		}
-		System.out.println("triggEntitySunk_kof1: " + triggEntitySunk_kof1);
+		/*System.out.println("triggEntitySunk_kof1: " + triggEntitySunk_kof1);
         System.out.println("triggEntityPrevSunk_kof2: " + triggEntityPrevSunk_kof2);
-        System.out.println("triggEntitySunkMod_kof1m: " + triggEntitySunkMod_kof1m);
+        System.out.println("triggEntitySunkMod_kof1m: " + triggEntitySunkMod_kof1m);*/
 	}
 	
 	// Declares that this block ID has metadata values.

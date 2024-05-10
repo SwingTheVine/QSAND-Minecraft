@@ -50,7 +50,7 @@ public class Quicksand extends Block implements IMetaBlockName {
 			triggEntityPrevSunk = Math.max(((pos.getY() - triggEntityPrevPosY - 0.5) * -1.0), 0.0); // How far into the block the entity previously sunk (in percent) to the top of the block
 		}
 		
-		double triggEntitySunk_kof1 = triggEntitySunk; // Percentage of entity NOT sunk into block???
+		double triggEntitySunk_kof1 = triggEntitySunk * -1.0; // Percentage of entity NOT sunk into block???
 		double triggEntityPrevSunk_kof2 = triggEntityPrevSunk;
 		double triggEntitySunkMod_kof1m = Math.max(triggEntitySunk_kof1, 0.0); // A modified version of trigger entity sunk
 		final int blockMetadata = 0; // Substitute for block metadata
