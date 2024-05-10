@@ -56,7 +56,7 @@ public class Quicksand extends Block implements IMetaBlockName {
 		final int blockMetadata = 0; // Substitute for block metadata
 		
 		/*
-			Thickness: High (mr_kof)
+			Thickness: High
 			Viscosity: High
 			Suction power: High
 			Solidity: No
