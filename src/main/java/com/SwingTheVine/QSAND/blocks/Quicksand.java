@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 
 public class Quicksand extends Block implements IMetaBlockName {
 	private static final String[] types = {"0"}; // Values of the different metadata levels
-	private static final Boolean useOneTexture = true; // Should all metadata variants use the same texture?
+	private static final boolean useOneTexture = true; // Should all metadata variants use the same texture?
 	private static final float[] sinkTypes = {1.00F}; // The maximum sink level for each metadata variant
 
 	// Constructor
@@ -63,11 +63,11 @@ public class Quicksand extends Block implements IMetaBlockName {
 		
 		// If the triggering entity is living (as opposed to a death animation)...
 		if (triggeringEntity instanceof EntityLivingBase) {
-			Boolean triggEntityAffected = true; // Should the triggering entity be affected by this block?
-			Boolean triggEntityJumping = false; // Is the triggering entity jumping?
-			Boolean triggEntityMoving = false; // Is the triggering entity moving?
-			Boolean triggEntitySplashing = false; // Is the triggering entity splashing?
-			Boolean triggEntityRotating = false; // Is the triggering entity rotating?
+			boolean triggEntityAffected = true; // Should the triggering entity be affected by this block?
+			boolean triggEntityJumping = false; // Is the triggering entity jumping?
+			boolean triggEntityMoving = false; // Is the triggering entity moving?
+			boolean triggEntitySplashing = false; // Is the triggering entity splashing?
+			boolean triggEntityRotating = false; // Is the triggering entity rotating?
 			final float blockMetadataBumped = 10.0f; // TODO: Changed
 			double triggEntityMovingDistance_movDis = 1.0;
 			double forceBubbleSpawn_movCof = 16.0; // Forces the block to attempt to spawn bubbles. This value is used when the entity is not moving
@@ -553,7 +553,7 @@ public class Quicksand extends Block implements IMetaBlockName {
 	}
 	
 	// Returns if only one texture should be used for all metadata types
-	public Boolean getUseOneTexture() {
+	public boolean getUseOneTexture() {
 		return useOneTexture;
 	}
 }

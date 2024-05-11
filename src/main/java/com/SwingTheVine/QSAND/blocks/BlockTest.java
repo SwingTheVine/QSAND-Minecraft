@@ -22,7 +22,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockTest extends Block implements IMetaBlockName {
 	
 	private static final String[] types = {"0", "1", "2", "3", "4"}; // Values of the different metadata levels
-	private static final Boolean useOneTexture = true; // Should all metadata variants use the same texture?
+	private static final boolean useOneTexture = true; // Should all metadata variants use the same texture?
 	public static final PropertyInteger SINK = PropertyInteger.create("sink", 0, 4); // Creates a metadata value for every "types" metadata value
 
 	// Constructor
@@ -105,7 +105,7 @@ public class BlockTest extends Block implements IMetaBlockName {
 	}
 	
 	// Returns if only one texture should be used for all metadata types
-	public Boolean getUseOneTexture() {
+	public boolean getUseOneTexture() {
 		return useOneTexture;
 	}
 }

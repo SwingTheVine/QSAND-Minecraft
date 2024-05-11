@@ -25,7 +25,7 @@ public class QSAND {
 	public static CommonProxy proxy;
 	
 	public static final QSAND_Tab QSANDTab = new QSAND_Tab("QSANDTab"); // Makes the Modded Creative Inventory tab
-	public static Boolean makeBlocksOpaque = false;
+	public static boolean makeBlocksOpaque = false;
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {

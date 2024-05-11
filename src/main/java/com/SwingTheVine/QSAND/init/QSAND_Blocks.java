@@ -18,6 +18,7 @@ public class QSAND_Blocks {
 	public static Block test_block;
 	public static Block mud;
 	public static Block quicksand;
+	public static Block moss;
 	// Test World Seed: 1637864495647481288
 	// Entities fall at a rate of 0.076125 blocks
 	
@@ -46,7 +47,7 @@ public class QSAND_Blocks {
 	}
 	
 	// Registers the inventory image for all block variants
-	public static void registerRenderInventory(Block block, String[] types, Boolean useOneTexture) {
+	public static void registerRenderInventory(Block block, String[] types, boolean useOneTexture) {
 		
 		Item item = Item.getItemFromBlock(block); // The item variant of the block
 		

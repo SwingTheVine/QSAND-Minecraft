@@ -2,6 +2,8 @@ package com.SwingTheVine.QSAND.blocks;
 
 import java.util.List;
 
+import com.SwingTheVine.QSAND.QSAND;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -16,6 +18,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
@@ -26,10 +29,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class Mud extends Block implements IMetaBlockName {
 	private static final String[] types = {"0", "1", "2", "3"}; // Values of the different metadata levels
-	private static final Boolean useOneTexture = true; // Should all metadata variants use the same texture?
+	private static final boolean useOneTexture = true; // Should all metadata variants use the same texture?
 	private static final float[] sinkTypes = {0.35F, 0.50F, 0.75F, 1.00F}; // The maximum sink level for each metadata variant
 	public static final PropertyInteger SINK = PropertyInteger.create("sink", 0, Integer.valueOf(types.length-1)); // Creates a metadata value for every "types" metadata value
-
+	
 	// Constructor
 	public Mud(Material material) {
 		super(material);
@@ -37,10 +40,15 @@ public class Mud extends Block implements IMetaBlockName {
 		this.setHarvestLevel("shovel", 0); // Sets the hardness of the block when mined with a shovel
 		this.setStepSound(Block.soundTypeSand); // Sets the sound that plays when the block is stepped on
 		this.setDefaultState(this.blockState.getBaseState().withProperty(SINK, Integer.valueOf(0))); // Default metadata values for the block
+		
+		// Makes the block opaque if the user desires
+		int opacity = (QSAND.makeBlocksOpaque)
+				? 255 : 3;
+		this.setLightOpacity(opacity);
 	}
 	
 	// Changes the collision box. This is not the texture bounding box. This is not the hitbox.
-	// This function changes the height of the block to make the entity "sink" into the block by the "sinkType" value corresponding to the metadata value of the block. (i.e. meta=0 means reduce height by 0.35)
+	// This function changes the height of the block to make the entity "sink" into the block by the "sinkType" value corresponding to the metadata value of the block. (i.e. meta = 0 means reduce height by 0.35)
 	@Override
 	public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state) {
         if (state.getValue(SINK).intValue() == 3) {return null;} // Removes collision box for bottomless mud
@@ -57,16 +65,14 @@ public class Mud extends Block implements IMetaBlockName {
 		// Triggering entity's distance sunk into the block.
 		// First statement is when the entity is a player.
 		// Second statement is when the entity is NOT a player
-		double triggEntitySunk, triggEntitySunk_kof1 = 
-				(triggeringEntity instanceof EntityPlayer)
+		double triggEntitySunk_kof1 = (triggeringEntity instanceof EntityPlayer)
 				? (pos.getY() - triggEntityPosY + 1.0)
 				: (pos.getY() - triggEntityPosY - 0.5); 
 
 		// Triggering entity's distance previously sunk into the block
 		// First statement is when the entity is a player.
 		// Second statement is when the entity is NOT a player
-		double triggEntityPrevSunk, triggEntityPrevSunk_kof2 = 
-				(triggeringEntity instanceof EntityPlayer)
+		double triggEntityPrevSunk_kof2 = (triggeringEntity instanceof EntityPlayer)
 				? Math.max((pos.getY() - triggEntityPrevPosY + 1.0), 0.0)
 				: Math.max((pos.getY() - triggEntityPrevPosY - 0.5), 0.0); 
 					
@@ -75,11 +81,11 @@ public class Mud extends Block implements IMetaBlockName {
 		
 		// If the triggering entity is living (as opposed to a death animation)...
 		if (triggeringEntity instanceof EntityLivingBase) {
-			Boolean triggEntityAffected = true; // Should the triggering entity be affected by this block?
-			Boolean triggEntityJumping = false; // Is the triggering entity jumping?
-			Boolean triggEntityMoving = false; // Is the triggering entity moving?
-			Boolean triggEntitySplashing = false; // Is the triggering entity splashing?
-			Boolean triggEntityRotating = false; // Is the triggering entity rotating?
+			boolean triggEntityAffected = true; // Should the triggering entity be affected by this block?
+			boolean triggEntityJumping = false; // Is the triggering entity jumping?
+			boolean triggEntityMoving = false; // Is the triggering entity moving?
+			boolean triggEntitySplashing = false; // Is the triggering entity splashing?
+			boolean triggEntityRotating = false; // Is the triggering entity rotating?
 			final float blockMetadataBumped = (float)(blockMetadata + 1); // Adds 1 to the block's metadata value
 			double triggEntityMovingDistance_movDis = 1.0;
 			double forceBubbleSpawn_movCof = 16.0; // Forces the block to attempt to spawn bubbles. This value is used when the entity is not moving
@@ -96,6 +102,9 @@ public class Mud extends Block implements IMetaBlockName {
 			// TODO: Add entity is Muddy Blob
 			
 			// TODO: Add check entity under
+			if (triggEntityAffected) {
+				
+			}
 			
 			// TODO: Add boot calculations
 			
@@ -665,13 +674,26 @@ public class Mud extends Block implements IMetaBlockName {
 		list.add(StatCollector.translateToLocal("mfqm.tooltip_1"));
 	}
 	
+	public void checkEntityUnder(final Entity ent) {
+
+        // If the entity is inside of this block, AND the entity is marked as drowning...
+        if (QSAND.isEntityInsideOfBlock(ent, this) && QSAND.isDrowning(ent)) {
+            QSAND.spawnDrowningBubble(ent.worldObj, ent, this, -1); // Spawn drowning bubbles
+
+            // ...AND the world is NOT on a server, AND the entity is marked as alive...
+            if (!ent.worldObj.isRemote && ent.isEntityAlive()) {
+                ent.attackEntityFrom(DamageSource.drown, Math.max(((EntityLivingBase)ent).getMaxHealth() * 0.1f, 2.0f)); // Deals 10% of max health or 2hp in damage. Whichever is greater
+            }
+        }
+    }
+	
 	// Returns types of metadata for the block
 	public String[] getTypes() {
 		return types;
 	}
 	
 	// Returns if only one texture should be used for all metadata types
-	public Boolean getUseOneTexture() {
+	public boolean getUseOneTexture() {
 		return useOneTexture;
 	}
 }
