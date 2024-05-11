@@ -54,7 +54,7 @@ public class QSAND_Blocks {
 			
 			// Every block variant uses the same texture file
 			for (int indexMeta = 0; indexMeta < types.length; indexMeta++) {
-				Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, indexMeta, new ModelResourceLocation(ModInfo.ID + ":" + item.getUnlocalizedName().substring(5) + "", "inventory"));
+				Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, indexMeta, new ModelResourceLocation(ModInfo.ID + ":" + item.getUnlocalizedName().substring(5), "inventory"));
 			}
 		}
 		else {

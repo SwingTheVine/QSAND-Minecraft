@@ -18,6 +18,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -608,13 +609,6 @@ public class Mud extends Block implements IMetaBlockName {
 		return getDefaultState().withProperty(SINK, Integer.valueOf(meta));
     }
 	
-	// Obtains the special name of the block variant.
-	// This is used to add a custom name to a block variant in the language file
-	@Override
-	public String getSpecialName(ItemStack stack) {
-		return Mud.types[stack.getItemDamage()];
-	}
-	
 	// Obtains the block (with metadata) when the player picks it (using Middle Mouse Button)
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player) {
@@ -655,6 +649,20 @@ public class Mud extends Block implements IMetaBlockName {
 	public boolean isFullCube() {
 		return false;
     }
+	
+	// Obtains the special name of the block variant.
+	// This is used to add a custom name to a block variant in the language file
+	@Override
+	public String getSpecialName(ItemStack stack) {
+		return Mud.types[stack.getItemDamage()];
+	}
+	
+	// Sets the tooltips that should be added to the block
+	// Leave blank for no tooltip
+	@Override
+	public void setTooltip(final ItemStack item, final EntityPlayer player, final List list, final boolean bool) {
+		list.add(StatCollector.translateToLocal("mfqm.tooltip_1"));
+	}
 	
 	// Returns types of metadata for the block
 	public String[] getTypes() {

@@ -65,13 +65,6 @@ public class BlockTest extends Block implements IMetaBlockName {
 		return getDefaultState().withProperty(SINK, Integer.valueOf(meta));
     }
 	
-	// Obtains the special name of the block variant.
-	// This is used to add a custom name to a block variant in the language file
-	@Override
-	public String getSpecialName(ItemStack stack) {
-		return BlockTest.types[stack.getItemDamage()];
-	}
-	
 	// Obtains the block (with metadata) when the player picks it (using Middle Mouse Button)
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player) {
@@ -90,6 +83,20 @@ public class BlockTest extends Block implements IMetaBlockName {
 	@Override
 	public int damageDropped(IBlockState state) {
 		return this.getMetaFromState(state);
+	}
+	
+	// Obtains the special name of the block variant.
+	// This is used to add a custom name to a block variant in the language file
+	@Override
+	public String getSpecialName(ItemStack stack) {
+		return BlockTest.types[stack.getItemDamage()];
+	}
+	
+	// Sets the tooltips that should be added to the block
+	// Leave blank for no tooltip
+	@Override
+	public void setTooltip(final ItemStack item, final EntityPlayer player, final List list, final boolean bool) {
+		
 	}
 	
 	// Returns types of metadata for the block

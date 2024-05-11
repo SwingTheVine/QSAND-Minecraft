@@ -12,4 +12,6 @@ tile.mud_3.name=Bottomless Mud
 
 tile.quicksand_0.name=Quicksand
 
+mfqm.tooltip_1=Faithful Recreation of MFQM Block
+
 itemGroup.QSANDTab=QSAND Mod
