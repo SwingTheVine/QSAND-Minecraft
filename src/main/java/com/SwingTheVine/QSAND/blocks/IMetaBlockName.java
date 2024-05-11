@@ -5,9 +5,14 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
+// Acts as a go-between for the custom ItemBlock class and the blocks themselves.
+// Functions defined here are called in the custom ItemBlock class.
+// Functions defined here are overridden in the blocks
 public interface IMetaBlockName {
 	
-	String getSpecialName(ItemStack stack); // What the name of that variant of the block is (e.g. "0")
+	// What the name of that variant of the block is (e.g. "0")
+	String getSpecialName(ItemStack stack);
 	
-	void setTooltip(final ItemStack item, final EntityPlayer player, final List list, final boolean bool); // What tooltips (if any) should be added
+	// Extends the tooltip function from the ItemBlock class to the blocks
+	void setTooltip(final ItemStack item, final EntityPlayer player, final List list, final boolean bool);
 }

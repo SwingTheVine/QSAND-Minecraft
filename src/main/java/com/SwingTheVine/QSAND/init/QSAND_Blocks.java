@@ -19,6 +19,7 @@ public class QSAND_Blocks {
 	public static Block mud;
 	public static Block quicksand;
 	// Test World Seed: 1637864495647481288
+	// Entities fall at a rate of 0.076125 blocks
 	
 	public static void init() {
 		
@@ -54,14 +55,14 @@ public class QSAND_Blocks {
 			
 			// Every block variant uses the same texture file
 			for (int indexMeta = 0; indexMeta < types.length; indexMeta++) {
-				Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, indexMeta, new ModelResourceLocation(ModInfo.ID + ":" + item.getUnlocalizedName().substring(5), "inventory"));
+				Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, indexMeta, new ModelResourceLocation(ModInfo.id + ":" + item.getUnlocalizedName().substring(5), "inventory"));
 			}
 		}
 		else {
 			
 			// Every block variant uses its own texture file
 			for (int indexMeta = 0; indexMeta < types.length; indexMeta++) {
-				Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, indexMeta, new ModelResourceLocation(ModInfo.ID + ":" + item.getUnlocalizedName().substring(5) + "_" + types[indexMeta], "inventory"));
+				Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, indexMeta, new ModelResourceLocation(ModInfo.id + ":" + item.getUnlocalizedName().substring(5) + "_" + types[indexMeta], "inventory"));
 			}
 		}
 	}

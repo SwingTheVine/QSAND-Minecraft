@@ -12,7 +12,7 @@ public class ItemBlockMeta extends ItemBlock {
 	public ItemBlockMeta(Block block) {
         super(block);
         if (!(block instanceof IMetaBlockName)) {
-            throw new IllegalArgumentException(String.format("The given Block %s is not an instance of IMetaBlockName.", block.getUnlocalizedName()));
+            throw new IllegalArgumentException(String.format("The Block %s is not an instance of IMetaBlockName.", block.getUnlocalizedName()));
         }
         this.setHasSubtypes(true);
     }

@@ -1,14 +1,14 @@
 [
 {
-  "modid": "examplemod",
-  "name": "Example Mod",
-  "description": "Example placeholder mod.",
-  "version": "${version}",
+  "modid": "QSAND",
+  "name": "QuickSand And Numerous Dungeons",
+  "description": "This mod adds a large variety of unique quicksands and custom structures to the game.",
+  "version": "0.1.0",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
-  "authorList": ["ExampleDude"],
-  "credits": "The Forge and FML guys, for making this example",
+  "authorList": ["SwingTheVine"],
+  "credits": "MrBlackGoo, elix_x, CrishNate, VanderCat, and Sanic for making the More Fun Quicksand Mod",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []

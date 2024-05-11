@@ -33,6 +33,9 @@ public class Mud extends Block implements IMetaBlockName {
 	// Constructor
 	public Mud(Material material) {
 		super(material);
+		this.setHardness(0.6f); // Sets the hardness of the block
+		this.setHarvestLevel("shovel", 0); // Sets the hardness of the block when mined with a shovel
+		this.setStepSound(Block.soundTypeSand); // Sets the sound that plays when the block is stepped on
 		this.setDefaultState(this.blockState.getBaseState().withProperty(SINK, Integer.valueOf(0))); // Default metadata values for the block
 	}
 	
@@ -43,8 +46,6 @@ public class Mud extends Block implements IMetaBlockName {
         if (state.getValue(SINK).intValue() == 3) {return null;} // Removes collision box for bottomless mud
 		return new AxisAlignedBB((double)pos.getX() + this.minX, (double)pos.getY() + this.minY, (double)pos.getZ() + this.minZ, (double)pos.getX() + this.maxX, (double)pos.getY() + this.maxY - sinkTypes[state.getValue(SINK).intValue()], (double)pos.getZ() + this.maxZ);
     }
-	
-	// Entities fall at a rate of 0.076125 blocks
 	
 	// What to do when an entity is INSIDE the block
 	// This is the core of the quicksand calculations
