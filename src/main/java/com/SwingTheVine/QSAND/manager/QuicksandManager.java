@@ -1,5 +1,6 @@
 package com.SwingTheVine.QSAND.manager;
 
+import com.SwingTheVine.QSAND.entity.Bubble;
 import com.SwingTheVine.QSAND.handler.ConfigHandler;
 import com.SwingTheVine.QSAND.init.QSAND_Blocks;
 
@@ -61,12 +62,13 @@ public class QuicksandManager {
     }
 	
 	// Spawns a bubble on a delay
-	public static void spawnBubbleDelay(final World world, final double x, final double y, final double z, final Block bl, final int mt, final float sz, final int tim, final int dly) {
-        world.spawnEntityInWorld((Entity)new EntityBubble(world, x, y, z, bl, mt, sz, tim, dly));
+	public static void spawnBubbleDelay(final World world, final double blockPosX, final double blockPosY, final double blockPosZ, final Block block, final int metadata, final float size, final int time, final int delay) {
+        world.spawnEntityInWorld((Entity)new Bubble(world, blockPosX, blockPosY, blockPosZ, block, metadata, size, time, delay));
     }
 	
 	// Spawns bubbles for when an entity is drowning
-	public static void spawnDrowningBubble(final World world, final Entity entity, final Block block, int blockMetadata) {
+	public static void spawnDrowningBubble(final World world, final Entity entity, final Block block, boolean useMetadata) {
+		int blockMetadata = 0;
 		
 		// If the world is NOT a server instance, AND the user does NOT want to spawn singleplayer bubbles...
         if (!world.isRemote && !ConfigHandler.spawnUnseenBubbles) {
@@ -108,20 +110,25 @@ public class QuicksandManager {
                 }
                 
                 // The block the bubble spawned in
-                final int xxx = (int)Math.floor(bubblePosX);
-                final int yyy = (int)Math.floor(bubblePosY);
-                final int zzz = (int)Math.floor(bubblePosZ);
+                final int blockPosX = (int)Math.floor(bubblePosX);
+                final int blockPosY = (int)Math.floor(bubblePosY);
+                final int blockPosZ = (int)Math.floor(bubblePosZ);
                 
                 // If the block that made the bubble spawn is NOT of the same type the bubble will spawn in...
-                if (world.getBlockState(new BlockPos(xxx, yyy, zzz)).getBlock() != block) {
+                if (world.getBlockState(new BlockPos(blockPosX, blockPosY, blockPosZ)).getBlock() != block) {
                 	// In other words, if the bubble is going to spawn in a different type of block...
                 	
                     return; // Don't spawn the bubble
                 }
                 
+                // If the metadata from the block should be used...
+                if (useMetadata) {
+                	blockMetadata = world.getBlockState(new BlockPos(blockPosX, blockPosY, blockPosZ)).getBlock().getMetaFromState(world.getBlockState(new BlockPos(blockPosX, blockPosY, blockPosZ)));
+                }
+                
                 final float bubbleSize = 1.25f - world.rand.nextFloat() * 1.0f;
                 final int bubbleTime = (int)Math.floor((1000 + world.rand.nextInt(500)) * bubbleSize);
-                spawnBubbleDelay(world, bubblePosX, yyy + surfaceY(block), bubblePosZ, block, blockMetadata, bubbleSize, bubbleTime, i * 100 + world.rand.nextInt(40) * 100);
+                spawnBubbleDelay(world, bubblePosX, blockPosY + surfaceY(block), bubblePosZ, block, blockMetadata, bubbleSize, bubbleTime, i * 100 + world.rand.nextInt(40) * 100);
             }
         }
     }
