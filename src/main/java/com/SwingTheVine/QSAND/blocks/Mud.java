@@ -3,6 +3,7 @@ package com.SwingTheVine.QSAND.blocks;
 import java.util.List;
 
 import com.SwingTheVine.QSAND.QSAND;
+import com.SwingTheVine.QSAND.manager.QuicksandManager;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -674,15 +675,15 @@ public class Mud extends Block implements IMetaBlockName {
 		list.add(StatCollector.translateToLocal("mfqm.tooltip_1"));
 	}
 	
-	public void checkEntityUnder(final Entity ent) {
+	public void checkEntityUnder(final Entity entity, final int blockMetadata) {
 
         // If the entity is inside of this block, AND the entity is marked as drowning...
-        if (QSAND.isEntityInsideOfBlock(ent, this) && QSAND.isDrowning(ent)) {
-            QSAND.spawnDrowningBubble(ent.worldObj, ent, this, -1); // Spawn drowning bubbles
+        if (QuicksandManager.isEntityInsideOfBlock(entity, this) && QuicksandManager.isDrowning(entity)) {
+            QuicksandManager.spawnDrowningBubble(entity.worldObj, entity, this, blockMetadata); // Spawn drowning bubbles
 
             // ...AND the world is NOT on a server, AND the entity is marked as alive...
-            if (!ent.worldObj.isRemote && ent.isEntityAlive()) {
-                ent.attackEntityFrom(DamageSource.drown, Math.max(((EntityLivingBase)ent).getMaxHealth() * 0.1f, 2.0f)); // Deals 10% of max health or 2hp in damage. Whichever is greater
+            if (!entity.worldObj.isRemote && entity.isEntityAlive()) {
+                entity.attackEntityFrom(DamageSource.drown, Math.max(((EntityLivingBase)entity).getMaxHealth() * 0.1f, 2.0f)); // Deals 10% of max health or 2hp in damage. Whichever is greater
             }
         }
     }
