@@ -104,7 +104,7 @@ public class Mud extends Block implements IMetaBlockName {
 			
 			// TODO: Add check entity under
 			if (triggEntityAffected) {
-				
+				this.checkEntityUnder(triggeringEntity);
 			}
 			
 			// TODO: Add boot calculations
@@ -675,11 +675,12 @@ public class Mud extends Block implements IMetaBlockName {
 		list.add(StatCollector.translateToLocal("mfqm.tooltip_1"));
 	}
 	
-	public void checkEntityUnder(final Entity entity, final int blockMetadata) {
+	// Checks to see if the entity is fully submerged in the block
+	public void checkEntityUnder(final Entity entity) {
 
         // If the entity is inside of this block, AND the entity is marked as drowning...
         if (QuicksandManager.isEntityInsideOfBlock(entity, this) && QuicksandManager.isDrowning(entity)) {
-            QuicksandManager.spawnDrowningBubble(entity.worldObj, entity, this, blockMetadata); // Spawn drowning bubbles
+            QuicksandManager.spawnDrowningBubble(entity.worldObj, entity, this, true); // Spawn drowning bubbles
 
             // ...AND the world is NOT on a server, AND the entity is marked as alive...
             if (!entity.worldObj.isRemote && entity.isEntityAlive()) {
