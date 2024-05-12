@@ -35,6 +35,7 @@ public class QSAND {
 		QSAND_Blocks.registerBlocks(); // Registers the blocks in the game registry
 		QSAND_Items.init(); // Initializes the items
 		QSAND_Items.registerItems(); // Registers the items in the game registry
+		proxy.registerEntityRenders(); // Registers the entities in the game registry
 	}
 	
 	@EventHandler
