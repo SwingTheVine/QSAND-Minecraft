@@ -22,6 +22,7 @@ public class ClientProxy extends CommonProxy {
 	// Registers the renders for the entities
 	@Override
 	public void registerEntityRenders() {
+		System.out.println("Register Entity Renders");
 		RenderingRegistry.registerEntityRenderingHandler((Class)BubbleRender.class, (IRenderFactory)BubbleRender.factory);
 	}
 	

@@ -58,6 +58,7 @@ public class Mud extends Block implements IMetaBlockName {
 	
 	// What to do when an entity is INSIDE the block
 	// This is the core of the quicksand calculations
+	@Override
 	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity triggeringEntity) {
 		final double triggEntityPosY = triggeringEntity.posY; // Triggering entity's Y position
 		final double triggEntityPrevPosY = triggeringEntity.prevPosY; // Triggering entity's previous Y position
@@ -102,9 +103,11 @@ public class Mud extends Block implements IMetaBlockName {
 			
 			// TODO: Add entity is Muddy Blob
 			
+			
 			// TODO: Add check entity under
 			if (triggEntityAffected) {
 				this.checkEntityUnder(triggeringEntity);
+				QuicksandManager.spawnDrowningBubble(triggeringEntity.worldObj, triggeringEntity, this, true); // Spawn drowning bubbles
 			}
 			
 			// TODO: Add boot calculations
@@ -676,15 +679,15 @@ public class Mud extends Block implements IMetaBlockName {
 	}
 	
 	// Checks to see if the entity is fully submerged in the block
-	public void checkEntityUnder(final Entity entity) {
+	public void checkEntityUnder(final Entity triggeringEntity) {
 
         // If the entity is inside of this block, AND the entity is marked as drowning...
-        if (QuicksandManager.isEntityInsideOfBlock(entity, this) && QuicksandManager.isDrowning(entity)) {
-            QuicksandManager.spawnDrowningBubble(entity.worldObj, entity, this, true); // Spawn drowning bubbles
+        if (QuicksandManager.isEntityInsideOfBlock(triggeringEntity, this) && QuicksandManager.isDrowning(triggeringEntity)) {
+            QuicksandManager.spawnDrowningBubble(triggeringEntity.worldObj, triggeringEntity, this, true); // Spawn drowning bubbles
 
             // ...AND the world is NOT on a server, AND the entity is marked as alive...
-            if (!entity.worldObj.isRemote && entity.isEntityAlive()) {
-                entity.attackEntityFrom(DamageSource.drown, Math.max(((EntityLivingBase)entity).getMaxHealth() * 0.1f, 2.0f)); // Deals 10% of max health or 2hp in damage. Whichever is greater
+            if (!triggeringEntity.worldObj.isRemote && triggeringEntity.isEntityAlive()) {
+            	triggeringEntity.attackEntityFrom(DamageSource.drown, Math.max(((EntityLivingBase)triggeringEntity).getMaxHealth() * 0.1f, 2.0f)); // Deals 10% of max health or 2hp in damage. Whichever is greater
             }
         }
     }
