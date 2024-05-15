@@ -2,6 +2,7 @@ package com.SwingTheVine.QSAND.entity;
 
 import org.lwjgl.Sys;
 
+import com.SwingTheVine.QSAND.ModInfo;
 import com.SwingTheVine.QSAND.handler.ConfigHandler;
 
 import net.minecraft.block.Block;
@@ -20,7 +21,7 @@ public class Bubble extends Entity {
 	public Block block; // The block that spawned the bubble
 	public int entityMetadata; // The metadata of the bubble
 	public float randomRotation; // A randomized rotation to spawn at
-	public static final String textureLocation = "textures/blocks/mud_0.png"; // The location of the texture used for the bubble
+	public static final String textureLocation = ModInfo.id + ":textures/blocks/mud_0.png"; // The location of the texture used for the bubble
 	
 	// Constructor
 	public Bubble(final World world) {

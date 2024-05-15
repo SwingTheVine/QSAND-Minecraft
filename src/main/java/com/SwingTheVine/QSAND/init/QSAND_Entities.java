@@ -2,9 +2,9 @@ package com.SwingTheVine.QSAND.init;
 
 import com.SwingTheVine.QSAND.QSAND;
 import com.SwingTheVine.QSAND.entity.Bubble;
+import com.SwingTheVine.QSAND.manager.ColorManager;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 
@@ -13,7 +13,7 @@ public class QSAND_Entities {
 	private static int entityID = 0; // Starting ID of the entity
 	
 	public static void registerEntities() {
-		registerEntity(Bubble.class, "bubble", 64, 20, true);
+		registerEntity(Bubble.class, "bubble", 64, 20, true); // Registers the bubble entity
 	}
 	
 	/**
@@ -26,11 +26,12 @@ public class QSAND_Entities {
      * @param biomes List of biomes
      */
 	public static void setEntityToSpawn() {
-		EntityRegistry.addSpawn((Class)Bubble.class, 1, 1, 1, EnumCreatureType.AMBIENT);
+		//EntityRegistry.addSpawn((Class)Bubble.class, 1, 1, 1, EnumCreatureType.AMBIENT); // Makes the entity spawn naturally
 	}
 	
+	// Generates a spawn egg for the entity
 	public static void generateSpawnEgg() {
-		EntityRegistry.registerEgg(Bubble.class, 255, 0);
+		EntityRegistry.registerEgg(Bubble.class, ColorManager.colorHexToLong("2450A4"), ColorManager.colorHexToLong("2450A4"));
 	}
 
 	/**
