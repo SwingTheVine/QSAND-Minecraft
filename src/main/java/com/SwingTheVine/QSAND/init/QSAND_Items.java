@@ -10,6 +10,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class QSAND_Items {
 	public static Item test_item;
+	public static Item bootsWading;
 	
 	public static void init() {
 		test_item = new Item().setUnlocalizedName("test_item").setCreativeTab(QSAND.QSANDTab);

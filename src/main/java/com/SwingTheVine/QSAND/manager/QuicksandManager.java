@@ -6,6 +6,7 @@ import com.SwingTheVine.QSAND.init.QSAND_Blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
@@ -45,6 +46,90 @@ public class QuicksandManager {
         return triggEntityInsideBlockLower == block && (block == QSAND_Blocks.moss || (triggEntityInsideBlockHigher.getMaterial().isSolid() && triggEntityMaxPosY + 1 > triggEntityHeight) || triggEntityMaxPosY + triggEntityInsideBlockLower.getBlockBoundsMaxY() > triggEntityHeight);
     }
 	
+	// Gets the mud level from how far the player has sunk into the block
+	public static int getMudLevel(final EntityPlayer player, final double blockPosY, final World world) {
+		final double eyeHeight = player.posY + player.getEyeHeight(); // The eye height of the player
+		final double deltaY = eyeHeight - blockPosY; // Difference in Y position between the eye height of the player and the block
+		
+		// If the player has sunk all but 0.7 blocks above the BOTTOM of the block...
+		if (deltaY < 0.7) {
+			// This means the eye height of the player has sunk 0.3 blocks into the block
+			
+			return 10; // The mud level is 10
+		}
+		
+		// If the player has sunk all but 1.04 blocks above the BOTTOM of the block...
+		if (deltaY < 1.04) {
+			return 9; // The mud level is 9
+		}
+		
+		// If the player has sunk all but 1.1 blocks above the BOTTOM of the block...
+		if (deltaY < 1.1) {
+			return 8; // The mud level is 8
+		}
+		
+		// If the player has sunk all but 1.21 blocks above the BOTTOM of the block...
+		if (deltaY < 1.21) {
+			return 7; // The mud level is 7
+		}
+		
+		// If the player has sunk all but 1.32 blocks above the BOTTOM of the block...
+		if (deltaY < 1.32) {
+			return 6; // The mud level is 6
+		}
+		
+		// If the player has sunk all but 1.53 blocks above the BOTTOM of the block...
+		if (deltaY < 1.53) {
+			return 5; // The mud level is 5
+		}
+		
+		// If the player has sunk all but 1.67 blocks above the BOTTOM of the block...
+		if (deltaY < 1.67) {
+			return 4; // The mud level is 4
+		}
+		
+		// If the player has sunk all but 1.98 blocks above the BOTTOM of the block...
+		if (deltaY < 1.98) {
+			return 3; // The mud level is 3
+		}
+		
+		// If the player has sunk all but 2.14 blocks above the BOTTOM of the block...
+		if (deltaY < 2.14) {
+			return 2; // The mud level is 2
+		}
+		
+		// If the player has sunk all but 2.4 blocks above the BOTTOM of the block...
+		if (deltaY < 2.4) {
+			return 1; // The mud level is 1
+		}
+		
+		return 0; // The mud level is 0. The player is not inside the block
+	}
+	
+	// Is the entity truly sinking?
+	public static boolean isTrulySinking(final Entity entity, final double triggEntitySunk_kof1) {
+		return !(entity instanceof EntityPlayer) || entity.worldObj.isRemote;
+	}
+	
+	// Checks if the entity should be marked with suction
+	public static boolean suctionWorldCheck(final Entity entity, final World world, final double velocity) {
+		double velocityY = Math.max(velocity * 10.0, 0.25);
+		
+		if (entity instanceof EntityPlayer && ConfigHandler.useCustomBootCalc && world.isRemote) {
+			boolean boots = false;
+			
+			if (((EntityPlayer)entity).getCurrentArmor(0) != null) {
+				boots = true;
+			}
+			
+			if (boots) {
+				velocityY = Math.max(velocityY / 2.0, 0.0);
+			}
+		}
+		
+		return world.getTotalWorldTime() % Math.floor(Math.max(10.0 * Math.pow(velocityY, 2.0), 1.0)) == 0.0 && world.rand.nextInt(5) == 0;
+	}
+	
 	// Returns the height of the block
 	public static double surfaceY(final Block block) {
 		
@@ -62,9 +147,80 @@ public class QuicksandManager {
     }
 	
 	// Spawns a bubble on a delay
+	public static void spawnBubble(final World world, final double blockPosX, final double blockPosY, final double blockPosZ, final Block block, final int metadata, final float size, final int time) {
+        world.spawnEntityInWorld((Entity)new Bubble(world, blockPosX, blockPosY, blockPosZ, block, metadata, size, time));
+    }
+	
+	// Spawns a bubble on a delay
 	public static void spawnBubbleDelay(final World world, final double blockPosX, final double blockPosY, final double blockPosZ, final Block block, final int metadata, final float size, final int time, final int delay) {
         world.spawnEntityInWorld((Entity)new Bubble(world, blockPosX, blockPosY, blockPosZ, block, metadata, size, time, delay));
     }
+	
+	// Spawns a random body bubble
+	public static void spawnBodyBubble(final World world, final Entity entity, final int blockPosX, final int blockPosY, final int blockPosZ, final Block block, boolean useMetadata) {
+		int blockMetadata = 0;
+		
+		// If the world is NOT a server instance, AND the user does NOT want to spawn singleplayer bubbles...
+        if (!world.isRemote && !ConfigHandler.spawnUnseenBubbles) {
+        	// The user will never see these bubbles normally in singleplayer.
+        	// There is no reason to spawn them UNLESS they are recording using a mod
+        	
+            return; // Don't spawn drowning bubbles
+        }
+        
+        // Spawns in a random area within 0.5 blocks of the entity
+        final double bubblePosX = entity.posX + world.rand.nextFloat() * 1.0f - 0.5;
+        final double bubblePosZ = entity.posZ + world.rand.nextFloat() * 1.0f - 0.5;
+        
+        // If the block is not this block...
+        if (world.getBlockState(new BlockPos((int)Math.floor(blockPosX), blockPosY, (int)Math.floor(blockPosZ))).getBlock() != block) {
+        	// In other words, if the bubble is going to spawn in a different type of block...
+        	
+        	return; // The block the entity is in is not the block that triggered this. Don't spawn
+        }
+        
+        // If the metadata from the block should be used...
+        if (useMetadata) {
+        	blockMetadata = world.getBlockState(new BlockPos(blockPosX, blockPosY, blockPosZ)).getBlock().getMetaFromState(world.getBlockState(new BlockPos(blockPosX, blockPosY, blockPosZ)));
+        }
+        
+        final float bubbleSize = 1.25f - world.rand.nextFloat() * 0.5f;
+        final int bubbleTime = (int)Math.floor((1000 + world.rand.nextInt(500)) * bubbleSize);
+        spawnBubble(world, bubblePosX, blockPosY + surfaceY(block), bubblePosZ, block, blockMetadata, bubbleSize, bubbleTime);
+	}
+	
+	// Spawns a random body bubble
+	public static void spawnBodyBubbleRandom(final World world, final Entity entity, final int blockPosX, final int blockPosY, final int blockPosZ, final Block block, boolean useMetadata) {
+		int blockMetadata = 0;
+		
+		// If the world is NOT a server instance, AND the user does NOT want to spawn singleplayer bubbles...
+        if (!world.isRemote && !ConfigHandler.spawnUnseenBubbles) {
+        	// The user will never see these bubbles normally in singleplayer.
+        	// There is no reason to spawn them UNLESS they are recording using a mod
+        	
+            return; // Don't spawn drowning bubbles
+        }
+        
+        // Spawns in a random area within 0.5 blocks of the entity
+        final double bubblePosX = entity.posX + world.rand.nextFloat() * 1.0f - 0.5;
+        final double bubblePosZ = entity.posZ + world.rand.nextFloat() * 1.0f - 0.5;
+        
+        // If the block is not this block...
+        if (world.getBlockState(new BlockPos((int)Math.floor(blockPosX), blockPosY, (int)Math.floor(blockPosZ))).getBlock() != block) {
+        	// In other words, if the bubble is going to spawn in a different type of block...
+        	
+        	return; // The block the entity is in is not the block that triggered this. Don't spawn
+        }
+        
+        // If the metadata from the block should be used...
+        if (useMetadata) {
+        	blockMetadata = world.getBlockState(new BlockPos(blockPosX, blockPosY, blockPosZ)).getBlock().getMetaFromState(world.getBlockState(new BlockPos(blockPosX, blockPosY, blockPosZ)));
+        }
+        
+        final float bubbleSize = 1.25f - world.rand.nextFloat() * 0.5f;
+        final int bubbleTime = (int)Math.floor((1000 + world.rand.nextInt(500)) * bubbleSize);
+        spawnBubbleDelay(world, bubblePosX, blockPosY + surfaceY(block), bubblePosZ, block, blockMetadata, bubbleSize, bubbleTime, world.rand.nextInt(20) * 100);
+	}
 	
 	// Spawns bubbles for when an entity is drowning
 	public static void spawnDrowningBubble(final World world, final Entity entity, final Block block, boolean useMetadata) {
@@ -235,4 +391,16 @@ public class QuicksandManager {
         
         return false; // The entity is marked as NOT drowning
     }
+	
+	// Gets the mud type of the block
+	public static int getMudType(final Block block) {
+		return -1; // This is not needed
+	}
+	
+	public static void setStuckEffect(final EntityLivingBase entity, final int level) {
+		
+		if (PlayerStuckEffectManager.get(entity) != null) {
+			PlayerStuckEffectManager.get(entity).setStuckLevel(level);
+		}
+	}
 }

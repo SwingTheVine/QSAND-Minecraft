@@ -3,6 +3,10 @@ package com.SwingTheVine.QSAND.blocks;
 import java.util.List;
 
 import com.SwingTheVine.QSAND.QSAND;
+import com.SwingTheVine.QSAND.entity.SlimeMud;
+import com.SwingTheVine.QSAND.handler.ConfigHandler;
+import com.SwingTheVine.QSAND.init.QSAND_Items;
+import com.SwingTheVine.QSAND.manager.PlayerMudManager;
 import com.SwingTheVine.QSAND.manager.QuicksandManager;
 
 import net.minecraft.block.Block;
@@ -17,6 +21,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
@@ -88,6 +93,8 @@ public class Mud extends Block implements IMetaBlockName {
 			boolean triggEntityMoving = false; // Is the triggering entity moving?
 			boolean triggEntitySplashing = false; // Is the triggering entity splashing?
 			boolean triggEntityRotating = false; // Is the triggering entity rotating?
+			boolean triggEntityHasBoots = false; // Is the triggering entity wearing boots?
+			boolean triggEntityBootsFloat = false; // Can the boots the triggering entity is wearing float in quicksand?
 			final float blockMetadataBumped = (float)(blockMetadata + 1); // Adds 1 to the block's metadata value
 			double triggEntityMovingDistance_movDis = 1.0;
 			double forceBubbleSpawn_movCof = 16.0; // Forces the block to attempt to spawn bubbles. This value is used when the entity is not moving
@@ -101,16 +108,29 @@ public class Mud extends Block implements IMetaBlockName {
 			// https://www.desmos.com/calculator/wgkirt9ra1
 			final int mr_blackgoo = (int)Math.min(5.0 + Math.floor(Math.max(0.0, Math.pow(blockMetadataBumped * 2.0f * (1.5 - triggEntitySunkMod_kof1m), 2.0))), 145.0);
 			
-			// TODO: Add entity is Muddy Blob
-			
-			
-			// TODO: Add check entity under
-			if (triggEntityAffected) {
-				this.checkEntityUnder(triggeringEntity);
-				QuicksandManager.spawnDrowningBubble(triggeringEntity.worldObj, triggeringEntity, this, true); // Spawn drowning bubbles
+			// If the triggering entity is a Muddy Slime...
+			if (triggeringEntity instanceof SlimeMud) {
+				triggEntityAffected = false; // The triggering entity is marked as NOT affected by this block
 			}
 			
-			// TODO: Add boot calculations
+			// If the triggering entity is marked as affected by this block...
+			if (triggEntityAffected) {
+				
+				// Run submerged code if the triggering entity is submerged
+				this.runSubmergedChecks(triggeringEntity);
+			}
+			
+			// If the triggering entity is a player...
+			if (triggeringEntity instanceof EntityPlayer) {
+				
+				// ...AND the player's boot slot is not null, AND the player's boot slot contains Wading Boots...
+				if (((EntityPlayer)triggeringEntity).getCurrentArmor(0) != null && ((EntityPlayer)triggeringEntity).getCurrentArmor(0).getItem() == QSAND_Items.bootsWading) {
+					triggEntityHasBoots = true;
+					triggEntityBootsFloat = true;
+				}
+				
+				this.checkPlayerMuddy((EntityPlayer)triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), world);
+			}
 			
 			// If the entity moves downwards with a high velocity, they are marked as splashing.
 			//    metadata 1 = -0.100 or faster (Mud)
@@ -160,7 +180,11 @@ public class Mud extends Block implements IMetaBlockName {
 				}
 			}
 			
-			// TODO: not wearing boots function
+			// If the entity is NOT wearing boots...
+			if (!triggEntityHasBoots) {
+				triggeringEntity.motionX *= 0.1; // Slow down their X movement by 90%
+				triggeringEntity.motionZ *= 0.1; // Slow down their Z movement by 90%
+			}
 			
 			// If the block variant is 0 (Mud)...
 			if (blockMetadata == 0) {
@@ -181,9 +205,70 @@ public class Mud extends Block implements IMetaBlockName {
 				}
 			}
 			
-			// TODO: entity instanceof muddy blob
+			// If the entity is a Mud Slime
+			if (triggeringEntity instanceof SlimeMud) {
+				
+				// Adds a potion effect of Regeneration for 5 seconds, 1.0 amplifier, ambient, and with no particles
+				((EntityLivingBase)triggeringEntity).addPotionEffect(new PotionEffect(10, 5, 1, true, false));
+				
+				// If the block above this one does NOT equal this type of block...
+				if (world.getBlockState(pos.up(1)).getBlock() != this) {
+					
+					// ...AND if the entity is sunk more than 1.35 blocks into this block...
+					if (triggEntitySunk_kof1 >= 1.35) {
+						
+						// ...AND the entity is NOT marked as splashing...
+						if (!triggEntitySplashing) {
+							triggeringEntity.motionY = 0.0; // Stop all Y movement for the entity
+							triggeringEntity.motionY += 0.08; // Add 0.08 Y movement to the entity
+							triggeringEntity.onGround = true; // The entity is marked as on the ground
+							triggeringEntity.fallDistance = 0.0f; // The entity takes no fall damage
+						}
+					} else {
+						triggeringEntity.motionY = 0.0; // Stop all Y movement for the entity
+						triggeringEntity.motionY += 0.1; // Add 0.08 Y movement to the entity
+						triggeringEntity.onGround = true; // The entity is marked as on the ground
+						triggeringEntity.fallDistance = 0.0f; // The entity takes no fall damage
+					}
+				} else {
+					triggeringEntity.motionY = 0.0; // Stop all Y movement for the entity
+					triggeringEntity.motionY += 0.1; // Add 0.08 Y movement to the entity
+					triggeringEntity.onGround = true; // The entity is marked as on the ground
+					triggeringEntity.fallDistance = 0.0f; // The entity takes no fall damage
+				}
+				return; // Stop entity collision calculations
+			}
 			
-			// TODO: not player; not affected
+			// If the entity is NOT a player, AND the entity was marked as NOT affected by the block...
+			if (!(triggeringEntity instanceof EntityPlayer) && !triggEntityAffected) {
+				
+				// If the block above this one does NOT equal this type of block...
+				if (world.getBlockState(pos.up(1)).getBlock() != this) {
+					
+					// ...AND if the entity is sunk more than 1.35 blocks into this block...
+					if (triggEntitySunk_kof1 >= 1.35) {
+						
+						// ...AND the entity is NOT marked as splashing...
+						if (!triggEntitySplashing) {
+							triggeringEntity.motionY = 0.0; // Stop all Y movement for the entity
+							triggeringEntity.motionY += 0.08; // Add 0.08 Y movement to the entity
+							triggeringEntity.onGround = true; // The entity is marked as on the ground
+							triggeringEntity.fallDistance = 0.0f; // The entity takes no fall damage
+						}
+					} else {
+						triggeringEntity.motionY = 0.0; // Stop all Y movement for the entity
+						triggeringEntity.motionY += 0.1; // Add 0.08 Y movement to the entity
+						triggeringEntity.onGround = true; // The entity is marked as on the ground
+						triggeringEntity.fallDistance = 0.0f; // The entity takes no fall damage
+					}
+				} else {
+					triggeringEntity.motionY = 0.0; // Stop all Y movement for the entity
+					triggeringEntity.motionY += 0.1; // Add 0.08 Y movement to the entity
+					triggeringEntity.onGround = true; // The entity is marked as on the ground
+					triggeringEntity.fallDistance = 0.0f; // The entity takes no fall damage
+				}
+				return; // Stop entity collision calculations
+			}
 			
 			// STATEMENT BEACON 1
             // If the remainder of the current world time divided by 128 is zero,
@@ -207,7 +292,8 @@ public class Mud extends Block implements IMetaBlockName {
 					
 					// If the entity is a player, AND the number in the world's random number generator sequence is 0 (1/3 chance)...
 					if (triggeringEntity instanceof EntityPlayer && world.rand.nextInt(3) == 0) {
-						// TODO: Add body bubbles
+						QuicksandManager.spawnBodyBubbleRandom(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), this, true);
+						QuicksandManager.spawnBodyBubbleRandom(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), this, true);
 					}
 				}
 				
@@ -221,7 +307,7 @@ public class Mud extends Block implements IMetaBlockName {
                     
                     // ...AND the number in the world's random number generator sequence equals 0 (1/7 chance)...
                     if (world.rand.nextInt(7) == 0) {
-                    	// TODO: Add body bubble
+                    	QuicksandManager.spawnBodyBubbleRandom(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), this, true);
                     }
 				}
 				
@@ -232,7 +318,9 @@ public class Mud extends Block implements IMetaBlockName {
 					
 					// If the entity is a player, AND the number in the world's random number generator sequence equals 0 (1/5 chance)...
                     if (triggeringEntity instanceof EntityPlayer && world.rand.nextInt(5) == 0) {
-                    	// TODO: Add body bubbles
+                    	QuicksandManager.spawnBodyBubbleRandom(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), this, true);
+                    	QuicksandManager.spawnBodyBubbleRandom(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), this, true);
+                    	QuicksandManager.spawnBodyBubbleRandom(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), this, true);
                     }
 				}
 				
@@ -254,7 +342,7 @@ public class Mud extends Block implements IMetaBlockName {
                     //    AND the remainder of the total world time divided by 32 is 0,
                     //    AND the number in the world's random number generator sequence equals 0 (1/20 chance)...
                     if (blockMetadata > 2 && world.getTotalWorldTime() % 32L == 0L && world.rand.nextInt(20) == 0) {
-                        // TODO: Add body bubble
+                    	QuicksandManager.spawnBodyBubble(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), this, true);
                     }
                 }
 			}
@@ -262,7 +350,10 @@ public class Mud extends Block implements IMetaBlockName {
             triggeringEntity.motionX = 0.0; // Make the entity stop moving
             triggeringEntity.motionZ = 0.0; // Make the entity stop moving
             
-            // TODO: add boots dont float
+            // If the triggering entity has sunk less than 1.3 blocks into this block...
+            if (triggEntitySunk_kof1 < 1.3) {
+            	triggEntityBootsFloat = false; // The boots don't float
+            }
             
             // If the entity's velocity is greater than -0.1...
             if (triggeringEntity.motionY > -0.1) {
@@ -319,12 +410,11 @@ public class Mud extends Block implements IMetaBlockName {
                     sinkRateMod_mys = 0.0; // Makes the non-player entity sink faster when negative
                 }
                 
-                // TODO: Fix this; suction check
-                /*
-                if (triggEntityJumping && false) {
+                // If the triggering entity is marked as jumping, AND the entity has been marked for suction...
+                if (triggEntityJumping && QuicksandManager.suctionWorldCheck(triggeringEntity, world, triggEntityVelY)) {
                 	triggeringEntity.motionY -= 0.05 * blockMetadataBumped * (Math.min(0.75, triggEntitySunkMod_kof1m) + 1.0); // Subtract some unknown modifier to the entity's Y velocity
                     world.playSound(triggeringEntity.posX, triggEntityPosY, triggeringEntity.posZ, "mob.magmacube.jump", 0.25f, 0.25f + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.4f, false); // Play sound
-                }*/
+                }
                 
                 // If the entity has sunk greater than or equal to 1.2 blocks...
                 if (triggEntitySunk_kof1 >= 1.2) {
@@ -332,9 +422,17 @@ public class Mud extends Block implements IMetaBlockName {
                 	// ...AND the entity is NOT marked as splashing...
                 	if (!triggEntitySplashing) {
 
-	                	// TODO: More boot code
-	                	if (false) {
+	                	// ...AND the entity's boots float in this block...
+	                	if (triggEntityBootsFloat) {
+	                		triggeringEntity.onGround = true; // The entity is marked as on the ground
+	                		triggeringEntity.fallDistance = 0.0f; // The entity takes no fall damage
 	                		
+	                		// If the entity has sunk more than 1.25 blocks into this block...
+	                		if (triggEntitySunk_kof1 > 1.25) {
+	                			triggeringEntity.motionY += 0.085; // Adds a modifier to the entity's Y velocity
+	                		} else {
+	                			triggeringEntity.motionY += 0.1; // Adds a modifier to the entity's Y velocity
+	                		}
 	                	} else {
 	                		
 	                		// If the remainder of the total world time divided by the bumped metadata value equals 0...
@@ -380,7 +478,11 @@ public class Mud extends Block implements IMetaBlockName {
                 	
                 } else {
                 	
-                	// TODO: Suction check function
+                	// If the entity is moving upwards, AND the number in the world's random number generator sequence modified by the modified distance sunk by the triggering entity equals 0, AND the entity has been marked for suction...
+                	if (triggEntityPosY - triggEntityPrevPosY > 0.001 && world.rand.nextInt(Math.max((int)Math.floor(triggEntitySunkMod_kof1m * 3.0), 10)) == 0 && QuicksandManager.suctionWorldCheck(triggeringEntity, world, triggEntityVelY)) {
+                		triggeringEntity.motionY -= 0.035 * blockMetadataBumped * (Math.min(0.75, triggEntitySunkMod_kof1m) + 1.0); // The entity's Y velocity is modified by the modified distance sunk by the triggering entity
+                		world.playSound(triggeringEntity.posX, triggEntityPosY, triggeringEntity.posZ, "mob.magmacube.jump", 0.25f, 0.25f + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.4f, false); // Play sound
+                	}
                 	
                 	// If the entity has sunk greater than 0.9 blocks...
                 	if (triggEntitySunk_kof1 >= 0.9) {
@@ -398,7 +500,7 @@ public class Mud extends Block implements IMetaBlockName {
                 		System.out.println("Equation Beacon 3: " + thicknessLower / Math.max((movementPunish_mofKofDiv - 1.0) * (Math.max(triggEntitySunkMod_kof1m - 0.5, 0.75) * 1.6), 1.0) / Math.pow(Math.max(triggEntitySunkMod_kof1m / 1.25, 1.0), 2.0));
                 		
                 		
-                		// TODO: set stuck effect
+                		QuicksandManager.setStuckEffect((EntityLivingBase)triggeringEntity, mr_blackgoo); // Makes the entity stuck
                 		triggeringEntity.fallDistance = 0.0f; // Resets the accumulated fall distance to 0
                 		
                 		// If the entity is a player...
@@ -480,7 +582,10 @@ public class Mud extends Block implements IMetaBlockName {
                             }
                         }
                         
-                        // TODO: is truly sink
+                        // If the entity is truly sinking...
+                        if (QuicksandManager.isTrulySinking(triggeringEntity, triggEntitySunk_kof1)) {
+                        	QuicksandManager.setStuckEffect((EntityLivingBase)triggeringEntity, mr_blackgoo);
+                        }
                         
                         triggeringEntity.fallDistance = 0.0f; // Resets the accumulated fall distance to 0
                         
@@ -556,7 +661,10 @@ public class Mud extends Block implements IMetaBlockName {
                                 triggeringEntity.motionY += (0.0725 + sinkRateMod_mys) * thicknessHigher / (movementPunish_mofKofDiv + 0.025); // Unknown modifier to entity's Y velocity
                             }
 
-                            // TODO: truly sink function
+                            // If the entity has sunk less than 0.45 blocks into this one, AND the entity is truly sinking...
+                            if (triggEntitySunk_kof1 < 0.45 && QuicksandManager.isTrulySinking(triggeringEntity, triggEntitySunk_kof1)) {
+                            	QuicksandManager.setStuckEffect((EntityLivingBase)triggeringEntity, 145);
+                            }
                         }
                 	}
                 }
@@ -574,7 +682,11 @@ public class Mud extends Block implements IMetaBlockName {
                 
                 // TODO: anti hold jump script
             } else {
-            	// TODO: set stuck effect
+            	
+            	// If the entity has sunk less than 0.45 blocks into this one, AND the entity is truly sinking...
+                if (triggEntitySunk_kof1 < 0.5 && QuicksandManager.isTrulySinking(triggeringEntity, triggEntitySunkMod_kof1m)) {
+                	QuicksandManager.setStuckEffect((EntityLivingBase)triggeringEntity, 145);
+                }
             	
             	triggeringEntity.setInWeb();
             }
@@ -679,7 +791,7 @@ public class Mud extends Block implements IMetaBlockName {
 	}
 	
 	// Checks to see if the entity is fully submerged in the block
-	public void checkEntityUnder(final Entity triggeringEntity) {
+	public void runSubmergedChecks(final Entity triggeringEntity) {
 
         // If the entity is inside of this block, AND the entity is marked as drowning...
         if (QuicksandManager.isEntityInsideOfBlock(triggeringEntity, this) && QuicksandManager.isDrowning(triggeringEntity)) {
@@ -691,6 +803,33 @@ public class Mud extends Block implements IMetaBlockName {
             }
         }
     }
+	
+	// Checks if the player is muddy
+	// If the player is muddy, it adds a skin overlay
+	public void checkPlayerMuddy(final EntityPlayer triggeringPlayer, final int blockPosX, final int blockPosY, final int blockPosZ, final World world) {
+		
+		// If the skin overlay is disabled by the user...
+		if (!ConfigHandler.useSkinOverlay) {
+			return; // The user does not want the skin overlay. Don't run this function
+		}
+		
+		// If the world is NOT run on a server...
+		if (!world.isRemote) {
+			final PlayerMudManager playerMudControl = PlayerMudManager.get(triggeringPlayer);
+			final int preMudLevel = QuicksandManager.getMudLevel(triggeringPlayer, blockPosY, world);
+			
+			// If the pre-mud level is greater than the mud level of the player times the mud time of the player divided by 1000...
+			if (preMudLevel > playerMudControl.getMudLevel() * (playerMudControl.getMudTime() / 1000.0f)) {
+				playerMudControl.setMudLevel(preMudLevel); // Sets the players mud level to the pre-mud level
+				
+				final int mudType = 10;
+				playerMudControl.setMudType(mudType); // Sets the mud type to the mud type of this block
+				
+				// Sets the mud time to the current mud time, or 1000. Whichever is smaller
+				playerMudControl.setMudTime(Math.min(playerMudControl.getMudTime(), 1000));
+			}
+		}
+	}
 	
 	// Returns types of metadata for the block
 	public String[] getTypes() {
