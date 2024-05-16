@@ -11,13 +11,13 @@ import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class LongStick extends Entity implements IEntityAdditionalSpawnData{
+public class EntityLongStick extends Entity implements IEntityAdditionalSpawnData{
 	public int stickPosX;
 	public int stickPosY;
 	public int stickPosZ;
 	public Entity player;
 	
-	public LongStick(final World world) {
+	public EntityLongStick(final World world) {
 		super(world);
 		
 		this.stickPosX = 0;
@@ -27,21 +27,21 @@ public class LongStick extends Entity implements IEntityAdditionalSpawnData{
 		this.ignoreFrustumCheck = true;
 	}
 	
-	public LongStick(final World world, final double entityPosX, final double entityPosY, final double entityPosZ, final Entity entity) {
+	public EntityLongStick(final World world, final double entityPosX, final double entityPosY, final double entityPosZ, final Entity entity) {
 		this(world);
 		this.setPosition(entityPosX, entityPosY, entityPosZ);
 		this.ignoreFrustumCheck = true;
 		this.player = entity;
 	}
 	
-	public LongStick(final World world, final double entityPosX, final double entityPosY, final double entityPosZ, final Entity entity, final int blockPosX, final int blockPosY, final int blockPosZ) {
+	public EntityLongStick(final World world, final double entityPosX, final double entityPosY, final double entityPosZ, final Entity entity, final int blockPosX, final int blockPosY, final int blockPosZ) {
 		this(world);
 		this.stickPosX = blockPosX;
 		this.stickPosY = blockPosY;
 		this.stickPosZ = blockPosZ;
 	}
 	
-	public LongStick(final World world, final EntityLivingBase entity) {
+	public EntityLongStick(final World world, final EntityLivingBase entity) {
 		super(world);
 		this.stickPosX = 0;
 		this.stickPosY = 0;

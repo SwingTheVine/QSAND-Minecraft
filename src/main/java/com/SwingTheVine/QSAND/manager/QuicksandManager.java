@@ -1,6 +1,10 @@
 package com.SwingTheVine.QSAND.manager;
 
+import java.util.UUID;
+
 import com.SwingTheVine.QSAND.entity.Bubble;
+import com.SwingTheVine.QSAND.entity.EntityLongStick;
+import com.SwingTheVine.QSAND.entity.TentaclesMud;
 import com.SwingTheVine.QSAND.handler.ConfigHandler;
 import com.SwingTheVine.QSAND.init.QSAND_Blocks;
 import com.SwingTheVine.QSAND.init.QSAND_Items;
@@ -18,6 +22,9 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
@@ -341,6 +348,68 @@ public class QuicksandManager {
         return 1.0;
     }
 	
+	// Obtains the entity from their UUID
+	public static Entity getEntityByUUID(final World world, final Entity entity, final UUID uuid, final double radius) {
+        final AxisAlignedBB boundingBox = AxisAlignedBB.fromBounds(entity.posX - radius, entity.posY - radius, entity.posZ - radius, entity.posX + radius, entity.posY + radius, entity.posZ + radius);
+        
+        for (final Object certainEntity : world.getEntitiesWithinAABBExcludingEntity(entity, boundingBox)) {
+            
+        	if (uuid.equals(((Entity)certainEntity).getUniqueID())) {
+                return (Entity)certainEntity;
+            }
+        }
+        return null;
+    }
+	
+	// Spawns in a mud tentacle
+	public static void spawnMudTentacles(final World world, final Entity entity, final int blockPosX, final int blockPosY, final int blockPosZ, final Block block, final int metadata, final int rate, final int chance) {
+		
+		// If the user has enabled mud/quicksand tentacles,
+		//    AND the code is NOT executing server-side,
+		//    AND the entity is NOT null,
+		//    AND the entity is a living base,
+		//    AND the width of the entity is less than 1.75 blocks,
+		//    AND the entity is not colliding with anything along the Y axis,
+		//    AND the remainder of the total world time divided by the spawn rate equals 0,
+		//    AND the next integer in the world's random number generator sequence equals 0 (1/chance chance),
+		//    AND the tentacles can be spawned in this block...
+		if (ConfigHandler.useMudTentacles
+				&& !world.isRemote
+				&& entity != null
+				&& entity instanceof EntityLivingBase
+				&& entity.width < 1.75
+				&& entity.isCollidedVertically
+				&& world.getTotalWorldTime() % rate == 0L
+				&& world.rand.nextInt(chance) == 0
+				&& canBeMudTentacles(world, blockPosX, blockPosY, blockPosZ, block, metadata)) {
+			
+			// Obtain the weak & slow potion effects on the player
+			// If there are none, it is set to null
+			final PotionEffect effectWeak = ((EntityLivingBase)entity).getActivePotionEffect(Potion.weakness);
+			final PotionEffect effectSlow = ((EntityLivingBase)entity).getActivePotionEffect(Potion.digSlowdown);
+			
+			int effectWeakLevel = -1; // The amplification level of the potion effect
+			int effectSlowLevel = -1; // The amplification level of the potion effect
+			
+			// If the weak effect is NOT null...
+			if (effectWeak != null) {
+				effectWeakLevel = effectWeak.getAmplifier(); // Obtain the amplification level on the player for this potion effect
+			}
+			
+			// If the slow effect is NOT null...
+			if (effectSlow != null) {
+				effectSlowLevel = effectSlow.getAmplifier(); // Obtain the amplification level on the player for this potion effect
+			}
+			
+			// If the weak effect is less than or equal to -1, OR the slow effect is less than or equal to 2...
+			if (effectWeakLevel <= -1 || effectSlowLevel <= 2) {
+				
+				// Spawn a mud/quicksand tentacle
+				world.spawnEntityInWorld((Entity)new TentaclesMud(world, entity.posX, Math.min(entity.posY + 0.5, blockPosY + 1), entity.posZ, (Entity)entity, blockPosY + 1, 0));
+			}
+		}
+	}
+	
 	// Handler for mud tentacles
 	public static void handleMudTentacles(final World world, final Entity entity, final int blockPosX, final int blockPosY, final int blockPosZ, final Block block, final int metadata) {
 		
@@ -367,6 +436,8 @@ public class QuicksandManager {
 			// Needless to say, this is a very rare occurrence
 			
 			entity.attackEntityFrom(DamageSource.generic, 1000.0f); // Deals 1000 HP of damage to the entity
+			
+			world.spawnEntityInWorld((Entity)new EntityLongStick(world, entity.posX, (double)(blockPosY + 1), entity.posZ, (Entity)null, blockPosX, blockPosY, blockPosZ));
 		}
 	}
 	
@@ -566,12 +637,12 @@ public class QuicksandManager {
         	// If the entity is a player...
             if (entity instanceof EntityPlayer) {
             	
-            	// Returns the datawatcher for custom drowning in blocks
-                return entity.getDataWatcher().getWatchableObjectInt(ConfigHandler.customDrownAirBlockDW);
+            	// Returns the datawatcher for custom drowning for players
+                return entity.getDataWatcher().getWatchableObjectInt(ConfigHandler.customDrownAirPlayersDW);
             }
             
-            // If the entity is NOT a player, it returns the datawatcher for custom drowning in entities
-            return entity.getDataWatcher().getWatchableObjectInt(ConfigHandler.customDrownAirEntityDW);
+            // If the entity is NOT a player, it returns the datawatcher for custom drowning for entities
+            return entity.getDataWatcher().getWatchableObjectInt(ConfigHandler.customDrownAirEntitiesDW);
         } catch (Exception ignored) {
         	// If it crashes, don't crash and ignore the error
         	
@@ -588,12 +659,12 @@ public class QuicksandManager {
         	// If the entity is a player...
             if (entity instanceof EntityPlayer) {
             	
-            	// Changes the value of the datawatcher for custom drowning in blocks
-                entity.getDataWatcher().updateObject(ConfigHandler.customDrownAirBlockDW, (Object)value);
+            	// Changes the value of the datawatcher for custom drowning for players
+                entity.getDataWatcher().updateObject(ConfigHandler.customDrownAirPlayersDW, (Object)value);
             } else {
             	
-            	// If the entity is NOT a player, it changes the value of the datawatcher for custom drowning in entities
-                entity.getDataWatcher().updateObject(ConfigHandler.customDrownAirEntityDW, (Object)value);
+            	// If the entity is NOT a player, it changes the value of the datawatcher for custom drowning for entities
+                entity.getDataWatcher().updateObject(ConfigHandler.customDrownAirEntitiesDW, (Object)value);
             }
         } catch (Exception ignored) {}
         // If it crashes, don't crash and ignore the error
@@ -608,12 +679,12 @@ public class QuicksandManager {
         	// If the entity is a player...
             if (entity instanceof EntityPlayer) {
             	
-            	// Adds the modifier to the datawatcher for custom drowning in blocks
-                entity.getDataWatcher().updateObject(ConfigHandler.customDrownAirBlockDW, (Object)(entity.getDataWatcher().getWatchableObjectInt(ConfigHandler.customDrownAirBlockDW) + modifier));
+            	// Adds the modifier to the datawatcher for custom drowning for players
+                entity.getDataWatcher().updateObject(ConfigHandler.customDrownAirPlayersDW, (Object)(entity.getDataWatcher().getWatchableObjectInt(ConfigHandler.customDrownAirPlayersDW) + modifier));
             } else {
             	
-            	// If the entity is NOT a player, it adds the modifier to the datawatcher for custom drowning in entities
-                entity.getDataWatcher().updateObject(ConfigHandler.customDrownAirEntityDW, (Object)(entity.getDataWatcher().getWatchableObjectInt(ConfigHandler.customDrownAirEntityDW) + modifier));
+            	// If the entity is NOT a player, it adds the modifier to the datawatcher for custom drowning for entities
+                entity.getDataWatcher().updateObject(ConfigHandler.customDrownAirEntitiesDW, (Object)(entity.getDataWatcher().getWatchableObjectInt(ConfigHandler.customDrownAirEntitiesDW) + modifier));
             }
         } catch (Exception ignored) {}
         // If it crashes, don't crash and ignore the error
@@ -625,14 +696,14 @@ public class QuicksandManager {
 		// If the entity is a player...
         if (entity instanceof EntityPlayer) {
         	
-        	// ...AND the user has disabled realistic drowning in blocks...
-            if (!ConfigHandler.useCustomDrownBlock) {
+        	// ...AND the user has disabled realistic drowning for players...
+            if (!ConfigHandler.useCustomDrownPlayers) {
                 return true; // The user disabled this. Return early
             }
             
             // If the entity is NOT a player...
-            //    ...AND the user has disabled realistic drowning in entities...
-        } else if (!ConfigHandler.useCustomDrownEntity) {
+            //    ...AND the user has disabled realistic drowning for entities...
+        } else if (!ConfigHandler.useCustomDrownEntities) {
             return true; // The user disabled this. Return early
         }
         

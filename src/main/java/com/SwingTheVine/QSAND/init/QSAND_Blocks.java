@@ -18,9 +18,11 @@ public class QSAND_Blocks {
 	public static Block test_block;
 	public static Block mud;
 	public static Block quicksand;
+	public static Block quicksandSoft;
 	public static Block quicksandJungle;
 	public static Block moss;
 	public static Block mire;
+	public static Block swallowingFlesh;
 	// Test World Seed: 1637864495647481288
 	// Entities fall at a rate of 0.076125 blocks
 	

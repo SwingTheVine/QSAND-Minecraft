@@ -30,7 +30,6 @@ public class QSAND {
 	public static QSAND instance;
 	
 	public static final QSAND_Tab QSANDTab = new QSAND_Tab("QSANDTab"); // Makes the Modded Creative Inventory tab
-	public static boolean makeBlocksOpaque = false;
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {

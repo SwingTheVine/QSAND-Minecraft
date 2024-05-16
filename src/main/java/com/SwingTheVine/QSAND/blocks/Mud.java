@@ -2,7 +2,6 @@ package com.SwingTheVine.QSAND.blocks;
 
 import java.util.List;
 
-import com.SwingTheVine.QSAND.QSAND;
 import com.SwingTheVine.QSAND.entity.SlimeMud;
 import com.SwingTheVine.QSAND.handler.ConfigHandler;
 import com.SwingTheVine.QSAND.init.QSAND_Items;
@@ -48,7 +47,7 @@ public class Mud extends Block implements IMetaBlockName {
 		this.setDefaultState(this.blockState.getBaseState().withProperty(SINK, Integer.valueOf(0))); // Default metadata values for the block
 		
 		// Makes the block opaque if the user desires
-		int opacity = (QSAND.makeBlocksOpaque)
+		int opacity = (ConfigHandler.makeBlocksOpaque)
 				? 255 : 3;
 		this.setLightOpacity(opacity);
 	}
@@ -146,12 +145,11 @@ public class Mud extends Block implements IMetaBlockName {
 					(triggEntityPosY - triggEntityPrevPosY > 0.2)
 					? true : false;
 			
-			// TODO: Complete the second equation. Requires Air block event
 			// If the entity is NOT a player, AND the entity has moved their camera along the Yaw axis...
 			// OR if the entity is a player, and this is multiplayer, AND the server instance has detected Yaw axis movement...
 			triggEntityRotating = 
 					((!(triggeringEntity instanceof EntityPlayer) && ((EntityLivingBase)triggeringEntity).prevRotationYaw != ((EntityLivingBase)triggeringEntity).rotationYaw)
-							|| (false))
+							|| ((triggeringEntity instanceof EntityPlayer) && world.isRemote && Math.abs(ConfigHandler.serverInstancePreRenderYaw - ConfigHandler.serverInstanceRenderYaw) > 10.0))
 					? true : false;
 			
 			// If the entity is marked as rotating, OR the entity has moved farther than 0.001 blocks along the X/Z axis...
@@ -702,7 +700,8 @@ public class Mud extends Block implements IMetaBlockName {
 				triggeringEntity.setInWeb();
 			}
 			
-			// TODO: handle mud tentacles
+			// Checks if mud tentacles should be spawned. If so, it spawns and manages them
+			QuicksandManager.handleMudTentacles(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), this, blockMetadata);
 		}
 		/*System.out.println("triggEntitySunk_kof1: " + triggEntitySunk_kof1);
         System.out.println("triggEntityPrevSunk_kof2: " + triggEntityPrevSunk_kof2);
