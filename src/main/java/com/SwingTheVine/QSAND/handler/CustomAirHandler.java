@@ -1,9 +1,11 @@
 package com.SwingTheVine.QSAND.handler;
 
+import com.SwingTheVine.QSAND.init.QSAND_Blocks;
 import com.SwingTheVine.QSAND.init.QSAND_Items;
 import com.SwingTheVine.QSAND.items.ItemLongStick;
 import com.SwingTheVine.QSAND.manager.QuicksandManager;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.entity.Entity;
@@ -148,34 +150,56 @@ public class CustomAirHandler {
         
         if (event.entityLiving.worldObj.isRemote) {
         	
-            final int gma = QuicksandManager.getMuddyAir((Entity)event.entityLiving);
+            final int gma = QuicksandManager.getCustomDrownAir((Entity)event.entityLiving);
             
             if (gma < event.entityLiving.getAir()) {
                 event.entityLiving.setAir(gma);
             }
         } else if (event.entityLiving instanceof EntityLivingBase) {
-            final int gma = QuicksandManager.getMuddyAir((Entity)event.entityLiving);
-            for (int i = 0; i < EntityRope.quicksandIDS.length; ++i) {
-                if (i != 6 && i != 7 && i != 13 && i != 15 && i != 21) {
-                    if (i == 22) {
-                        if (QuicksandManager.isEntityInsideOfBlockM((Entity)event.entityLiving, EntityRope.quicksandIDS[i])) {
-                            if (gma > -1) {
-                            	QuicksandManager.addMuddyAir((Entity)event.entityLiving, -1);
-                            }
-                            return;
-                        }
-                    }
-                    else if (QuicksandManager.isEntityInsideOfBlock((Entity)event.entityLiving, EntityRope.quicksandIDS[i])) {
-                        if (gma > -1) {
-                        	QuicksandManager.addMuddyAir((Entity)event.entityLiving, -1);
-                        }
-                        return;
-                    }
-                }
+        	
+            final int gma = QuicksandManager.getCustomDrownAir((Entity)event.entityLiving);
+            
+            // Use this in place of QSAND_Blocks.blockList to remove the magic numbers
+            final Block[] failIfEntityInside = {
+            		QSAND_Blocks.mireLiquid,
+            		QSAND_Blocks.mireLiquidStable,
+            		QSAND_Blocks.larvae,
+            		QSAND_Blocks.meatHole,
+            		QSAND_Blocks.voidHole};
+            
+            for (int currentBlockIndex = 0; currentBlockIndex < failIfEntityInside.length; currentBlockIndex++) {
+            	
+            	// If the entity is inside any of the blocks on the fail list...
+            	if ((QuicksandManager.isEntityInsideOfBlock((Entity)event.entityLiving, failIfEntityInside[currentBlockIndex]))) {
+            		return;
+            	}
             }
+            
+            for (int currentBlockIndex = 0; currentBlockIndex < QSAND_Blocks.blockList.length; currentBlockIndex++) {
+            	
+            	// If the entity is inside moss
+        		if (QuicksandManager.isEntityInsideOfBlockM((Entity)event.entityLiving, QSAND_Blocks.moss)) {
+        			
+        			if (gma > -1) {
+        				QuicksandManager.addCustomDrownAir((Entity)event.entityLiving, -1);
+        			}
+        			
+        			return;
+        		} else if (QuicksandManager.isEntityInsideOfBlock((Entity)event.entityLiving, QSAND_Blocks.blockList[currentBlockIndex])) {
+        			
+        			if (gma > -1) {
+        				QuicksandManager.addCustomDrownAir((Entity)event.entityLiving, -1);
+        			}
+        			
+        			return;
+        		}
+            }
+            
             if (gma < 300) {
-            	QuicksandManager.addMuddyAir((Entity)event.entityLiving, Math.min(5, 300 - gma));
+            	QuicksandManager.addCustomDrownAir((Entity)event.entityLiving, Math.min(5, 300 - gma));
             }
         }
     }
+    
+    
 }

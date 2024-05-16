@@ -22,7 +22,28 @@ public class QSAND_Blocks {
 	public static Block quicksandJungle;
 	public static Block moss;
 	public static Block mire;
+	public static Block mireLiquid;
+	public static Block mireLiquidStable;
+	public static Block meat;
+	public static Block meatHole;
+	public static Block voidHole;
 	public static Block swallowingFlesh;
+	public static Block larvae;
+	public static Block[] blockList = {
+			test_block,
+			mud,
+			quicksand,
+			quicksandSoft,
+			quicksandJungle,
+			moss,
+			mire,
+			mireLiquid,
+			mireLiquidStable,
+			meat,
+			meatHole,
+			voidHole,
+			swallowingFlesh,
+			larvae};
 	// Test World Seed: 1637864495647481288
 	// Entities fall at a rate of 0.076125 blocks
 	
