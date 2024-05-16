@@ -1,6 +1,7 @@
 package com.SwingTheVine.QSAND.proxy;
 
 import com.SwingTheVine.QSAND.client.entity.BubbleRender;
+import com.SwingTheVine.QSAND.client.entity.SlimeSandRender;
 import com.SwingTheVine.QSAND.init.QSAND_Blocks;
 import com.SwingTheVine.QSAND.init.QSAND_Items;
 
@@ -24,6 +25,7 @@ public class ClientProxy extends CommonProxy {
 	public void registerEntityRenders() {
 		System.out.println("Register Entity Renders");
 		RenderingRegistry.registerEntityRenderingHandler((Class)BubbleRender.class, (IRenderFactory)BubbleRender.factory);
+		RenderingRegistry.registerEntityRenderingHandler((Class)SlimeSandRender.class, (IRenderFactory)SlimeSandRender.factory);
 	}
 	
 	// Registers the models for the items

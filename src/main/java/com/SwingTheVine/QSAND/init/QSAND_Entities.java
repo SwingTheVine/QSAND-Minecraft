@@ -2,6 +2,7 @@ package com.SwingTheVine.QSAND.init;
 
 import com.SwingTheVine.QSAND.QSAND;
 import com.SwingTheVine.QSAND.entity.Bubble;
+import com.SwingTheVine.QSAND.entity.SlimeSand;
 import com.SwingTheVine.QSAND.manager.ColorManager;
 
 import net.minecraft.entity.Entity;
@@ -14,6 +15,7 @@ public class QSAND_Entities {
 	
 	public static void registerEntities() {
 		registerEntity(Bubble.class, "bubble", 64, 20, true); // Registers the bubble entity
+		registerEntity(SlimeSand.class, "slime_sand", 64, 20, true); // Registers the sand slime entity
 	}
 	
 	/**
@@ -32,6 +34,7 @@ public class QSAND_Entities {
 	// Generates a spawn egg for the entity
 	public static void generateSpawnEgg() {
 		EntityRegistry.registerEgg(Bubble.class, ColorManager.colorHexToLong("2450A4"), ColorManager.colorHexToLong("2450A4"));
+		EntityRegistry.registerEgg(SlimeSand.class, ColorManager.colorHexToLong("E28743"), ColorManager.colorHexToLong("873E23"));
 	}
 
 	/**
