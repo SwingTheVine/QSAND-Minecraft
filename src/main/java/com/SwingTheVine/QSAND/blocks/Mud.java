@@ -680,7 +680,8 @@ public class Mud extends Block implements IMetaBlockName {
                     triggeringEntity.motionY -= 0.01; // Modify the entity's velocity by -0.01
                 }
                 
-                // TODO: anti hold jump script
+                // Prevents the entity from continuously jumping
+                QuicksandManager.antiHoldJumpScript(triggeringEntity, triggEntitySunk_kof1, true);
             } else {
             	
             	// If the entity has sunk less than 0.45 blocks into this one, AND the entity is truly sinking...

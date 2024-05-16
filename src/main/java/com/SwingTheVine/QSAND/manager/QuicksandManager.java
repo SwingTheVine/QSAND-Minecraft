@@ -3,14 +3,27 @@ package com.SwingTheVine.QSAND.manager;
 import com.SwingTheVine.QSAND.entity.Bubble;
 import com.SwingTheVine.QSAND.handler.ConfigHandler;
 import com.SwingTheVine.QSAND.init.QSAND_Blocks;
+import com.SwingTheVine.QSAND.init.QSAND_Items;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemFood;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.BlockFluidClassic;
 
 public class QuicksandManager {
@@ -130,6 +143,188 @@ public class QuicksandManager {
 		return world.getTotalWorldTime() % Math.floor(Math.max(10.0 * Math.pow(velocityY, 2.0), 1.0)) == 0.0 && world.rand.nextInt(5) == 0;
 	}
 	
+	// Keeps players from holding the jump button to escape
+	public static void antiHoldJumpScript(final Entity entity, final double triggEntitySunk, final boolean isStuck) {
+		
+		// If the entity is not a player...
+		if (!(entity instanceof EntityPlayer)) {
+			return; // The entity can't hold the jump button. Don't run this script
+		}
+		
+		// If the entity is on a server...
+		if (entity.worldObj.isRemote) {
+			double weight = 0.0; // Weight of the player
+			double weightArmor = 0.0; // Weight of the armor on the player
+			double weightInv = 0.0; // Weight of the player's inventory
+			
+			// If the player entity is the current player...
+			if((EntityPlayer)entity == Minecraft.getMinecraft().thePlayer) {
+				
+				// ...AND we are weighing armor...
+				if (ConfigHandler.useCustomArmorCalc) {
+					double damageReduction = 0.0; // How much damage is reduced by this piece of armor
+					
+					// For every armor slot...
+					for (int armorSlot = 0; armorSlot <= 3; armorSlot++) {
+						
+						// If the player's boot slot is NOT null, AND the player's boot slot contains an ItemArmor item...
+						if (((EntityPlayer)entity).getCurrentArmor(armorSlot) != null && ((EntityPlayer)entity).getCurrentArmor(armorSlot).getItem() instanceof ItemArmor) {
+							
+							// Finds how much damage the boots reduce
+							damageReduction = ((ItemArmor)((EntityPlayer)entity).getCurrentArmor(armorSlot).getItem()).getArmorMaterial().getDamageReductionAmount(3 - armorSlot);
+							
+							// Adds the calculated weight of this piece of armor into the total armor weight variable
+							weightArmor += Math.signum(Math.max(((-0.4 * armorSlot) + 1.3) - triggEntitySunk, 0.0)) * (damageReduction + 10.0 / Math.max(damageReduction, 1.0)) / 2.0 + Math.pow(damageReduction, 2.0);
+						}
+					}
+				}
+				
+				// If we are weighing the inventory...
+				if (ConfigHandler.useCustomInvCalc) {
+					// TODO: Sever inventory weight
+					
+					// If the remainder of the total world time divided by 32 equals 0...
+					if (entity.worldObj.getTotalWorldTime() % 32L == 0L) {
+						weightInv = 0.0; // Reset the weight of the inventory
+						
+						// For every inventory slot...
+						for (int invSlot = 0; invSlot <= 35; invSlot++) {
+							
+							// If the inventory slot is NOT null...
+							if (((EntityPlayer)entity).inventory.mainInventory[invSlot] != null) {
+								final ItemStack slotItem = ((EntityPlayer)entity).inventory.mainInventory[invSlot]; // The item in the slot
+								
+								// If the item in the slot is a block...
+								if (slotItem.getItem() instanceof ItemBlock) {
+									final Block slotBlock = Block.getBlockFromItem(slotItem.getItem()); // The block in the slot
+									
+									// If the block is NOT null...
+									if (slotBlock != null) {
+										
+										// ...AND the block has a tile entity...
+										if (slotBlock.hasTileEntity((IBlockState)slotBlock.getBlockState())) {
+											weightInv += 10 * slotItem.stackSize; // Add the number of items in that slot times 10 as the weight
+										} else {
+											final Material slotBlockMaterial = slotBlock.getMaterial(); // Get the material of the block in the slot
+											weightInv += (2.5 + (slotBlockMaterial.getCanBurn() ? 0 : 1) * 2.5 + (slotBlock.canDropFromExplosion((Explosion)null) ? 1 : 0) * slotBlock.getExplosionResistance((Entity)null) / 2.0) / ((slotBlock.isOpaqueCube() ? 0 : 1) + 1.0) * (((slotBlockMaterial.getMaterialMobility() == 2) ? 1 : 0) + 1.0) / 2.0 * slotItem.stackSize;
+										}
+									} else {
+										weightInv += 0.5 * slotItem.stackSize; // Adds the number of items in that slot times 0.5 as the weight
+									}
+								} else if (slotItem.getItem() instanceof ItemArmor) {
+									// Else if the item in the slot is a piece of armor...
+									
+									// Adds the weight of the damage the armor to the 2nd power
+									weightInv += Math.pow(((ItemArmor)slotItem.getItem()).getArmorMaterial().getDamageReductionAmount(((ItemArmor)slotItem.getItem()).armorType), 2.0) * slotItem.stackSize;
+								} else if (slotItem.getItem().isDamageable()) {
+									// Else if the item can be damaged (i.e. sword)
+									
+									weightInv += 5 * slotItem.stackSize; // Adds the weight of the number of items in the slot times 5
+								} else if (slotItem.getItem().getItemStackLimit(slotItem) == 1) {
+									// Else if the item can NOT be stacked (i.e. bow)
+									
+									weightInv += 2.5 * slotItem.stackSize; // Adds the weight of the number of items in the slot times 2.5
+								} else {
+									// Else...
+									
+									weightInv += 0.5 * slotItem.stackSize; // Adds the weight of the number of items in the slot times 0.5
+								}
+							}
+						}
+						
+						// TODO: Server weight equals weightInv
+					}
+				}
+				
+				// Calculates the total weight from the inventoy and armor weight
+				weight = Math.max(-250.0 + weightInv / 2.5 * (1.0 + Math.signum(Math.max(0.75 - triggEntitySunk, 0.0)) * 1.5), 0.0) + weightArmor;
+				
+				// Makes the entity fall/sink faster
+				entity.motionY -= Math.min(weight, 2000.0 * Math.max((triggEntitySunk - 0.25) * 5.0, 1.0)) / 300000.0;
+			}
+		}
+		
+		// If the entity is marked as stuck, AND the user wants to use the custom boot calculations...
+		if (isStuck && ConfigHandler.useCustomBootCalc) {
+			boolean hasBoots = false; // Is the entity wearing boots?
+			boolean bootsFloat = false; // Do the boots (the entity is wearing) float?
+			
+			// If the entity's boot slot is NOT null...
+			if (((EntityPlayer)entity).getCurrentArmor(0) != null) {
+				
+				// ...AND the player entity's boot slot has Wading Boots...
+				if (((EntityPlayer)entity).getCurrentArmor(0).getItem() == QSAND_Items.bootsWading) {
+					bootsFloat = true; // Then the boots can float
+				}
+				
+				hasBoots = true; // The entity is wearing boots
+			}
+			
+			// If the entity has sunk less than 1.3 blocks into this one...
+			if (triggEntitySunk < 1.3) {
+				bootsFloat = false; // Then the boots don't float
+			}
+			
+			// If the entity is wearing boots, AND the entity has sunk less than 1.475 blocks into this one, AND the boot don't float...
+			if (hasBoots && triggEntitySunk < 1.475 && !bootsFloat) {
+				final boolean wasOnGround = entity.onGround; // Was the entity on the ground previously?
+				
+				entity.onGround = (false | entity.isCollidedVertically); // If the entity is colliding with something on the Y axis, then the entity is marked as on the ground
+				
+				// If the remainder of the total world time divided by an equation equals 0...
+				if (entity.worldObj.getTotalWorldTime() % Math.max(1.0 + Math.floor(20.0 / Math.max(triggEntitySunk * 5.0, 0.01)), 1.0) == 0.0) {
+					entity.onGround = wasOnGround; // Reverts any changes made
+				}
+				
+				// If the world is hosted on a server...
+				if (entity.worldObj.isRemote) {
+					
+					// Retrieves and stores the custom player properties for managing the stuck effect of quicksand
+					final PlayerStuckEffectManager playerProperties = PlayerStuckEffectManager.get((EntityLivingBase)entity);
+					
+					int stuckLevel = -1; // Creates a new variable to hold the new stuck level to assign
+					
+					// If the player has custom player properties for managing the stuck effect...
+					if (playerProperties != null) {
+						stuckLevel = playerProperties.getLevel(); // Gets the stored stuck level of the stuck effect
+					}
+					
+					// Sets a new stuck level into the stuck effect of the player
+					setStuckEffect((EntityLivingBase)entity, Math.max(Math.max(Math.min((int)Math.floor(Math.pow(10.0 * Math.max(1.5 - triggEntitySunk, 0.0), 2.0)) + stuckLevel, 255), 5), stuckLevel));
+				}
+			}
+		}
+		
+		// If the player is holding down the jump key...
+		if (isJumpKeyDown((EntityPlayer)entity)) {
+			entity.onGround = false; // Mark the player as not on the ground
+		}
+	}
+	
+	// Is the player pressing down the jump key?
+	public static boolean isJumpKeyDown(final EntityPlayer player) {
+		
+		// If the code is executing server-side, AND the current player is the player...
+		if (player.worldObj.isRemote && Minecraft.getMinecraft().thePlayer == player) {
+			final GameSettings gameSettings = Minecraft.getMinecraft().gameSettings; // The game settings of the player
+			return GameSettings.isKeyDown(Minecraft.getMinecraft().gameSettings.keyBindJump); // Returns true if the player is pressing down the key binded to their jump key
+		}
+		
+		return false; // In all other cases, return false
+	}
+	
+	// Is the player pressing down the crouch key?
+	public static boolean isCrouchKeyDown(final EntityPlayer player) {
+		
+		// If the code is executing server-side, AND the current player is the player...
+		if (player.worldObj.isRemote && Minecraft.getMinecraft().thePlayer == player) {
+			final GameSettings gameSettings = Minecraft.getMinecraft().gameSettings; // The game settings of the player
+			return GameSettings.isKeyDown(Minecraft.getMinecraft().gameSettings.keyBindSneak); // Returns true if the player is pressing down the key binded to their sneak key
+		}
+		
+		return false; // In all other cases, return false
+	}
+	
 	// Returns the height of the block
 	public static double surfaceY(final Block block) {
 		
@@ -145,6 +340,79 @@ public class QuicksandManager {
         
         return 1.0;
     }
+	
+	// Handler for mud tentacles
+	public static void handleMudTentacles(final World world, final Entity entity, final int blockPosX, final int blockPosY, final int blockPosZ, final Block block, final int metadata) {
+		
+		// If the user has enabled mud tentacles,
+		//    AND the code is NOT executing server-side,
+		//    AND the entity is NOT null,
+		//    AND the entity is an item,
+		//    AND the item is food,
+		//    AND the food item has NOT collided on the y axis,
+		//    AND wolves like this food item,
+		//    AND the remainder of the total world time divided by 64 equals 0,
+		//    AND the next integer in the world's random number generator sequence equals 0 (1/5 chance),
+		//    AND the block can spawn mud tentacles...
+		if(ConfigHandler.useMudTentacles
+				&& !world.isRemote
+				&& entity != null
+				&& entity instanceof EntityItem
+				&& ((EntityItem)entity).getEntityItem().getItem() instanceof ItemFood
+				&& !entity.isCollidedVertically
+				&& ((ItemFood)((EntityItem)entity).getEntityItem().getItem()).isWolfsFavoriteMeat()
+				&& world.getTotalWorldTime() % 64L == 0L
+				&& world.rand.nextInt(5) == 0
+				&& canBeMudTentacles(world, blockPosX, blockPosY, blockPosZ, block, metadata)) {
+			// Needless to say, this is a very rare occurrence
+			
+			entity.attackEntityFrom(DamageSource.generic, 1000.0f); // Deals 1000 HP of damage to the entity
+		}
+	}
+	
+	public static boolean canBeMudTentacles(final World world, final int blockPosX, final int blockPosY, final int blockPosZ, final Block block, final int metadata) {
+		
+		// If the user has enabled mud tentacles, AND the code is NOT executing server-side...
+		if (ConfigHandler.useMudTentacles && !world.isRemote) {
+			
+			// ...AND the world's dimension ID does NOT equal 0...
+			if (world.provider.getDimensionId() != 0) {
+				return false; // Only spawn mud tentacles in the Overworld
+			}
+			
+			// Creates a block position object that holds the position of this block
+			BlockPos blockPos = new BlockPos(blockPosX, blockPosY, blockPosZ);
+			
+			// If the block above this block is NOT the same as this block, AND all other adjacent blocks are the same as this block
+			if (world.getBlockState(blockPos.up(1)) != block
+					&& world.getBlockState(blockPos.down(1)) == block
+					&& world.getBlockState(blockPos.add(-1, 0, 0)) == block
+					&& world.getBlockState(blockPos.add(1, 0, 0)) == block
+					&& world.getBlockState(blockPos.add(0, 0, -1)) == block
+					&& world.getBlockState(blockPos.add(0, 0, 1)) == block) {
+				
+				// Obtains the current chunk
+				final Chunk currentChunk = world.getChunkFromBlockCoords(blockPos);
+				
+				int spawnChance = 10; // Base spawn chance of mud tentacles being able to spawn. Smaller equals greater spawn chance
+				
+				if (block == QSAND_Blocks.quicksandJungle) {
+					spawnChance = 10; // 1 in 10 spawn chance
+				} else if (block == QSAND_Blocks.mud) {
+					spawnChance = 40; // 1 in 40 spawn chance
+				} else {
+					spawnChance = 20; // 1 in 20 spawn chance
+				}
+				
+				// TODO: Custom World Generation equation
+				if (currentChunk.getRandomWithSeed(987654321L).nextInt(spawnChance) == 0) {
+					return true; // Mud tentacles can spawn in this block
+				}
+			}
+		}
+		
+		return false; // Otherwise, mud tentacles can NOT spawn in this block
+	}
 	
 	// Spawns a bubble on a delay
 	public static void spawnBubble(final World world, final double blockPosX, final double blockPosY, final double blockPosZ, final Block block, final int metadata, final float size, final int time) {
@@ -251,7 +519,7 @@ public class QuicksandManager {
         if (world.getTotalWorldTime() % 48L == 0L && world.rand.nextInt(2) == 0) {
         	
         	// Spawns between 4 and 9 bubbles (4 + 0-5)
-            for (int i = 0; i < 4 + world.rand.nextInt(6); ++i) {
+            for (int i = 0; i < 4 + world.rand.nextInt(6); i++) {
             	
             	// Spawns in a random area within 0.5 blocks of the entity
                 final double bubblePosX = entity.posX + world.rand.nextFloat() * 1.0f - 0.5;

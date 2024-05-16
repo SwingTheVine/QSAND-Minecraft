@@ -18,6 +18,7 @@ public class QSAND_Blocks {
 	public static Block test_block;
 	public static Block mud;
 	public static Block quicksand;
+	public static Block quicksandJungle;
 	public static Block moss;
 	public static Block mire;
 	// Test World Seed: 1637864495647481288
