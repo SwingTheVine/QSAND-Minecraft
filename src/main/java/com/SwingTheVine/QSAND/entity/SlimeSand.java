@@ -16,7 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
@@ -34,6 +33,8 @@ public class SlimeSand extends EntityLiving implements IMob {
 	public float antiSit;
 	private int slimeJumpDelay;
 	public static final String textureLocation = ":textures/entities/SlimeSand.png"; // The location of the texture used for the bubble
+	public int datawatcherDepthID = 13;
+	public int datawatcherSizeID = 14;
 	
 	public SlimeSand(World world) {
 		super(world);
@@ -49,8 +50,74 @@ public class SlimeSand extends EntityLiving implements IMob {
 	
 	protected void entityInit() {
         super.entityInit();
-        this.dataWatcher.addObject(16, (Object)new Byte((byte)1));
-        this.dataWatcher.addObject(15, (Object)0.0f);
+        
+        // Creates an array to hold the IDs of all datawatcher slots
+        boolean[] datawatcherIDExists = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
+        
+        // For every slot, it checks if a datawatcher already  exists in that slot
+        for (int i = 0; i < this.dataWatcher.getAllWatched().size(); i++) {
+        	// If it does, it updates that slot in the ID array with "true"
+        	
+        	datawatcherIDExists[this.dataWatcher.getAllWatched().get(i).getDataValueId()] = true;
+        }
+        
+        // Finds the next available datawatcher slot and creates a new datawatcher there
+        for (int i = 15; i >= 0; i--) {
+        	
+        	// If no datawatcher exists in that slot...
+        	if (!datawatcherIDExists[i]) {
+        		
+        		datawatcherSizeID = i; // Change the Size ID to that slot ID
+        		datawatcherIDExists[i] = true; // Change the slot ID to "true"
+        		
+        		// Add a new datawatcher in that slot
+        		this.dataWatcher.addObject(datawatcherSizeID, (Object)new Byte((byte)1));
+        		System.out.println("Size datawatcher was created on ID slot " + i + ".");
+        		break; // Stop looking for available datawatcher slots
+        	} else if (i == 0) {
+        		// Else if it has run out of slot options...
+        		
+        		datawatcherSizeID = i; // Change the Size ID to that slot ID
+        		datawatcherIDExists[i] = true; // Change the slot ID to "true"
+        		
+        		// Print out an error message
+        		System.out.println("Entity has run out of available positions to create a new datawatcher! All 16 are full.");
+        		
+        		// Crash
+        		this.dataWatcher.addObject(datawatcherSizeID, (Object)new Byte((byte)1));
+        		break;
+        	}
+        }
+        
+        // Finds the next available datawatcher slot and creates a new datawatcher there
+        for (int i = 15; i >= 0; i--) {
+        	
+        	// If no datawatcher exists in that slot...
+        	if (!datawatcherIDExists[i]) {
+        		
+        		datawatcherDepthID = i; // Change the Size ID to that slot ID
+        		datawatcherIDExists[i] = true; // Change the slot ID to "true"
+        		
+        		// Add a new datawatcher in that slot
+        		this.dataWatcher.addObject(datawatcherDepthID, (Object)0.0f);
+        		System.out.println("Depth datawatcher was created on ID slot " + i + ".");
+        		break;// Stop looking for available datawatcher slots
+        	} else if (i == 0) {
+        		// Else if it has run out of slot options...
+        		
+        		datawatcherDepthID = i; // Change the Size ID to that slot ID
+        		datawatcherIDExists[i] = true; // Change the slot ID to "true"
+        		
+        		// Print out an error message
+        		System.out.println("Entity has run out of available positions to create a new datawatcher! All 16 are full.");
+        		
+        		// Crash
+        		this.dataWatcher.addObject(datawatcherDepthID, (Object)0.0f);
+        		break;
+        	}
+        }
+        
+        System.out.println(datawatcherSizeID + ", " + datawatcherDepthID);
     }
     
     public void writeEntityToNBT(final NBTTagCompound nbtt) {
@@ -69,16 +136,16 @@ public class SlimeSand extends EntityLiving implements IMob {
     
     protected void syncronizeDepth() {
         if (!this.worldObj.isRemote) {
-            this.dataWatcher.updateObject(15, (Object)this.tDeepFactor);
+            this.dataWatcher.updateObject(datawatcherDepthID, (Object)this.tDeepFactor);
         }
         else {
-            this.tDeepFactor = this.dataWatcher.getWatchableObjectFloat(15);
+            this.tDeepFactor = this.dataWatcher.getWatchableObjectFloat(datawatcherDepthID);
         }
     }
     
     protected void setSlimeSize(final int size) {
-        this.dataWatcher.updateObject(16, (Object)new Byte((byte)size));
-        this.dataWatcher.updateObject(15, (Object)this.tDeepFactor);
+        this.dataWatcher.updateObject(datawatcherSizeID, (Object)new Byte((byte)size));
+        this.dataWatcher.updateObject(datawatcherDepthID, (Object)this.tDeepFactor);
         this.setSize(0.5f * size, 0.5f * size);
         this.setPosition(this.posX, this.posY, this.posZ);
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue((double)this.getSpawnHp());
@@ -146,7 +213,7 @@ public class SlimeSand extends EntityLiving implements IMob {
                 final float var5 = this.rand.nextFloat() * 0.5f + 0.5f;
                 final float var6 = MathHelper.sin(var4) * 2.0f * 0.5f * var5;
                 final float var7 = MathHelper.cos(var4) * 2.0f * 0.5f * var5;
-                this.worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX + var6, this.getCollisionBoundingBox().minY + 0.5, this.posZ + var7, 0.0, 0.0, 0.0);
+                //this.worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX + var6, this.getEntityBoundingBox().minY + 0.5, this.posZ + var7, 0.0, 0.0, 0.0);
             }
         }
         
@@ -164,7 +231,7 @@ public class SlimeSand extends EntityLiving implements IMob {
                 final float var12 = this.rand.nextFloat() * 0.5f + 0.5f;
                 final float var13 = MathHelper.sin(var11) * var9 * 0.5f * var12;
                 final float var14 = MathHelper.cos(var11) * var9 * 0.5f * var12;
-                this.worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX + var13, this.getCollisionBoundingBox().minY, this.posZ + var14, 0.0, 0.0, 0.0);
+                //this.worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX + var13, this.getEntityBoundingBox().minY, this.posZ + var14, 0.0, 0.0, 0.0);
             }
             
             if (this.makesSoundOnLand()) {

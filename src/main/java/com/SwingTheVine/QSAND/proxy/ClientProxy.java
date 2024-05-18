@@ -2,9 +2,12 @@ package com.SwingTheVine.QSAND.proxy;
 
 import com.SwingTheVine.QSAND.client.entity.BubbleRender;
 import com.SwingTheVine.QSAND.client.entity.SlimeSandRender;
+import com.SwingTheVine.QSAND.entity.SlimeSand;
 import com.SwingTheVine.QSAND.init.QSAND_Blocks;
 import com.SwingTheVine.QSAND.init.QSAND_Items;
 
+import assets.qsand.models.entity.ModelSlimeVoid;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -25,7 +28,8 @@ public class ClientProxy extends CommonProxy {
 	public void registerEntityRenders() {
 		System.out.println("Register Entity Renders");
 		RenderingRegistry.registerEntityRenderingHandler((Class)BubbleRender.class, (IRenderFactory)BubbleRender.factory);
-		RenderingRegistry.registerEntityRenderingHandler((Class)SlimeSandRender.class, (IRenderFactory)SlimeSandRender.factory);
+		//RenderingRegistry.registerEntityRenderingHandler((Class)SlimeSandRender.class, (IRenderFactory)SlimeSandRender.factory);
+		RenderingRegistry.registerEntityRenderingHandler(SlimeSand.class, new SlimeSandRender(Minecraft.getMinecraft().getRenderManager(), new ModelSlimeVoid(0), 0.5F));
 	}
 	
 	// Registers the models for the items

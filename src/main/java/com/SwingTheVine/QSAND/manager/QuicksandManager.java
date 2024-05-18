@@ -30,11 +30,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.event.entity.EntityEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fluids.BlockFluidClassic;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class QuicksandManager {
 	
@@ -702,6 +698,8 @@ public class QuicksandManager {
 		// Tries to run this code
         try {
         	
+        	System.out.println(entity.getDataWatcher().getWatchableObjectInt(ConfigHandler.customDrownAirPlayersDW));
+        	
         	// If the entity is a player...
             if (entity instanceof EntityPlayer) {
             	
@@ -826,50 +824,4 @@ public class QuicksandManager {
 			PlayerStuckEffectManager.get(entity).setStuckLevel(level);
 		}
 	}
-	
-	@SubscribeEvent
-    public void onEntityConstructing(final EntityEvent.EntityConstructing event) {
-        if (event.entity instanceof EntityPlayer && PlayerMudManager.get((EntityPlayer)event.entity) == null) {
-        	PlayerMudManager.register((EntityPlayer)event.entity);
-        }
-    }
-    
-    @SubscribeEvent
-    public void onLivingDeathEvent(final LivingDeathEvent event) {
-        if (!event.entityLiving.worldObj.isRemote && event.entityLiving instanceof EntityPlayer) {
-            final PlayerMudManager props = PlayerMudManager.get((EntityPlayer)event.entityLiving);
-            props.setMudLevel(0);
-            props.setMudType(-1);
-            props.setMudTime(0);
-        }
-    }
-    
-    @SubscribeEvent
-    public void onLivingUpdateEvent(final LivingEvent.LivingUpdateEvent event) {
-        if (!event.entityLiving.worldObj.isRemote && event.entityLiving instanceof EntityPlayer) {
-            final PlayerMudManager props = PlayerMudManager.get((EntityPlayer)event.entityLiving);
-            final int ml = props.getMudLevel();
-            final int mtp = props.getMudType();
-            final int mt = props.getMudTime();
-            if (mtp >= 0 && mt > 0) {
-                if (event.entityLiving.isWet()) {
-                    if (!isEntityInsideOfBlockL((Entity)event.entityLiving, QSAND_Blocks.mireLiquid) && !isEntityInsideOfBlockL((Entity)event.entityLiving, QSAND_Blocks.mireLiquidStable) && props.getMudTime() > 0) {
-                        props.addMudTime(-5 - props.getMudTime() / 100);
-                        props.setMudTime(Math.max(props.getMudTime(), 0));
-                        if (event.entityLiving.worldObj.getTotalWorldTime() % 16L == 0L && ml > 5) {
-                            props.setMudLevel(ml - 1);
-                        }
-                    }
-                }
-                else {
-                    if (event.entityLiving.worldObj.getTotalWorldTime() % 1024L == 0L && ml > 5 && mt < 1000) {
-                        props.setMudLevel(ml - 1);
-                    }
-                    if (event.entityLiving.worldObj.getTotalWorldTime() % 2L == 0L && props.getMudTime() > getLastMudType(mtp)) {
-                        props.addMudTime(-1);
-                    }
-                }
-            }
-        }
-    }
 }

@@ -3,6 +3,7 @@ package com.SwingTheVine.QSAND.blocks;
 import java.util.List;
 
 import com.SwingTheVine.QSAND.entity.SlimeMud;
+import com.SwingTheVine.QSAND.handler.BeaconHandler;
 import com.SwingTheVine.QSAND.handler.ConfigHandler;
 import com.SwingTheVine.QSAND.init.QSAND_Items;
 import com.SwingTheVine.QSAND.manager.PlayerMudManager;
@@ -37,6 +38,7 @@ public class Mud extends Block implements IMetaBlockName {
 	private static final boolean useOneTexture = true; // Should all metadata variants use the same texture?
 	private static final float[] sinkTypes = {0.35F, 0.50F, 0.75F, 1.00F}; // The maximum sink level for each metadata variant
 	public static final PropertyInteger SINK = PropertyInteger.create("sink", 0, Integer.valueOf(types.length-1)); // Creates a metadata value for every "types" metadata value
+	private BeaconHandler beacon = new BeaconHandler(false); // Constructs a beacon handler. Enabled if "true" passed in
 	
 	// Constructor
 	public Mud(Material material) {
@@ -190,7 +192,7 @@ public class Mud extends Block implements IMetaBlockName {
 				// ... AND if the entity is NOT a player, AND the entity has sunk less than 1.25 blocks...
 				if (!(triggeringEntity instanceof EntityPlayer) && triggEntitySunk_kof1 < 1.25) {
 					
-					System.out.println("MotionY Beacon 1");
+					beacon.logBeacon("MotionY", "1");
 					triggeringEntity.motionY = 0.0; // Set the entity's velocity to 0
 					triggeringEntity.motionY += 0.08 + Math.min((1.25 - triggEntitySunk_kof1) / 100.0, 0.005); // Add Y velocity to the entity
 	                // The upwards motion of the entity reduces the further into the block the entity is sunk:
@@ -356,10 +358,10 @@ public class Mud extends Block implements IMetaBlockName {
             // If the entity's velocity is greater than -0.1...
             if (triggeringEntity.motionY > -0.1) {
                 // This only happens when the entity is NOT moving downwards very fast
-            	System.out.println("MotionY Beacon 2.1: " + triggeringEntity.motionY);
+            	beacon.logBeacon("MotionY", "2.1", triggeringEntity.motionY);
             	triggeringEntity.motionY = 0.0; // Make the entity stop moving
             } else {
-            	System.out.println("MotionY Beacon 2.2: " + triggeringEntity.motionY);
+            	beacon.logBeacon("MotionY", "2.2", triggeringEntity.motionY);
             	triggeringEntity.motionY /= 1.5; // Slow the downwards motion of the entity by 50%
             }
             
@@ -386,7 +388,7 @@ public class Mud extends Block implements IMetaBlockName {
                 		
                 		// If the entity is NOT in water, AND the entity has sunk less than 1.3 blocks...
                 		if (!triggeringEntity.isInWater() && triggEntitySunk_kof1 < 1.3) {
-                			System.out.println("MotionY Beacon 5");
+                			beacon.logBeacon("MotionY", "5");
                 			// Dramatically increases the rate the entity sinks right before it is submerged.
                 			// Adds an upwards velocity to combat the effect of gravity.
                 			// 0 to 1 blocks sunk has a velocity of 0.025 added.
@@ -446,9 +448,9 @@ public class Mud extends Block implements IMetaBlockName {
 	                		// Basically, "thicknessLower" is the maximum value, and the further the player has sunk, the closer it approaches 0.
 	                		// After a while (happens sooner the higher the punishment value is), the rate it approaches 0 changes and becomes faster
 	                		// https://www.desmos.com/calculator/klpmbgz7je
-	                		System.out.println("MotionY Beacon 6");
+	                		beacon.logBeacon("MotionY", "6");
 	                		triggeringEntity.motionY += thicknessLower / Math.max((movementPunish_mofKofDiv - 1.0) * (Math.max(triggEntitySunkMod_kof1m - 0.5, 0.75) * 1.6), 1.0) / Math.pow(Math.max(triggEntitySunkMod_kof1m / 1.25, 1.0), 2.0);
-	                		System.out.println("Equation Beacon 2: " + thicknessLower / Math.max((movementPunish_mofKofDiv - 1.0) * (Math.max(triggEntitySunkMod_kof1m - 0.5, 0.75) * 1.6), 1.0) / Math.pow(Math.max(triggEntitySunkMod_kof1m / 1.25, 1.0), 2.0));
+	                		beacon.logBeacon("Equation", "2", thicknessLower / Math.max((movementPunish_mofKofDiv - 1.0) * (Math.max(triggEntitySunkMod_kof1m - 0.5, 0.75) * 1.6), 1.0) / Math.pow(Math.max(triggEntitySunkMod_kof1m / 1.25, 1.0), 2.0));
 	                		
 	                		triggeringEntity.onGround = false; // The entity is marked as NOT on the ground
 	                		triggeringEntity.fallDistance = 0.0f; // The entity takes no fall damage
@@ -495,8 +497,7 @@ public class Mud extends Block implements IMetaBlockName {
                 		
                 		// EQUATION BEACON 3. 2nd complex
                 		triggeringEntity.motionY += thicknessLower / Math.max((movementPunish_mofKofDiv - 1.0) * (Math.max(triggEntitySunkMod_kof1m - 0.5, 0.75) * 1.6), 1.0) / Math.pow(Math.max(triggEntitySunkMod_kof1m / 1.25, 1.0), 2.0);
-                		System.out.println("Equation Beacon 3: " + thicknessLower / Math.max((movementPunish_mofKofDiv - 1.0) * (Math.max(triggEntitySunkMod_kof1m - 0.5, 0.75) * 1.6), 1.0) / Math.pow(Math.max(triggEntitySunkMod_kof1m / 1.25, 1.0), 2.0));
-                		
+                		beacon.logBeacon("Equation", "3", thicknessLower / Math.max((movementPunish_mofKofDiv - 1.0) * (Math.max(triggEntitySunkMod_kof1m - 0.5, 0.75) * 1.6), 1.0) / Math.pow(Math.max(triggEntitySunkMod_kof1m / 1.25, 1.0), 2.0));
                 		
                 		QuicksandManager.setStuckEffect((EntityLivingBase)triggeringEntity, mr_blackgoo); // Makes the entity stuck
                 		triggeringEntity.fallDistance = 0.0f; // Resets the accumulated fall distance to 0
@@ -520,7 +521,7 @@ public class Mud extends Block implements IMetaBlockName {
                 			// More intense the further they sink.
                 			final double mrs_blackgoo = 1 + mr_blackgoo / 10;
                 			
-                			System.out.println("Set Position Beacon 1: " + triggeringEntity.prevPosX + (triggeringEntity.posX - triggeringEntity.prevPosX) / mrs_blackgoo + ", " + triggeringEntity.prevPosZ + (triggeringEntity.posZ - triggeringEntity.prevPosZ) / mrs_blackgoo);
+                			beacon.logBeacon("Set Position", "1", triggeringEntity.prevPosX + (triggeringEntity.posX - triggeringEntity.prevPosX) / mrs_blackgoo + ", " + triggeringEntity.prevPosZ + (triggeringEntity.posZ - triggeringEntity.prevPosZ) / mrs_blackgoo);
                 			// Sucks the entity back towards where they came from. Only partially though
                 			triggeringEntity.setPosition(triggeringEntity.prevPosX + (triggeringEntity.posX - triggeringEntity.prevPosX) / mrs_blackgoo, triggEntityPosY, triggeringEntity.prevPosZ + (triggeringEntity.posZ - triggeringEntity.prevPosZ) / mrs_blackgoo);
                 		}
@@ -570,7 +571,7 @@ public class Mud extends Block implements IMetaBlockName {
                         	// More intense the further they sink
                         	final double mrs_blackgoo = 1 + mr_blackgoo / 10;
                         	
-                            System.out.println("Set Position Beacon 2: " + triggeringEntity.prevPosX + (triggeringEntity.posX - triggeringEntity.prevPosX) / mrs_blackgoo + ", " + triggeringEntity.prevPosZ + (triggeringEntity.posZ - triggeringEntity.prevPosZ) / mrs_blackgoo);
+                            beacon.logBeacon("Set Position", "2", triggeringEntity.prevPosX + (triggeringEntity.posX - triggeringEntity.prevPosX) / mrs_blackgoo + ", " + triggeringEntity.prevPosZ + (triggeringEntity.posZ - triggeringEntity.prevPosZ) / mrs_blackgoo);
                             // Sucks the entity along the X-Z grid back towards where they came from. Only partially though
                             triggeringEntity.setPosition(triggeringEntity.prevPosX + (triggeringEntity.posX - triggeringEntity.prevPosX) / mrs_blackgoo, triggEntityPosY, triggeringEntity.prevPosZ + (triggeringEntity.posZ - triggeringEntity.prevPosZ) / mrs_blackgoo); // Unknown
 
@@ -602,13 +603,13 @@ public class Mud extends Block implements IMetaBlockName {
 
                                 // If the entity is NOT marked as moving...
                                 if (!triggEntityMoving) {
-                                    System.out.println("MotionY Beacon 8.1");
+                                    beacon.logBeacon("MotionY", "8.1");
                                     // Bumps the entity downwards slightly.
                                     // 0.0725 (plus a modifer) amplified by "thicknessHigher". If thicknessHigher is 1.05, the entity does not sink
                                     triggeringEntity.motionY += (0.0725 + sinkRateMod_mys) * thicknessHigher;
                                 }
                                 else {
-                                    System.out.println("MotionY Beacon 8.2");
+                                    beacon.logBeacon("MotionY", "8.2");
                                     // Bumps the entity downwards slightly.
                                     // 0.0725 (plus a modifier) amplified by "thicknessHigher". If thicknessHigher is 1.05, the entity does not sink
                                     // Then, it is divided by the punishment value plus 0.025
@@ -617,13 +618,13 @@ public class Mud extends Block implements IMetaBlockName {
                                 }
                             } // ...if the entity is NOT marked as moving...
                             else if (!triggEntityMoving) {
-                            	System.out.println("MotionY Beacon 9");
+                            	beacon.logBeacon("MotionY", "9");
                             	// Moves the entity downwards slightly.
                                 // 0.075 (plus a modifer) amplified by "thicknessHigher". If thicknessHigher is 1.05, the entity goes upwards for a tick
                                 triggeringEntity.motionY += (0.075 + sinkRateMod_mys) * thicknessHigher; // Unknown modifer to entity's Y velocity
                             }
                             else {
-                            	System.out.println("MotionY Beacon 10");
+                            	beacon.logBeacon("MotionY", "10");
                             	// Bumps the entity downwards slightly.
                                 // 0.075 (plus a modifier) amplified by "thicknessHigher". If thicknessHigher is 1.05, the entity goes upwards for a tick
                                 // Then, it is divided by the punishment value plus 0.025
@@ -645,13 +646,13 @@ public class Mud extends Block implements IMetaBlockName {
                             
                             // If the entity is marked as not moving...
                             if (!triggEntityMoving) {
-                            	System.out.println("MotionY Beacon 11.1: " + (0.0725 + sinkRateMod_mys) * thicknessHigher);
+                            	beacon.logBeacon("MotionY", "11.1", (0.0725 + sinkRateMod_mys) * thicknessHigher);
                             	// Moves the entity downwards slightly.
                                 // 0.0725 (plus a modifer) amplified by "thicknessHigher". If thicknessHigher is 1.05, the entity does not sink
                                 triggeringEntity.motionY += (0.0725 + sinkRateMod_mys) * thicknessHigher;
                             }
                             else {
-                            	System.out.println("MotionY Beacon 11.2: " + (0.0725 + sinkRateMod_mys) * thicknessHigher / (movementPunish_mofKofDiv + 0.025));
+                            	beacon.logBeacon("MotionY", "11.2", (0.0725 + sinkRateMod_mys) * thicknessHigher / (movementPunish_mofKofDiv + 0.025));
                             	// Bumps the entity downwards slightly.
                                 // 0.0725 (plus a modifier) amplified by "thicknessHigher". If thicknessHigher is 1.05, the entity does not sink
                                 // Then, it is divided by the punishment value plus 0.025

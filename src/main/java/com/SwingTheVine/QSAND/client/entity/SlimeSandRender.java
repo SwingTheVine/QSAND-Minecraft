@@ -10,37 +10,45 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class SlimeSandRender extends RenderLiving {
+@SideOnly(Side.CLIENT)
+public class SlimeSandRender extends RenderLiving<SlimeSand> {
 
 	public static Factory factory = new Factory(); // Construct a new factory
-    private static final ResourceLocation entityTexture = new ResourceLocation(ModInfo.id, SlimeSand.textureLocation); // The texture the entity will use
-    private static ModelBase scaleAmount;
-    private static float shadowOpaque;
+    private static final ResourceLocation entityTexture = new ResourceLocation(ModInfo.id + SlimeSand.textureLocation); // The texture the entity will use
+    private static ModelBase model;
+    private static float shadowSize;
     
-    public SlimeSandRender(final RenderManager p_i1267_1_, final ModelBase p_i1267_2_, final float p_i1267_3_) {
-        super(p_i1267_1_, p_i1267_2_, p_i1267_3_);
-        this.scaleAmount = p_i1267_2_;
-        this.shadowOpaque = p_i1267_3_;
+    public SlimeSandRender(final RenderManager renderManager, final ModelBase modelBase, final float shadowSize) {
+        super(renderManager, modelBase, shadowSize);
+        this.model = modelBase;
+        this.shadowSize = shadowSize;
     }
     
-    protected int shouldRenderPass(final SlimeSand p_77032_1_, final int p_77032_2_, final float p_77032_3_) {
-        if (p_77032_1_.isInvisible()) {
+    @Override
+    public void doRender(SlimeSand entity, double x, double y, double z, float entityYaw, float partialTicks) {
+        this.shadowSize = 0.25F * (float)entity.getSlimeSize();
+        super.doRender(entity, x, y, z, entityYaw, partialTicks);
+    }
+    
+    protected int shouldRenderPass(final SlimeSand slime, final int p_77032_2_, final float p_77032_3_) {
+        if (slime.isInvisible()) {
             return 0;
         }
         if (p_77032_2_ == 0) {
-            final float var4 = p_77032_1_.ticksExisted + p_77032_3_;
+            final float var4 = slime.ticksExisted + p_77032_3_;
             GL11.glMatrixMode(5890);
             GL11.glLoadIdentity();
             final float uh = var4 * 0.0025f + MathHelper.cos(var4 * 0.02f) * 0.005f;
             final float vv = -var4 * 0.005f;
             GL11.glTranslatef(uh, vv, 0.0f);
-            //this.setRenderPassModel(this.scaleAmount);
+            //this.setRenderPassModel(this.model);
             GL11.glMatrixMode(5888);
             GL11.glEnable(2977);
             GL11.glEnable(3042);
@@ -61,28 +69,27 @@ public class SlimeSandRender extends RenderLiving {
         return -1;
     }
     
-    protected void preRenderCallback(final SlimeSand p_77041_1_, final float p_77041_2_) {
-        final float var3 = (float)p_77041_1_.getSlimeSize();
-        final float var4 = (p_77041_1_.squishFactorPrev + (p_77041_1_.squishFactor - p_77041_1_.squishFactorPrev) * p_77041_2_) / (var3 * 0.5f + 1.0f);
+    @Override
+    protected void preRenderCallback(SlimeSand entity, float partialTickTime) {
+        final float slimeSize = (float)entity.getSlimeSize();
+        final float var4 = (entity.squishFactorPrev + (entity.squishFactor - entity.squishFactorPrev) * partialTickTime) / (slimeSize * 0.5f + 1.0f);
         final float var5 = 1.0f / (var4 + 1.0f);
         final float scaleFactor = 1.1f;
-        GL11.glScalef(var5 * var3 * scaleFactor, 0.75f / var5 * var3 * scaleFactor, var5 * var3 * scaleFactor);
+        GL11.glScalef(var5 * slimeSize * scaleFactor, 0.75f / var5 * slimeSize * scaleFactor, var5 * slimeSize * scaleFactor);
     }
     
-    protected ResourceLocation getEntityTexture() {
+    /*
+    protected void preRenderCallback(final EntityLivingBase entity, final float p_77041_2_) {
+        this.preRenderCallback((SlimeSand)entity, p_77041_2_);
+    }*/
+    
+    protected int shouldRenderPass(final EntityLivingBase entity, final int p_77032_2_, final float p_77032_3_) {
+        return this.shouldRenderPass((SlimeSand)entity, p_77032_2_, p_77032_3_);
+    }
+    
+    @Override
+    protected ResourceLocation getEntityTexture(SlimeSand entity) {
         return entityTexture;
-    }
-    
-    protected void preRenderCallback(final EntityLivingBase p_77041_1_, final float p_77041_2_) {
-        this.preRenderCallback((SlimeSand)p_77041_1_, p_77041_2_);
-    }
-    
-    protected int shouldRenderPass(final EntityLivingBase p_77032_1_, final int p_77032_2_, final float p_77032_3_) {
-        return this.shouldRenderPass((SlimeSand)p_77032_1_, p_77032_2_, p_77032_3_);
-    }
-    
-    protected ResourceLocation getEntityTexture(final Entity p_110775_1_) {
-        return this.getEntityTexture((SlimeSand)p_110775_1_);
     }
     
     // The render factory to use
@@ -91,7 +98,7 @@ public class SlimeSandRender extends RenderLiving {
   		// What manager is the factory creating the render for
   		@Override
   		public Render<? super SlimeSand> createRenderFor(RenderManager manager) {
-  			return new SlimeSandRender(Minecraft.getMinecraft().getRenderManager(), scaleAmount, shadowOpaque);
+  			return new SlimeSandRender(Minecraft.getMinecraft().getRenderManager(), model, shadowSize);
   		}
   	}
 }
