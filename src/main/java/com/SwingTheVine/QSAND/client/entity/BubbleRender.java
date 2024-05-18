@@ -112,7 +112,6 @@ public class BubbleRender extends Render<Bubble> {
         final WorldRenderer worldRenderer = tessellator.getWorldRenderer(); // Obtains the world renderer
         
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX); // Start drawing a quadrilateral in the OpenGL engine
-        //tessellator.setNormal(0.0f, 1.0f, 0.0f);
         worldRenderer.pos(x, y + ys, z).tex(maxU, minV).endVertex();
         worldRenderer.pos(x, y + ys, z + zs).tex(maxU, maxV).endVertex();
         worldRenderer.pos(x + xs, y + ys, z + zs).tex(minU, maxV).endVertex();
@@ -120,7 +119,6 @@ public class BubbleRender extends Render<Bubble> {
         tessellator.getInstance().draw();; // Draw the quadrilateral
         
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX); // Start drawing a quadrilateral in the OpenGL engine
-        //tessellator.setNormal(0.0f, -1.0f, 0.0f);
         worldRenderer.pos(x + xs, y, z).tex(maxU, minV).endVertex();
         worldRenderer.pos(x + xs, y, z + zs).tex(maxU, maxV).endVertex();
         worldRenderer.pos(x, y, z + zs).tex(minU, maxV).endVertex();
@@ -128,7 +126,6 @@ public class BubbleRender extends Render<Bubble> {
         tessellator.getInstance().draw(); // Draw the quadrilateral
         
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX); // Start drawing a quadrilateral in the OpenGL engine
-        //tessellator.setNormal(0.0f, 0.0f, -1.0f);
         worldRenderer.pos(x, y, z).tex(maxU, minV).endVertex();
         worldRenderer.pos(x, y + ys, z).tex(maxU, maxV).endVertex();
         worldRenderer.pos(x + xs, y + ys, z).tex(minU, maxV).endVertex();
@@ -136,7 +133,6 @@ public class BubbleRender extends Render<Bubble> {
         tessellator.getInstance().draw(); // Draw the quadrilateral
         
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX); // Start drawing a quadrilateral in the OpenGL engine
-        //tessellator.setNormal(0.0f, 0.0f, 1.0f);
         worldRenderer.pos(x + xs, y, z + zs).tex(maxU, minV).endVertex();
         worldRenderer.pos(x + xs, y + ys, z + zs).tex(maxU, maxV).endVertex();
         worldRenderer.pos(x, y + ys, z + zs).tex(minU, maxV).endVertex();
@@ -144,7 +140,6 @@ public class BubbleRender extends Render<Bubble> {
         tessellator.getInstance().draw(); // Draw the quadrilateral
         
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX); // Start drawing a quadrilateral in the OpenGL engine
-        //tessellator.setNormal(-1.0f, 0.0f, 0.0f);
         worldRenderer.pos(x, y, z + zs).tex(maxU, minV).endVertex();
         worldRenderer.pos(x, y + ys, z + zs).tex(maxU, maxV).endVertex();
         worldRenderer.pos(x, y + ys, z).tex(minU, maxV).endVertex();
@@ -152,7 +147,6 @@ public class BubbleRender extends Render<Bubble> {
         tessellator.getInstance().draw(); // Draw the quadrilateral
         
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX); // Start drawing a quadrilateral in the OpenGL engine
-        //tessellator.setNormal(1.0f, 0.0f, 0.0f);
         worldRenderer.pos(x + xs, y, z).tex(minU, minV).endVertex();
         worldRenderer.pos(x + xs, y + ys, z).tex(minU, minV).endVertex();
         worldRenderer.pos(x + xs, y + ys, z + zs).tex(maxU, maxV).endVertex();
