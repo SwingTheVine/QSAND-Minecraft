@@ -7,16 +7,18 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ModelSlimeVoid extends ModelBase {
+public class ModelSlimeSand extends ModelBase {
 	private ModelRenderer slimeBodies;
     
-    public ModelSlimeVoid(final int textureOffsetY) {
+    public ModelSlimeSand(final int textureOffsetY) {
         this.slimeBodies = new ModelRenderer((ModelBase)this, 0, textureOffsetY);
         if (textureOffsetY == 0) {
             this.slimeBodies.addBox(-4.0f, 16.0f, -4.0f, 8, 8, 8);
             this.slimeBodies.addBox(-3.0f, 17.0f, -5.0f, 6, 6, 10);
             this.slimeBodies.addBox(-5.0f, 17.0f, -3.0f, 10, 6, 6);
             this.slimeBodies.addBox(-3.0f, 15.0f, -3.0f, 6, 10, 6);
+            this.slimeBodies.addBox(-0.5f, 15.05f, -0.5f, 1, 3, 1);
+            this.slimeBodies.addBox(-0.5f, 18.05f, -0.5f, 1, 5, 1);
         }
         this.slimeBodies.setTextureSize(128, 128);
     }

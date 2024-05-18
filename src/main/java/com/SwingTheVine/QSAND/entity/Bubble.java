@@ -87,6 +87,7 @@ public class Bubble extends Entity {
 	
 	// Bubble initialization method
 	protected void entityInit() {
+		
     }
 	
 	// Checks if the bubble is within range to render
@@ -127,8 +128,8 @@ public class Bubble extends Entity {
                 final double bubblePosX = this.worldObj.rand.nextFloat() * 0.2 * this.size - 0.1 * this.size;
                 final double bubblePosZ = this.worldObj.rand.nextFloat() * 0.2 * this.size - 0.1 * this.size;
                 
-                // Spawns a crack in the bubble
-                this.worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX + bubblePosX, this.posY, this.posZ + bubblePosZ, 0.0, 0.0, 0.0);
+                // Spawns a particle
+                this.worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK, true, this.posX + bubblePosX, this.posY, this.posZ + bubblePosZ, 0.0, 0.0, 0.0, Block.getIdFromBlock(this.block));
             }
             
             // Plays a popping sound
@@ -140,9 +141,11 @@ public class Bubble extends Entity {
     }
 	
 	public void writeEntityToNBT(final NBTTagCompound par1NBTTagCompound) {
+		
     }
     
     public void readEntityFromNBT(final NBTTagCompound par1NBTTagCompound) {
+    	
     }
     
     // What size the shadow under the entity be

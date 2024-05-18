@@ -5,7 +5,7 @@ import org.lwjgl.opengl.GL11;
 import com.SwingTheVine.QSAND.ModInfo;
 import com.SwingTheVine.QSAND.entity.SlimeSand;
 
-import assets.qsand.models.entity.ModelSlimeVoid;
+import assets.qsand.models.entity.ModelSlimeSand;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -20,13 +20,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class SlimeSandRender extends RenderLiving<SlimeSand> {
 
     private static final ResourceLocation entityTexture = new ResourceLocation(ModInfo.id + SlimeSand.textureLocation); // The texture the entity will use
-    private static ModelBase model;
-    private static float shadowSize;
+    private static ModelBase model = new ModelSlimeSand(0);
+    private static float shadowSize = 0.5F;
     
     public SlimeSandRender(final RenderManager renderManager, final ModelBase modelBase, final float shadowSize) {
         super(renderManager, modelBase, shadowSize);
-        this.model = modelBase;
-        this.shadowSize = shadowSize;
     }
     
     @Override
@@ -88,12 +86,10 @@ public class SlimeSandRender extends RenderLiving<SlimeSand> {
     // The render factory to use
   	public static class Factory implements IRenderFactory {
   		
-  		//public static SlimeSandFactory instance = new SlimeSandFactory(); // Construct a new slime sand factory
-
   		// What manager is the factory creating the render for
   		@Override
   		public SlimeSandRender createRenderFor(RenderManager manager) {
-  			return new SlimeSandRender(manager, new ModelSlimeVoid(0), 0.5F);
+  			return new SlimeSandRender(manager, model, shadowSize);
   		}
   	}
 }

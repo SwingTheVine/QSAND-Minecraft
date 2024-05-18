@@ -14,8 +14,8 @@ public class QSAND_Entities {
 	private static int entityID = 0; // Starting ID of the entity
 	
 	public static void registerEntities() {
-		registerEntity(Bubble.class, "bubble", 64, 20, true); // Registers the bubble entity
-		registerEntity(SlimeSand.class, "slime_sand", 64, 20, true); // Registers the sand slime entity
+		registerEntity(Bubble.class, "bubble", 120, 2, true); // Registers the bubble entity
+		registerEntity(SlimeSand.class, "slime_sand", 80, 3, true); // Registers the sand slime entity
 	}
 	
 	/**
@@ -33,7 +33,6 @@ public class QSAND_Entities {
 	
 	// Generates a spawn egg for the entity
 	public static void generateSpawnEgg() {
-		EntityRegistry.registerEgg(Bubble.class, ColorManager.colorHexToLong("2450A4"), ColorManager.colorHexToLong("2450A4"));
 		EntityRegistry.registerEgg(SlimeSand.class, ColorManager.colorHexToLong("E28743"), ColorManager.colorHexToLong("873E23"));
 	}
 

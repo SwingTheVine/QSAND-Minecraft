@@ -1,12 +1,15 @@
 package com.SwingTheVine.QSAND.entity;
 
+import com.SwingTheVine.QSAND.entity.ai.SlimeSandAI;
 import com.SwingTheVine.QSAND.init.QSAND_Blocks;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIFindEntityNearestPlayer;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -16,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
@@ -36,21 +40,28 @@ public class SlimeSand extends EntityLiving implements IMob {
 	public int datawatcherDepthID = 13; // Default datawatcher ID 
 	public int datawatcherSizeID = 14; // Default datawatcher ID
 	
+	// Constructor
 	public SlimeSand(World world) {
 		super(world);
 		this.slimeInv = new ItemStack[5]; // Makes the slime inventory 5 slots
-		this.antiSit = 0.5f;
+		this.antiSit = 0.15f;
 		this.deepFactor = 0.0f;
-		this.tDeepFactor  = 0.0f;
+		this.tDeepFactor = 0.0f;
 		this.pullTime = 0.0f;
 		this.slimeJumpDelay = this.rand.nextInt(20) + 10;
 		
+		this.moveHelper = new SlimeSandAI.SlimeMoveHelper(this);
+        this.targetTasks.addTask(1, new EntityAIFindEntityNearestPlayer(this));
+        this.tasks.addTask(2, new SlimeSandAI.AISlimeAttack(this));
+        this.tasks.addTask(3, new SlimeSandAI.AISlimeFaceRandom(this));
+        this.tasks.addTask(4, new SlimeSandAI.AISlimeHop(this));
 	}
 	
+	// Initializes the slime
 	protected void entityInit() {
         super.entityInit();
         
-        // Creates an array to hold the IDs of all datawatcher slots
+     // Creates an array to hold the IDs of all datawatcher slots
         boolean[] datawatcherIDExists = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
         
         // For every slot, it checks if a datawatcher already  exists in that slot
@@ -115,32 +126,47 @@ public class SlimeSand extends EntityLiving implements IMob {
         }
     }
     
-    public void writeEntityToNBT(final NBTTagCompound nbtt) {
-        super.writeEntityToNBT(nbtt);
-        nbtt.setInteger("Size", this.getSlimeSize() - 1);
+	// Writes the NBT data for the slime
+    public void writeEntityToNBT(final NBTTagCompound compound) {
+        super.writeEntityToNBT(compound);
+        compound.setInteger("Size", this.getSlimeSize() - 1); // Sets a new NBT tag called "Size"
     }
     
-    public void readEntityFromNBT(final NBTTagCompound nbtt) {
-        super.readEntityFromNBT(nbtt);
-        int var0 = nbtt.getInteger("Size");
-        if (var0 < 0) {
-            var0 = 0;
+    // Reads the NBT data for the slime
+    public void readEntityFromNBT(final NBTTagCompound compound) {
+        super.readEntityFromNBT(compound);
+        int size = compound.getInteger("Size"); // Reads the NBT tag called "Size"
+        
+        // If the size of the slime is less than 0...
+        if (size < 0) {
+        	size = 0; // Set the size to 0
         }
-        this.setSlimeSize(var0 + 1);
+        
+        this.setSlimeSize(size + 1); // Set the size of the slime to the size + 1
     }
     
+    // 
     protected void syncronizeDepth() {
+    	
+    	// If the code is NOT executing server-side...
         if (!this.worldObj.isRemote) {
+        	// Update the depth datawatcher to match the current depth
             this.dataWatcher.updateObject(datawatcherDepthID, (Object)this.tDeepFactor);
-        }
-        else {
+        } else {
+        	
+        	// Set the deep factor to the depth
             this.tDeepFactor = this.dataWatcher.getWatchableObjectFloat(datawatcherDepthID);
         }
     }
     
+    // Sets the slime's size
     protected void setSlimeSize(final int size) {
+    	
+    	// Updates the datawatchers
         this.dataWatcher.updateObject(datawatcherSizeID, (Object)new Byte((byte)size));
         this.dataWatcher.updateObject(datawatcherDepthID, (Object)this.tDeepFactor);
+        
+        // Sets the slime's parameters
         this.setSize(0.5f * size, 0.5f * size);
         this.setPosition(this.posX, this.posY, this.posZ);
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue((double)this.getSpawnHp());
@@ -148,139 +174,178 @@ public class SlimeSand extends EntityLiving implements IMob {
         this.experienceValue = size + 1;
     }
     
+    // Obtains and returns the slime's size
     public int getSlimeSize() {
         return 3;
     }
     
-    protected String getJumpSound() {
+    // Obtains and returns the slime's jump sound
+    public String getJumpSound() {
         return "mob.slime.big";
     }
     
+    // Creates an instance of the slime
     protected SlimeSand createInstance() {
         return new SlimeSand(this.worldObj);
     }
     
+    // Kills the slime
     public void setDead() {
         super.setDead();
     }
     
-    protected boolean canDamagePlayer() {
+    // Returns if the slime can damage players
+    public boolean canDamagePlayer() {
         return true;
     }
     
-    protected float getSoundVolume() {
+    // Returns the sound volume for sounds played
+    public float getSoundVolume() {
         return 0.25f;
     }
     
+    // The speed it takes to move the entityliving's rotationPitch through the faceEntity method.
     public int getVerticalFaceSpeed() {
         return 0;
     }
     
-    protected boolean makesSoundOnJump() {
+    // Returns if the slime makes sounds when the slime jumps
+    public boolean makesSoundOnJump() {
         return true;
     }
     
+    // Returns if the slime makes sounds when the slime lands
     protected boolean makesSoundOnLand() {
         return true;
     }
     
+    // Returns the sound to play when the slime is hurt
     protected String getHurtSound() {
         return "mob.slime.big";
     }
     
+    // Returns the sound to play when the slime dies
     protected String getDeathSound() {
         return "mob.slime.big";
     }
     
+    // Triggers to updaate the slime
     public void onUpdate() {
     	
+    	// If the code is NOT executing server-side, AND the difficulty is peaceful...
         if (!this.worldObj.isRemote && this.worldObj.getDifficulty() == EnumDifficulty.PEACEFUL) {
-            this.isDead = true;
+            this.isDead = true; // Kill the slime
         }
         
+        // If the slime is wet...
         if (this.isWet()) {
-            this.attackEntityFrom(DamageSource.drown, 10.0f);
+            this.attackEntityFrom(DamageSource.drown, 10.0f); // Damage the slime
         } else {
         	
-            for (int var3 = 0; var3 < 2; ++var3) {
+        	// For every particle...
+            for (int particle = 0; particle < 2; particle++) {
             	
-                final float var4 = this.rand.nextFloat() * 3.1415927f * 2.0f;
-                final float var5 = this.rand.nextFloat() * 0.5f + 0.5f;
-                final float var6 = MathHelper.sin(var4) * 2.0f * 0.5f * var5;
-                final float var7 = MathHelper.cos(var4) * 2.0f * 0.5f * var5;
-                //this.worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX + var6, this.getEntityBoundingBox().minY + 0.5, this.posZ + var7, 0.0, 0.0, 0.0);
+            	// Calculates the position to spawn the particle, then spawns it
+                final float yaw = this.rand.nextFloat() * 3.1415927f * 2.0f;
+                final float height = this.rand.nextFloat() * 0.5f + 0.5f;
+                final float offsetX = MathHelper.sin(yaw) * 2.0f * 0.5f * height;
+                final float offsetZ = MathHelper.cos(yaw) * 2.0f * 0.5f * height;
+                this.worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK, true, this.posX + offsetX, this.getEntityBoundingBox().minY + 0.5, this.posZ + offsetZ, 0.0, 0.0, 0.0, Block.getIdFromBlock((Block)Blocks.sand));
             }
         }
         
-        this.extinguish();
+        this.extinguish(); // If the entity is on fire, it is no longer on fire
         this.squishFactor += (this.squishAmount - this.squishFactor) * 0.5f;
         this.squishFactorPrev = this.squishFactor;
-        final boolean var8 = this.onGround;
-        super.onUpdate();
+        final boolean isOnGround = this.onGround; // Is the slime on the ground?
         
-        if (this.onGround && !var8) {
+        super.onUpdate(); // UPDATES THE SLIME
+        
+        // If the slime is on the ground, AND the slime was on the ground before the update...
+        if (this.onGround && !isOnGround) {
         	
-            for (int var9 = this.getSlimeSize(), var10 = 0; var10 < var9 * 16; ++var10) {
+        	// Spawns as many particles as the slime is big (bigger slime = more particles)
+            for (int slimeSize = this.getSlimeSize(), particle = 0; particle < slimeSize * 16; particle++) {
             	
-                final float var11 = this.rand.nextFloat() * 3.1415927f * 2.0f;
-                final float var12 = this.rand.nextFloat() * 0.5f + 0.5f;
-                final float var13 = MathHelper.sin(var11) * var9 * 0.5f * var12;
-                final float var14 = MathHelper.cos(var11) * var9 * 0.5f * var12;
-                //this.worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX + var13, this.getEntityBoundingBox().minY, this.posZ + var14, 0.0, 0.0, 0.0);
+            	// Calculates the position to spawn the particle, then spawns it
+                final float yaw = this.rand.nextFloat() * 3.1415927f * 2.0f;
+                final float height = this.rand.nextFloat() * 0.5f + 0.5f;
+                final float offsetX = MathHelper.sin(yaw) * slimeSize * 0.5f * height;
+                final float offsetZ = MathHelper.cos(yaw) * slimeSize * 0.5f * height;
+                this.worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK, true, this.posX + offsetX, this.getEntityBoundingBox().minY + 0.5, this.posZ + offsetZ, 0.0, 0.0, 0.0, Block.getIdFromBlock((Block)Blocks.sand));
             }
             
+            // If the slime makes a sound when it lands...
             if (this.makesSoundOnLand()) {
+            	
+            	// Play sounds
                 this.playSound(this.getJumpSound(), this.getSoundVolume(), ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2f + 1.0f) / 0.8f);
                 this.playSound("step.grass", 0.5f, this.rand.nextFloat() * 0.2f + 0.1f);
                 this.playSound("step.grass", 0.5f, this.rand.nextFloat() * 0.2f + 0.1f);
             }
             
             this.squishAmount = -0.5f;
-        } else if (!this.onGround && var8) {
+            
+        } else if (!this.onGround && isOnGround) {
             this.squishAmount = 1.0f;
         }
         
+        // If the slime is on the ground, AND the remainde of the total world time divided by 16 equals 0, AND the next random integer equals 0 (1/10 chance)
         if (this.onGround && this.worldObj.getTotalWorldTime() % 16L == 0L && this.worldObj.rand.nextInt(10) == 0) {
-            this.squishAmount = 2.0f;
-            this.playSound("step.grass", 0.5f, this.rand.nextFloat() * 0.2f + 0.1f);
+            
+        	this.squishAmount = 2.0f; // Make the slime stretch upwards
+        	
+            this.playSound("step.grass", 0.5f, this.rand.nextFloat() * 0.2f + 0.1f); // Play sound
         }
         
-        this.alterSquishAmount();
+        this.alterSquishAmount(); // Makes the slime retract downwards slightly
         
+        // If the slime is not being ridden...
         if (this.riddenByEntity == null) {
         	
+        	// If the deep factor is greater than 0...
             if (this.deepFactor > 0.0f) {
-                this.tDeepFactor -= 0.5f;
+                this.tDeepFactor -= 0.5f; // Slowly reduce until it hits 0
             }
         } else {
         	
+        	// If the code is NOT running server-side
             if (!this.worldObj.isRemote) {
             	
+            	// If the slime is NOT being ridden by a player...
                 if (!(this.riddenByEntity instanceof EntityPlayer)) {
                 	
-                    this.riddenByEntity.mountEntity((Entity)null);
-                    return;
+                    this.riddenByEntity.mountEntity((Entity)null); // Dismount the mounted entity
+                    return; // End code execution for onUpdate()
                 }
                 
+                // If the slime is being ridden by a player that has disabled damage...
                 if (((EntityPlayer)this.riddenByEntity).capabilities.disableDamage) {
-                    ((EntityPlayer)this.riddenByEntity).mountEntity((Entity)null);
-                    return;
+                    ((EntityPlayer)this.riddenByEntity).mountEntity((Entity)null); // Dismount the mounted entity
+                    return; // End code execution for onUpdate()
                 }
             }
             
+            // If the remainder of the total world time divided by 2 equals 0, AND the next random integer equals 0 (1/5 chance)...
             if (this.worldObj.getTotalWorldTime() % 2L == 0L && this.rand.nextInt(5) == 0) {
-                this.playSound("step.grass", 0.25f, this.rand.nextFloat() * 0.5f + 0.5f);
+                this.playSound("step.grass", 0.25f, this.rand.nextFloat() * 0.5f + 0.5f); // Play sound
             }
             
+            // If the deep factor is less than 12.5
             if (this.deepFactor < 12.5f) {
-                this.tDeepFactor += 0.02f;
-                final float pullTime = this.pullTime;
-                this.pullTime = pullTime - 1.0f;
+            	
+                this.tDeepFactor += 0.02f; // Increase tDeepFactor
+                final float initialPullTime = this.pullTime; // Create a local pullTime variable
+                this.pullTime = initialPullTime - 1.0f; // Subtracts 1 from pullTime
                 
-                if (pullTime <= 0.0f) {
-                    this.pullTime = (float)(20 + this.rand.nextInt(10));
-                    this.squishAmount = 1.5f;
-                    this.tDeepFactor += 0.75f;
+                // If the initial pull time is less that or equal to 0...
+                if (initialPullTime <= 0.0f) {
+                	
+                    this.pullTime = (float)(20 + this.rand.nextInt(10)); // Set pullTime to a number between 20 and 29
+                    this.squishAmount = 1.5f; // Stretch upwards slightly
+                    this.tDeepFactor += 0.75f; // Add to tDeepFactor
+                    
+                    // Play sounds
                     this.playSound("step.sand", 0.25f, this.rand.nextFloat() * 0.2f + 0.2f);
                     this.playSound("mob.magmacube.jump", 0.25f, 0.25f + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4f);
                     this.playSound("mob.magmacube.jump", 0.25f, 0.25f + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4f);
@@ -288,73 +353,35 @@ public class SlimeSand extends EntityLiving implements IMob {
                     this.playSound("step.grass", 0.25f, this.rand.nextFloat() * 0.5f + 0.5f);
                 }
             } else if (!this.worldObj.isRemote && this.worldObj.getTotalWorldTime() % 4L == 0L && this.rand.nextInt(5) == 0) {
+            	// Else If the code is NOT executing server-side, AND the remainder of the total world time divided by 4 equals 0, AND the next random integer equals 0 (1/5 chance)...
+            	
+            	// Attack the entity riding the slime for 10% of the entities max health
                 this.riddenByEntity.attackEntityFrom(DamageSource.inWall, ((EntityLivingBase)this.riddenByEntity).getMaxHealth() * 0.1f);
             }
         }
         
+        // If the absolute value of the deep factor minus the dDeepFactor is greater than 0.1...
         if (Math.abs(this.deepFactor - this.tDeepFactor) > 0.1) {
-            this.deepFactor += (this.tDeepFactor - this.deepFactor) / 10.0f;
+            this.deepFactor += (this.tDeepFactor - this.deepFactor) / 10.0f; // Add 10% of that to deepFactor
         }
         
+        // If the code is executing server-side...
         if (this.worldObj.isRemote) {
-            final int var9 = this.getSlimeSize();
-            this.setSize(0.6f * var9, 0.6f * var9);
+            final int size = this.getSlimeSize(); // Gets the slime size
+            this.setSize(0.6f * size, 0.6f * size); // Sets the size
         }
     }
     
+    // Updates the mounted entity's position
     public void updateRiderPosition() {
+    	
+    	// If the entity riding the slime is NOT null...
         if (this.riddenByEntity != null) {
+        	
+        	// Set the position to slightly below this position
             this.riddenByEntity.setPosition(this.posX, this.posY + this.getMountedYOffset() + this.antiSit + this.riddenByEntity.getYOffset() - Math.min(1.25, Math.max(0.0f, this.deepFactor / 10.0f)) * 1.25, this.posZ);
         }
     }
-    /*
-    protected void updateEntityActionState() {
-    	super.updateEntityActionState();
-    	
-        this.despawnEntity();
-        EntityPlayer var1 = null;
-        
-        if (this.riddenByEntity == null) {
-            var1 = this.worldObj.getClosestPlayerToEntity((Entity)this, 16.0);
-        }
-        
-        if (var1 != null) {
-            this.faceEntity((Entity)var1, 10.0f, 20.0f);
-        }
-        
-        if (this.onGround && this.slimeJumpDelay-- <= 0) {
-        	
-            this.slimeJumpDelay = this.getJumpDelay();
-            
-            if (var1 != null) {
-                this.slimeJumpDelay /= 10;
-            }
-            
-            if (this.riddenByEntity == null) {
-            	
-                this.isJumping = true;
-                
-                if (this.makesSoundOnJump()) {
-                    this.playSound(this.getJumpSound(), this.getSoundVolume(), ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2f + 1.0f) * 0.8f);
-                    this.playSound("dig.sand", 0.5f, this.rand.nextFloat() * 0.5f + 0.5f);
-                }
-                
-                this.moveStrafing = 1.0f - this.rand.nextFloat() * 2.0f;
-                this.moveForward = (float)(1 * this.getSlimeSize());
-            } else {
-                this.slimeJumpDelay = 10;
-            }
-        } else {
-        	
-            this.isJumping = false;
-            
-            if (this.onGround) {
-                final float n = 0.0f;
-                this.moveForward = n;
-                this.moveStrafing = n;
-            }
-        }
-    }*/
     
     public void onCollideWithPlayer(final EntityPlayer player) {
     	
@@ -520,7 +547,7 @@ public class SlimeSand extends EntityLiving implements IMob {
         return "splash";
     }
     
-    protected int getJumpDelay() {
+    public int getJumpDelay() {
         return this.rand.nextInt(40) + 100;
     }
     
