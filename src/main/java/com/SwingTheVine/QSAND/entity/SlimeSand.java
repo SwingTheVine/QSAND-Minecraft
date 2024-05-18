@@ -33,14 +33,13 @@ public class SlimeSand extends EntityLiving implements IMob {
 	public float antiSit;
 	private int slimeJumpDelay;
 	public static final String textureLocation = ":textures/entities/SlimeSand.png"; // The location of the texture used for the bubble
-	public int datawatcherDepthID = 13;
-	public int datawatcherSizeID = 14;
+	public int datawatcherDepthID = 13; // Default datawatcher ID 
+	public int datawatcherSizeID = 14; // Default datawatcher ID
 	
 	public SlimeSand(World world) {
 		super(world);
 		this.slimeInv = new ItemStack[5]; // Makes the slime inventory 5 slots
 		this.antiSit = 0.5f;
-		//this.yOffset = 0.0f;
 		this.deepFactor = 0.0f;
 		this.tDeepFactor  = 0.0f;
 		this.pullTime = 0.0f;
@@ -72,7 +71,6 @@ public class SlimeSand extends EntityLiving implements IMob {
         		
         		// Add a new datawatcher in that slot
         		this.dataWatcher.addObject(datawatcherSizeID, (Object)new Byte((byte)1));
-        		System.out.println("Size datawatcher was created on ID slot " + i + ".");
         		break; // Stop looking for available datawatcher slots
         	} else if (i == 0) {
         		// Else if it has run out of slot options...
@@ -100,7 +98,6 @@ public class SlimeSand extends EntityLiving implements IMob {
         		
         		// Add a new datawatcher in that slot
         		this.dataWatcher.addObject(datawatcherDepthID, (Object)0.0f);
-        		System.out.println("Depth datawatcher was created on ID slot " + i + ".");
         		break;// Stop looking for available datawatcher slots
         	} else if (i == 0) {
         		// Else if it has run out of slot options...
@@ -116,8 +113,6 @@ public class SlimeSand extends EntityLiving implements IMob {
         		break;
         	}
         }
-        
-        System.out.println(datawatcherSizeID + ", " + datawatcherDepthID);
     }
     
     public void writeEntityToNBT(final NBTTagCompound nbtt) {

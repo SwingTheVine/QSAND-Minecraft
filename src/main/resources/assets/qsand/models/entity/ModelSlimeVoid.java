@@ -9,6 +9,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ModelSlimeVoid extends ModelBase {
 	private ModelRenderer slimeBodies;
+	public static ModelBase instance;
     
     public ModelSlimeVoid(final int textureOffsetY) {
         this.slimeBodies = new ModelRenderer((ModelBase)this, 0, textureOffsetY);

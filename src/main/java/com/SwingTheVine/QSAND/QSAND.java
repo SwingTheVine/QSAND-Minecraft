@@ -45,12 +45,12 @@ public class QSAND {
 		if (ConfigHandler.useSkinOverlay) {
 			MinecraftForge.EVENT_BUS.register((Object)new PlayerManager());
 		}
+		proxy.registerEntityRenders(); // Registers the render models for all entities
 	}
 	
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		proxy.registerRenders(); // Registers the render models for all default blocks and items
-		proxy.registerEntityRenders(); // Registers the render models for all entities
 		proxy.registerModelQSAND(); // Registers the render models for all variants of the items
 		QSAND_Entities.setEntityToSpawn();
 		QSAND_Entities.generateSpawnEgg(); // Generates the spawn eggs for all the entities

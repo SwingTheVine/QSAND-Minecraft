@@ -5,9 +5,8 @@ import org.lwjgl.opengl.GL11;
 import com.SwingTheVine.QSAND.ModInfo;
 import com.SwingTheVine.QSAND.entity.SlimeSand;
 
-import net.minecraft.client.Minecraft;
+import assets.qsand.models.entity.ModelSlimeVoid;
 import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.EntityLivingBase;
@@ -20,7 +19,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class SlimeSandRender extends RenderLiving<SlimeSand> {
 
-	public static Factory factory = new Factory(); // Construct a new factory
     private static final ResourceLocation entityTexture = new ResourceLocation(ModInfo.id + SlimeSand.textureLocation); // The texture the entity will use
     private static ModelBase model;
     private static float shadowSize;
@@ -78,11 +76,6 @@ public class SlimeSandRender extends RenderLiving<SlimeSand> {
         GL11.glScalef(var5 * slimeSize * scaleFactor, 0.75f / var5 * slimeSize * scaleFactor, var5 * slimeSize * scaleFactor);
     }
     
-    /*
-    protected void preRenderCallback(final EntityLivingBase entity, final float p_77041_2_) {
-        this.preRenderCallback((SlimeSand)entity, p_77041_2_);
-    }*/
-    
     protected int shouldRenderPass(final EntityLivingBase entity, final int p_77032_2_, final float p_77032_3_) {
         return this.shouldRenderPass((SlimeSand)entity, p_77032_2_, p_77032_3_);
     }
@@ -93,12 +86,14 @@ public class SlimeSandRender extends RenderLiving<SlimeSand> {
     }
     
     // The render factory to use
-  	public static class Factory implements IRenderFactory<SlimeSand> {
+  	public static class Factory implements IRenderFactory {
+  		
+  		//public static SlimeSandFactory instance = new SlimeSandFactory(); // Construct a new slime sand factory
 
   		// What manager is the factory creating the render for
   		@Override
-  		public Render<? super SlimeSand> createRenderFor(RenderManager manager) {
-  			return new SlimeSandRender(Minecraft.getMinecraft().getRenderManager(), model, shadowSize);
+  		public SlimeSandRender createRenderFor(RenderManager manager) {
+  			return new SlimeSandRender(manager, new ModelSlimeVoid(0), 0.5F);
   		}
   	}
 }
