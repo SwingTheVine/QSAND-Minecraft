@@ -2,6 +2,8 @@ package com.SwingTheVine.QSAND;
 
 import java.io.File;
 
+import com.SwingTheVine.QSAND.client.player.CustomPlayerGUIRenderer;
+import com.SwingTheVine.QSAND.client.player.CustomPlayerOverlayRenderer;
 import com.SwingTheVine.QSAND.handler.ConfigHandler;
 import com.SwingTheVine.QSAND.init.QSAND_Blocks;
 import com.SwingTheVine.QSAND.init.QSAND_Entities;
@@ -10,12 +12,14 @@ import com.SwingTheVine.QSAND.manager.PlayerManager;
 import com.SwingTheVine.QSAND.proxy.CommonProxy;
 
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
 @Mod(modid = ModInfo.id, 
 		name = ModInfo.name, 
@@ -42,10 +46,24 @@ public class QSAND {
 		QSAND_Items.init(); // Initializes the items
 		QSAND_Items.registerItems(); // Registers the items in the game registry
 		QSAND_Entities.registerEntities(); // Registers the entities
-		if (ConfigHandler.useSkinOverlay) {
-			MinecraftForge.EVENT_BUS.register((Object)new PlayerManager());
-		}
 		proxy.registerEntityRenders(); // Registers the render models for all entities
+		
+		// If the user has enabled skin overlays...
+		if (ConfigHandler.useSkinOverlay) {
+			MinecraftForge.EVENT_BUS.register((Object)new PlayerManager()); // Registers a new player manager
+		}
+		
+		// If the code is executing client-side...
+		if (FMLCommonHandler.instance().getSide().equals((Object)Side.CLIENT)) {
+			
+			MinecraftForge.EVENT_BUS.register((Object)new CustomPlayerGUIRenderer()); // Registers a new GUI renderer
+			
+			// If the user has enabled skin overlays...
+			if (ConfigHandler.useSkinOverlay) {
+				MinecraftForge.EVENT_BUS.register((Object)new CustomPlayerOverlayRenderer()); // Registers a new overlay renderer
+			}
+		}
+		
 	}
 	
 	@EventHandler

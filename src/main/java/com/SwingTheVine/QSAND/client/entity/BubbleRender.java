@@ -116,7 +116,7 @@ public class BubbleRender extends Render<Bubble> {
         worldRenderer.pos(x, y + ys, z + zs).tex(maxU, maxV).endVertex();
         worldRenderer.pos(x + xs, y + ys, z + zs).tex(minU, maxV).endVertex();
         worldRenderer.pos(x + xs, y + ys, z).tex(minU, minV).endVertex();
-        tessellator.getInstance().draw();; // Draw the quadrilateral
+        tessellator.getInstance().draw(); // Draw the quadrilateral
         
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX); // Start drawing a quadrilateral in the OpenGL engine
         worldRenderer.pos(x + xs, y, z).tex(maxU, minV).endVertex();

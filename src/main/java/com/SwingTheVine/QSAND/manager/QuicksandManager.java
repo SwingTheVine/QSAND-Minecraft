@@ -34,6 +34,42 @@ import net.minecraftforge.fluids.BlockFluidClassic;
 
 public class QuicksandManager {
 	
+	// Spawns in a new item in a semi-random position
+	public static void dropItem(final World world, final int x, final int y, final int z, final ItemStack item) {
+        
+		// If the code is NOT executing server-side...
+		if (!world.isRemote) {
+			
+			// Calculates a semirandom position to spawn the item in at
+            final float var6 = 0.7f;
+            final double d0 = world.rand.nextFloat() * var6 + (1.0f - var6) * 0.5;
+            final double d2 = world.rand.nextFloat() * var6 + (1.0f - var6) * 0.5;
+            final double d3 = world.rand.nextFloat() * var6 + (1.0f - var6) * 0.5;
+            
+            // Constructs the item
+            final EntityItem entityitem = new EntityItem(world, x + d0, y + d2, z + d3, item);
+            
+            entityitem.setPickupDelay(10); // Adds a delay to picking the item up
+            
+            world.spawnEntityInWorld((Entity)entityitem); // Spawns the item into the world
+        }
+    }
+	
+	// Spawns in a new item in an exact position
+	public static void dropItem(final World world, final double x, final double y, final double z, final ItemStack item) {
+        
+		// If the code is NOT executing server-side...
+		if (!world.isRemote) {
+			
+			// Constructs the item
+            final EntityItem entityitem = new EntityItem(world, x, y, z, item);
+            
+            entityitem.setPickupDelay(10); // Adds a delay to picking the item up
+            
+            world.spawnEntityInWorld((Entity)entityitem); // Spawns the item into the world
+        }
+    }
+	
 	// Finds out if the entity is inside of the type of block specified
 	public static boolean isEntityInsideOfBlock(final Entity triggeringEntity, final Block block) {
         double overCor = 0.0; // If the fluid is a full block
@@ -190,6 +226,37 @@ public class QuicksandManager {
 		return 0; // The mud level is 0. The player is not inside the block
 	}
 	
+	// Gets the mud type of the block
+	public static int getMudType(final Block block) {
+		
+		// For every block in the block list...
+		for (int i = 0; i < QSAND_Blocks.blockList.length; i++) {
+			
+			// If the block in a certain block index equals this block...
+            if (QSAND_Blocks.blockList[i] == block) {
+                return i; // Return the index
+            }
+        }
+		
+		return -1; // No mud type found
+	}
+	
+	public static int getLastMudType(final int type) {
+        
+		// If type is less than 0...
+		if (type < 0) {
+            return 0; // Return 0
+        }
+		
+		// If type is greater than the length of the block list...
+        if (type > QSAND_Blocks.blockList.length) {
+            return 0; // Return 0
+        }
+        
+        // Otherwise, return the light opacity of the block at the index "type"
+        return QSAND_Blocks.blockList[type].getLightOpacity();
+    }
+	
 	// Is the entity truly sinking?
 	public static boolean isTrulySinking(final Entity entity, final double triggEntitySunk_kof1) {
 		return !(entity instanceof EntityPlayer) || entity.worldObj.isRemote;
@@ -252,7 +319,8 @@ public class QuicksandManager {
 				
 				// If we are weighing the inventory...
 				if (ConfigHandler.useCustomInvCalc) {
-					// TODO: Sever inventory weight
+					
+					weightInv = ConfigHandler.serverInstanceWeightInv; // Retrieves the weight of the player from the server
 					
 					// If the remainder of the total world time divided by 32 equals 0...
 					if (entity.worldObj.getTotalWorldTime() % 32L == 0L) {
@@ -303,7 +371,7 @@ public class QuicksandManager {
 							}
 						}
 						
-						// TODO: Server weight equals weightInv
+						ConfigHandler.serverInstanceWeightInv = weightInv; // Stores the inventory weight of the player in the server
 					}
 				}
 				
@@ -692,6 +760,53 @@ public class QuicksandManager {
         }
     }
 	
+	// Spawns Bubbles for Long Stick
+	public static void spawnStickBubble(final World world, final double x, final double y, final double z, final Block block, boolean useMetadata, final boolean deep) {
+        
+		// If the code is NOT executing server-side...
+		if (!world.isRemote) {
+            return; // Return early
+        }
+		
+        int random = 4 + world.rand.nextInt(6); // A random number between 4 and 9
+        
+        // If the entity is NOT deep in the block...
+        if (!deep) {
+        	random = 2 + world.rand.nextInt(3); // Replaces the previous random number with a random number between 2 and 4
+        }
+        
+        // For every random number, spawn a bubble...
+        for (int i = 0; i < random; ++i) {
+        	int blockMetadata = 0;
+        	
+        	// Finds the bubble coordinates to spawn the bubble at
+            final double bubblePosX = x + world.rand.nextFloat() * 1.0f - 0.5;
+            final double bubblePosZ = z + world.rand.nextFloat() * 1.0f - 0.5;
+            final double bubblePosY = y - 1.0;
+            
+            // Finds the block coordinates the bubble will spawn in
+            final int blockPosX = (int)Math.floor(bubblePosX);
+            final int blockPosY = (int)Math.floor(bubblePosY);
+            final int blockPosZ = (int)Math.floor(bubblePosZ);
+            
+            // If the bubble will spawn in a different type of block than the block that triggered the bubble to spawn...
+            if (world.getBlockState(new BlockPos(blockPosX, blockPosY, blockPosZ)).getBlock() != block) {
+                return; // Don't spawn the bubble in a different type of block
+            }
+            
+            // If the metadata from the block should be used...
+            if (useMetadata) {
+            	blockMetadata = world.getBlockState(new BlockPos(blockPosX, blockPosY, blockPosZ)).getBlock().getMetaFromState(world.getBlockState(new BlockPos(blockPosX, blockPosY, blockPosZ)));
+            }
+            
+            final float size = 1.25f - world.rand.nextFloat() * 1.0f; // The size of the bubble
+            final int time = (int)Math.floor((1000 + world.rand.nextInt(500)) * size); // How long the bubble should live for
+            
+            // Spawns the bubble
+            spawnBubbleDelay(world, bubblePosX, blockPosY + surfaceY(block), bubblePosZ, block, blockMetadata, size, time, i * 200 + world.rand.nextInt(10) * 100);
+        }
+    }
+	
 	// Obtains the value of the custom drown air datawatcher
 	public static int getCustomDrownAir(final Entity entity) {
 		
@@ -797,31 +912,17 @@ public class QuicksandManager {
         return false; // The entity is marked as NOT drowning
     }
 	
-	// Gets the mud type of the block
-	public static int getMudType(final Block block) {
-		
-		for (int i = 0; i < QSAND_Blocks.blockList.length; ++i) {
-            if (QSAND_Blocks.blockList[i] == block) {
-                return i;
-            }
-        }
-		return -1;
-	}
-	
-	public static int getLastMudType(final int type) {
-        if (type < 0) {
-            return 0;
-        }
-        if (type > QSAND_Blocks.blockList.length) {
-            return 0;
-        }
-        return QSAND_Blocks.blockList[type].getLightOpacity();
+	// If the child is the child of the parent in question
+	public static boolean isChildOf(final Class parent, final Class child) {
+        return child.getSuperclass() == parent || (child.getSuperclass() != Entity.class && isChildOf(parent, child.getSuperclass()));
     }
 	
+	// Sets the stuck effect of the player
 	public static void setStuckEffect(final EntityLivingBase entity, final int level) {
 		
+		// If the entity has a stuck level...
 		if (PlayerStuckEffectManager.get(entity) != null) {
-			PlayerStuckEffectManager.get(entity).setStuckLevel(level);
+			PlayerStuckEffectManager.get(entity).setStuckLevel(level); // Set the new stuck level
 		}
 	}
 }
