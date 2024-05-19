@@ -1,5 +1,7 @@
 package com.SwingTheVine.QSAND.manager;
 
+import com.SwingTheVine.QSAND.client.player.PlayerMudManager;
+import com.SwingTheVine.QSAND.handler.BeaconHandler;
 import com.SwingTheVine.QSAND.init.QSAND_Blocks;
 
 import net.minecraft.entity.Entity;
@@ -10,6 +12,7 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class PlayerManager {
+	private BeaconHandler beacon = new BeaconHandler(false); // Constructs a beacon handler. Enabled if "true" passed in
 	
 	@SubscribeEvent
     public void onEntityConstructing(final EntityEvent.EntityConstructing event) {
@@ -44,8 +47,7 @@ public class PlayerManager {
                             props.setMudLevel(ml - 1);
                         }
                     }
-                }
-                else {
+                } else {
                     if (event.entityLiving.worldObj.getTotalWorldTime() % 1024L == 0L && ml > 5 && mt < 1000) {
                         props.setMudLevel(ml - 1);
                     }

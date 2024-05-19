@@ -5,8 +5,8 @@ import java.util.UUID;
 import org.lwjgl.opengl.GL11;
 
 import com.SwingTheVine.QSAND.ModInfo;
+import com.SwingTheVine.QSAND.handler.BeaconHandler;
 import com.SwingTheVine.QSAND.init.QSAND_Blocks;
-import com.SwingTheVine.QSAND.manager.PlayerMudManager;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -18,6 +18,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class SkinOverlayRenderer extends ModelRenderer {
+	private BeaconHandler beacon = new BeaconHandler(false); // Constructs a beacon handler. Enabled if "true" passed in
 	
 	public EntityPlayer player;
 	public UUID playerUUID;
@@ -102,6 +103,11 @@ public class SkinOverlayRenderer extends ModelRenderer {
 		final int mudLevel = properties.getMudLevel();
         final int mudType = properties.getMudType();
         final int mudTime = properties.getMudTime();
+        
+        beacon.logBeacon("render");
+        beacon.logBeacon("mudLevel", "1", mudLevel);
+        beacon.logBeacon("mudType", "1", mudType);
+        beacon.logBeacon("mudTime", "1", mudTime);
         
         if (mudTime > 50 && mudType >= 0 && mudType <= QSAND_Blocks.mudTypesColors.length && mudLevel > 0) {
             

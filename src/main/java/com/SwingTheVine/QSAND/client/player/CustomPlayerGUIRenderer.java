@@ -30,10 +30,22 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class CustomPlayerGUIRenderer {
 	
+	// TODO: Find a way to move this to QSAND_Blocks. It fails to work in there for some reason >:(
 	public static Block[] blockList = {
 			QSAND_Blocks.test_block,
 			QSAND_Blocks.mud,
-			QSAND_Blocks.quicksand};
+			QSAND_Blocks.quicksand/*,
+			QSAND_Blocks.quicksandSoft,
+			QSAND_Blocks.quicksandJungle,
+			QSAND_Blocks.moss,
+			QSAND_Blocks.mire,
+			QSAND_Blocks.mireLiquid,
+			QSAND_Blocks.mireLiquidStable,
+			QSAND_Blocks.meat,
+			QSAND_Blocks.meatHole,
+			QSAND_Blocks.voidHole,
+			QSAND_Blocks.swallowingFlesh,
+			QSAND_Blocks.larvae*/};
 	
 	@SubscribeEvent
     @SideOnly(Side.CLIENT)
@@ -106,6 +118,7 @@ public class CustomPlayerGUIRenderer {
                 	texture = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(new ResourceLocation(ModInfo.id, "textures/blocks/mud_0.png").toString());
                 	//texture = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(new ResourceLocation(ModInfo.id, model.getResourcePath()).toString());
                 	//texture = CustomRenderOverlayEvent.quicksandIDS[i].getBlockTextureFromSide(2);
+                	// minecraft/client/renderer/BlockFluidRenderer
                 }
                 if (ConfigHandler.forceFirstPerson) {
                     Minecraft.getMinecraft().gameSettings.thirdPersonView = 0;

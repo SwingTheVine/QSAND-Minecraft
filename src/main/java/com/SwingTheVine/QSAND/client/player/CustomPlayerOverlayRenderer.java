@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.SwingTheVine.QSAND.handler.BeaconHandler;
 import com.SwingTheVine.QSAND.handler.FieldsHandler;
 
 import net.minecraft.client.Minecraft;
@@ -20,9 +21,11 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class CustomPlayerOverlayRenderer {
+	private BeaconHandler beacon = new BeaconHandler(false); // Constructs a beacon handler. Enabled if "true" passed in
 	
 	@SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
     public void preRenderPlayer(final RenderPlayerEvent.Pre event) {
+		//beacon.logBeacon("preRender");
 		
 		// If the player does NOT equal the current player,
 		//    OR the player equals the current player, AND the player is NOT in 3rd person view,
@@ -32,16 +35,21 @@ public class CustomPlayerOverlayRenderer {
         }
     }
     
+	// Called constantly whilst playing the game
     @SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
     public void handRenderPlayer(final RenderHandEvent event) {
-        if (this.checkPlayerMuddyModel((RenderPlayer)((RendererLivingEntity)Minecraft.getMinecraft().getRenderManager().getEntityRenderObject((Entity)Minecraft.getMinecraft().thePlayer)), (EntityPlayer)Minecraft.getMinecraft().thePlayer)) {
+    	//beacon.logBeacon("handRenderPlayer");
+    	if (this.checkPlayerMuddyModel((RenderPlayer)((RendererLivingEntity)Minecraft.getMinecraft().getRenderManager().getEntityRenderObject((Entity)Minecraft.getMinecraft().thePlayer)), (EntityPlayer)Minecraft.getMinecraft().thePlayer)) {
             this.registerPlayerMuddyModel((RenderPlayer)((RendererLivingEntity)Minecraft.getMinecraft().getRenderManager().getEntityRenderObject((Entity)Minecraft.getMinecraft().thePlayer)), (EntityPlayer)Minecraft.getMinecraft().thePlayer);
         }
     }
     
     public boolean turnOnRenderMuddyModel(final RenderPlayer renderer, final EntityPlayer entityPlayer) {
-        final List<ModelRenderer> list = new ArrayList<ModelRenderer>();
+    	beacon.logBeacon("turnOnRenderMuddyModel");
+    	
+    	final List<ModelRenderer> list = new ArrayList<ModelRenderer>();
         for (final Object o : renderer.getMainModel().boxList) {
+        	beacon.logBeacon("Box List", "1", renderer.getMainModel().boxList.toString());
             if (o instanceof ModelRenderer) {
                 list.add((ModelRenderer)o);
             }
@@ -53,13 +61,19 @@ public class CustomPlayerOverlayRenderer {
     }
     
     public boolean turnOnRenderMuddyModelFirstPerson(final RenderPlayer renderer, final EntityPlayer entityPlayer) {
-        this.turnOnChilds(renderer.getMainModel().bipedRightArm, entityPlayer);
+    	beacon.logBeacon("turnOnRenderMuddyModelFirstPerson");
+    	
+    	this.turnOnChilds(renderer.getMainModel().bipedRightArm, entityPlayer);
         return true;
     }
     
+    // Called once upon spawning into a world or logging into a world
     public boolean registerPlayerMuddyModel(final RenderPlayer renderer, final EntityPlayer entityPlayer) {
-        final List<ModelRenderer> list = new ArrayList<ModelRenderer>();
+    	beacon.logBeacon("registerPlayerMuddyModel");
+    	
+    	final List<ModelRenderer> list = new ArrayList<ModelRenderer>();
         for (final Object o : renderer.getMainModel().boxList) {
+        	beacon.logBeacon("Box List", "2", renderer.getMainModel().boxList.toString());
             if (o instanceof ModelRenderer && !(o instanceof SkinOverlayRenderer)) {
                 list.add((ModelRenderer)o);
             }
@@ -71,11 +85,15 @@ public class CustomPlayerOverlayRenderer {
         return true;
     }
     
+    // Called constantly whilst playing the game
     public boolean checkPlayerMuddyModel(final RenderPlayer renderer, final EntityPlayer entityPlayer) {
-        int isFailed = 0;
+    	//beacon.logBeacon("checkPlayerMuddyModel");
+    	
+    	int isFailed = 0;
         int result = 0;
         final List boxList = new ArrayList(renderer.getMainModel().boxList);
         for (final Object o : renderer.getMainModel().boxList) {
+        	beacon.logBeacon("Box List", "3", renderer.getMainModel().boxList.toString());
             if (o instanceof ModelRenderer) {
                 isFailed = this.checkPlayerMuddyModelChild((ModelRenderer)o, entityPlayer);
                 if (isFailed > result) {
@@ -108,8 +126,11 @@ public class CustomPlayerOverlayRenderer {
         return true;
     }
     
+    // Called constantly whilst playing the game
     public int checkPlayerMuddyModelChild(final ModelRenderer model, final EntityPlayer ply) {
-        int isFailed = 0;
+    	//beacon.logBeacon("checkPlayerMuddyModelChild");
+    	
+    	int isFailed = 0;
         if (model != null) {
             if (model.childModels != null) {
                 for (final Object o : model.childModels) {
@@ -138,8 +159,11 @@ public class CustomPlayerOverlayRenderer {
         return isFailed;
     }
     
+    // Called a large, finite number of times upon spawning or logging into a world
     public void scanChilds(final ModelRenderer model, final EntityPlayer ply) {
-        if (model != null) {
+    	beacon.logBeacon("scanChilds");
+    	
+    	if (model != null) {
             if (model.childModels != null && !(model instanceof SkinOverlayRenderer)) {
                 for (final Object o : model.childModels) {
                     if (o instanceof ModelRenderer && !(o instanceof SkinOverlayRenderer)) {
@@ -174,8 +198,11 @@ public class CustomPlayerOverlayRenderer {
         }
     }
     
+    // Called a finite number of times upon player death
     public void deleteChilds(final ModelRenderer model, final EntityPlayer ply) {
-        if (model != null && model.childModels != null) {
+    	beacon.logBeacon("deleteChilds");
+    	
+    	if (model != null && model.childModels != null) {
             final List childBoxList = new ArrayList(model.childModels);
             for (final Object o : model.childModels) {
                 if (o instanceof SkinOverlayRenderer && ((SkinOverlayRenderer)o).playerNickname == ply.getName()) {
@@ -189,20 +216,22 @@ public class CustomPlayerOverlayRenderer {
         }
     }
     
-    public void turnOnChilds(final ModelRenderer model, final EntityPlayer ply) {
-        if (model != null) {
+    // Called constantly whilst playing the game
+    public void turnOnChilds(final ModelRenderer model, final EntityPlayer player) {
+    	//beacon.logBeacon("turnOnChilds");
+    	
+    	if (model != null) {
             if (model.childModels != null) {
                 for (final Object o : model.childModels) {
                     if (o instanceof ModelRenderer) {
-                        this.turnOnChilds((ModelRenderer)o, ply);
+                        this.turnOnChilds((ModelRenderer)o, player);
                     }
                 }
             }
             if (model instanceof SkinOverlayRenderer) {
-                if (((SkinOverlayRenderer)model).player == ply) {
+                if (((SkinOverlayRenderer)model).player == player) {
                     ((SkinOverlayRenderer)model).showOverlay = true;
-                }
-                else {
+                } else {
                     ((SkinOverlayRenderer)model).showOverlay = false;
                 }
             }

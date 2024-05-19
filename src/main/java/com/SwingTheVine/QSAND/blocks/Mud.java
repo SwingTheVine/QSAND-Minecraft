@@ -2,11 +2,11 @@ package com.SwingTheVine.QSAND.blocks;
 
 import java.util.List;
 
+import com.SwingTheVine.QSAND.client.player.PlayerMudManager;
 import com.SwingTheVine.QSAND.entity.SlimeMud;
 import com.SwingTheVine.QSAND.handler.BeaconHandler;
 import com.SwingTheVine.QSAND.handler.ConfigHandler;
 import com.SwingTheVine.QSAND.init.QSAND_Items;
-import com.SwingTheVine.QSAND.manager.PlayerMudManager;
 import com.SwingTheVine.QSAND.manager.QuicksandManager;
 
 import net.minecraft.block.Block;
@@ -825,6 +825,11 @@ public class Mud extends Block implements IMetaBlockName {
 				
 				final int mudType = 10;
 				playerMudControl.setMudType(mudType); // Sets the mud type to the mud type of this block
+				
+				// If the mud time is less than 1000 ticks...
+				if (playerMudControl.getMudTime() < 1000) {
+					playerMudControl.addMudTime(50); // Adds 50 ticks to mud time
+				}
 				
 				// Sets the mud time to the current mud time, or 1000. Whichever is smaller
 				playerMudControl.setMudTime(Math.min(playerMudControl.getMudTime(), 1000));

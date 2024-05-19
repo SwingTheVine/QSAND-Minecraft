@@ -8,6 +8,13 @@ public class BeaconHandler {
 		this.enableBeacons = enableBeacons;
 	}
 	
+	// Logs a beacon with only a name
+	public void logBeacon(String name) {
+		if (this.enableBeacons) {
+			System.out.println(name + " Beacon");
+		}
+	}
+	
 	// Logs a beacon without a value
 	public void logBeacon(String name, String id) {
 		if (this.enableBeacons) {

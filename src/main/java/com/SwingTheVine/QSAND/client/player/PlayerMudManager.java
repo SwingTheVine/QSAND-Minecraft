@@ -1,4 +1,4 @@
-package com.SwingTheVine.QSAND.manager;
+package com.SwingTheVine.QSAND.client.player;
 
 import com.SwingTheVine.QSAND.handler.ConfigHandler;
 

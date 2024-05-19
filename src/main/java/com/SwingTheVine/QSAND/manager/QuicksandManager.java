@@ -106,6 +106,11 @@ public class QuicksandManager {
 	public static boolean isEntityInsideOfBlockS(final Entity triggeringEntity, final Block block) {
         double overCor = 0.0; // If the fluid is a full block
         
+        if (block == null) {
+        	System.out.println("The block type is null. Skipping...");
+        	return false;
+        }
+        
         // If the block is a liquid, AND the block is a classic fluid...
         if (block.getMaterial().isLiquid() && block instanceof BlockFluidClassic) {
             overCor = ((((BlockFluidClassic)block).getMaxRenderHeightMeta() == -1) ? 0.0 : 0.15);
@@ -253,8 +258,12 @@ public class QuicksandManager {
             return 0; // Return 0
         }
         
-        // Otherwise, return the light opacity of the block at the index "type"
-        return QSAND_Blocks.blockList[type].getLightOpacity();
+        try {
+	        // Otherwise, return the light opacity of the block at the index "type"
+	        return QSAND_Blocks.blockList[type].getLightOpacity();
+        } catch (Exception ignored) {
+        	return 0;
+        }
     }
 	
 	// Is the entity truly sinking?
