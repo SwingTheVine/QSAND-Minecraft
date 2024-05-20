@@ -29,6 +29,7 @@ public class QSAND_Blocks {
 	public static Block voidHole;
 	public static Block swallowingFlesh;
 	public static Block larvae;
+	public static Block tar;
 	public static Block[] blockList = {
 			test_block,
 			mud,
@@ -43,7 +44,8 @@ public class QSAND_Blocks {
 			meatHole,
 			voidHole,
 			swallowingFlesh,
-			larvae};
+			larvae,
+			tar};
 	public static int[] mudTypesColors = {4538917, 14611967, 16777215, 2431764, 6444596, 3089167, 2431764, 2431764, 15007713, 2431764, 2431764, 10197137, 1973277, 16777215, 16777215, 16777189, 16777215, 6180923, 14803425, 16777189, 14013598, 16777189, 7041868, 10056782, 8554890, 2431764, 12298319, 3806471, 5720614, 2431764, 5389343, 16758567};
 	public static int[] mudMaxOpacity = {2000, 500, 0, 1000, 5000, 5000, 500, 500, 500, 5000, 5000, 5000, 10000, 0, 0, 250, 0, 2000, 3000, 250, 500, 250, 1000, 5000, 5000, 1000, 10000, 7000, 2000, 2000, 5000, 600};
 	public static int[] mudLastOpacity = {500, 0, 0, 750, 750, 750, 250, 250, 0, 750, 750, 750, 1000, 0, 0, 0, 0, 500, 0, 0, 0, 0, 0, 750, 750, 750, 1000, 1000, 750, 750, 750, 600};

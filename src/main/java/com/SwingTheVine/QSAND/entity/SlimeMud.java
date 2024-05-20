@@ -47,7 +47,7 @@ public class SlimeMud extends EntityLiving implements IMob {
 	public float pullTime;
 	public float antiSit;
 	private int slimeJumpDelay;
-	public static final String textureLocation = ":textures/entities/SlimeSand.png"; // The location of the texture used for the bubble
+	public static final String textureLocation = ":textures/entities/SlimeMud.png"; // The location of the texture used for the bubble
 	public int datawatcherDepthID = 13; // Default datawatcher ID 
 	public int datawatcherSizeID = 14; // Default datawatcher ID
 
@@ -273,13 +273,13 @@ public class SlimeMud extends EntityLiving implements IMob {
                 final float height = this.rand.nextFloat() * 0.5f + 0.5f;
                 final float offsetX = MathHelper.sin(yaw) * slimeSize * 0.5f * height;
                 final float offsetZ = MathHelper.cos(yaw) * slimeSize * 0.5f * height;
-                this.worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK, true, this.posX + offsetX, this.getEntityBoundingBox().minY + 0.5, this.posZ + offsetZ, 0.0, 0.0, 0.0, Block.getIdFromBlock(QSAND_Blocks.mud));
+                this.worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK, true, this.posX + offsetX, this.getEntityBoundingBox().minY, this.posZ + offsetZ, 0.0, 0.0, 0.0, Block.getIdFromBlock(QSAND_Blocks.mud));
             }
             
             // If the slime makes a sound when it lands...
             if (this.makesSoundOnLand()) {
             	
-            	// Play sounds
+            	// Play sound
                 this.playSound(this.getJumpSound(), this.getSoundVolume(), ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2f + 1.0f) / 0.8f);
             }
             
@@ -333,7 +333,9 @@ public class SlimeMud extends EntityLiving implements IMob {
             
                 // If the mounted entity's position is greater than the position of the slime plus 0.25...
                 if (this.riddenByEntity.posY > this.posY + 0.25) {
-                	// TODO: Check player muddy
+                	
+                	// Checks if the player is muddy
+                	this.checkPlayerMuddy((EntityPlayer)this.riddenByEntity, 0.0, this.posY + this.getMountedYOffset() - 0.5, 0.0, this.worldObj);
                 }
             }
             
@@ -436,7 +438,7 @@ public class SlimeMud extends EntityLiving implements IMob {
             final int var2 = this.getSlimeSize();
             final float opMul = Math.max(player.getMaxHealth() / 20.0f, 1.0f);
             
-            if (!(player.ridingEntity instanceof SlimeVoid) && !(player.ridingEntity instanceof SlimeMud) && !(player.ridingEntity instanceof SlimeTar) && !(player.ridingEntity instanceof SlimeSand)) {
+            if (!(player.ridingEntity instanceof SlimeVoid) && !(player.ridingEntity instanceof SlimeMud) && !(player.ridingEntity instanceof SlimeTar) && !(player.ridingEntity instanceof SlimeMud)) {
                 
             	final float sizeCoof = 2.0f;
                 
@@ -509,7 +511,7 @@ public class SlimeMud extends EntityLiving implements IMob {
                 	
                     final ItemStack item = ((EntityPlayer)ply).getCurrentEquippedItem();
                     
-                    final Object var1 = new Item().getAttributeModifiers(item); // TODO: Might not work
+                    final Object var1 = new Item().getAttributeModifiers(item);
                     
                     if (var1 != null) {
                     	

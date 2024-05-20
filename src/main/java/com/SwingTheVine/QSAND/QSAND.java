@@ -70,7 +70,7 @@ public class QSAND {
 	public void init(FMLInitializationEvent event) {
 		proxy.registerRenders(); // Registers the render models for all default blocks and items
 		proxy.registerModelQSAND(); // Registers the render models for all variants of the items
-		QSAND_Entities.setEntityToSpawn();
+		QSAND_Entities.setEntityToSpawn(); // Sets the entity to spawn naturally in the world
 		QSAND_Entities.generateSpawnEgg(); // Generates the spawn eggs for all the entities
 	}
 	

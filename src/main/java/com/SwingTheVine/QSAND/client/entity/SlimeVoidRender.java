@@ -3,7 +3,7 @@ package com.SwingTheVine.QSAND.client.entity;
 import org.lwjgl.opengl.GL11;
 
 import com.SwingTheVine.QSAND.ModInfo;
-import com.SwingTheVine.QSAND.entity.SlimeMud;
+import com.SwingTheVine.QSAND.entity.SlimeVoid;
 
 import assets.qsand.models.entity.ModelSlimeVoid;
 import net.minecraft.client.model.ModelBase;
@@ -16,23 +16,23 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class SlimeMudRender extends RenderLiving<SlimeMud> {
+public class SlimeVoidRender extends RenderLiving<SlimeVoid> {
 
-    private static final ResourceLocation entityTexture = new ResourceLocation(ModInfo.id + SlimeMud.textureLocation); // The texture the entity will use
+    private static final ResourceLocation entityTexture = new ResourceLocation(ModInfo.id + SlimeVoid.textureLocation); // The texture the entity will use
     private static ModelBase model = new ModelSlimeVoid(0);
     private static float shadowSize = 0.5F;
     
-    public SlimeMudRender(final RenderManager renderManager, final ModelBase modelBase, final float shadowSize) {
+    public SlimeVoidRender(final RenderManager renderManager, final ModelBase modelBase, final float shadowSize) {
         super(renderManager, modelBase, shadowSize);
     }
     
     @Override
-    public void doRender(SlimeMud entity, double x, double y, double z, float entityYaw, float partialTicks) {
+    public void doRender(SlimeVoid entity, double x, double y, double z, float entityYaw, float partialTicks) {
         this.shadowSize = 0.25F * (float)entity.getSlimeSize();
         super.doRender(entity, x, y, z, entityYaw, partialTicks);
     }
     
-    protected int shouldRenderPass(final SlimeMud slime, final int p_77032_2_, final float p_77032_3_) {
+    protected int shouldRenderPass(final SlimeVoid slime, final int p_77032_2_, final float p_77032_3_) {
         if (slime.isInvisible()) {
             return 0;
         }
@@ -51,20 +51,20 @@ public class SlimeMudRender extends RenderLiving<SlimeMud> {
     }
     
     @Override
-    protected void preRenderCallback(SlimeMud entity, float partialTickTime) {
+    protected void preRenderCallback(SlimeVoid entity, float partialTickTime) {
         final float slimeSize = (float)entity.getSlimeSize();
         final float var4 = (entity.squishFactorPrev + (entity.squishFactor - entity.squishFactorPrev) * partialTickTime) / (slimeSize * 0.5f + 1.0f);
         final float var5 = 1.0f / (var4 + 1.0f);
-        final float scaleFactor = 1.15f;
+        final float scaleFactor = 1.25f;
         GL11.glScalef(var5 * slimeSize * scaleFactor, 0.75f / var5 * slimeSize * scaleFactor, var5 * slimeSize * scaleFactor);
     }
     
     protected int shouldRenderPass(final EntityLivingBase entity, final int p_77032_2_, final float p_77032_3_) {
-        return this.shouldRenderPass((SlimeMud)entity, p_77032_2_, p_77032_3_);
+        return this.shouldRenderPass((SlimeVoid)entity, p_77032_2_, p_77032_3_);
     }
     
     @Override
-    protected ResourceLocation getEntityTexture(SlimeMud entity) {
+    protected ResourceLocation getEntityTexture(SlimeVoid entity) {
         return entityTexture;
     }
     
@@ -73,8 +73,8 @@ public class SlimeMudRender extends RenderLiving<SlimeMud> {
   		
   		// What manager is the factory creating the render for
   		@Override
-  		public SlimeMudRender createRenderFor(RenderManager manager) {
-  			return new SlimeMudRender(manager, model, shadowSize);
+  		public SlimeVoidRender createRenderFor(RenderManager manager) {
+  			return new SlimeVoidRender(manager, model, shadowSize);
   		}
   	}
 }

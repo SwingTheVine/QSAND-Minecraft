@@ -6,6 +6,8 @@ import com.SwingTheVine.QSAND.QSAND;
 import com.SwingTheVine.QSAND.entity.Bubble;
 import com.SwingTheVine.QSAND.entity.SlimeMud;
 import com.SwingTheVine.QSAND.entity.SlimeSand;
+import com.SwingTheVine.QSAND.entity.SlimeTar;
+import com.SwingTheVine.QSAND.entity.SlimeVoid;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
@@ -19,8 +21,10 @@ public class QSAND_Entities {
 	
 	public static void registerEntities() {
 		registerEntity(Bubble.class, "bubble", 120, 2, true); // Registers the bubble entity
-		registerEntity(SlimeMud.class, "slime_mud", 80, 3, true);
+		registerEntity(SlimeVoid.class, "slime_void", 80, 3, true); // Registers the void slime entity
+		registerEntity(SlimeMud.class, "slime_mud", 80, 3, true); // Registers the mud slime entity
 		registerEntity(SlimeSand.class, "slime_sand", 80, 3, true); // Registers the sand slime entity
+		registerEntity(SlimeTar.class, "slime_tar", 80, 3, true); // Registers the tar slime entity
 	}
 	
 	/**
@@ -86,13 +90,18 @@ public class QSAND_Entities {
 		final BiomeGenBase[] swampBiomes = swampBiomesList.toArray(swampBiomesArray);
 		final BiomeGenBase[] desertBiomes = desertBiomesList.toArray(desertBiomesArray);
 		
+		EntityRegistry.addSpawn(SlimeVoid.class, 2, 1, 1, EnumCreatureType.MONSTER, allBiomes);
 		EntityRegistry.addSpawn(SlimeMud.class, 2, 1, 1, EnumCreatureType.MONSTER, swampBiomes);
+		EntityRegistry.addSpawn(SlimeSand.class, 2, 1, 1, EnumCreatureType.MONSTER, desertBiomes);
+		EntityRegistry.addSpawn(SlimeTar.class, 2, 1, 1, EnumCreatureType.MONSTER, allBiomes);
 	}
 	
 	// Generates a spawn egg for the entity
 	public static void generateSpawnEgg() {
-		EntityRegistry.registerEgg(SlimeSand.class, 16049320, 14858107);
+		EntityRegistry.registerEgg(SlimeVoid.class, 10205416, 10993884);
 		EntityRegistry.registerEgg(SlimeMud.class, 7428915, 5787429);
+		EntityRegistry.registerEgg(SlimeSand.class, 16049320, 14858107);
+		EntityRegistry.registerEgg(SlimeTar.class, 1973277, 2696228);
 	}
 
 	/**

@@ -17,6 +17,8 @@ public class ModelSlimeVoid extends ModelBase {
             this.slimeBodies.addBox(-3.0f, 17.0f, -5.0f, 6, 6, 10);
             this.slimeBodies.addBox(-5.0f, 17.0f, -3.0f, 10, 6, 6);
             this.slimeBodies.addBox(-3.0f, 15.0f, -3.0f, 6, 10, 6);
+            this.slimeBodies.addBox(-0.5f, 15.05f, -0.5f, 1, 3, 1);
+            this.slimeBodies.addBox(-0.5f, 18.05f, -0.5f, 1, 5, 1);
         }
         this.slimeBodies.setTextureSize(128, 128);
     }
