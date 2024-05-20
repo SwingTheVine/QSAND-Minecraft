@@ -16,6 +16,7 @@ public class ConfigHandler {
 	public static boolean spawnSlimeTar; // SpawnTS
 	
 	// Options
+	public static boolean onlyMFQM;
 	public static boolean makeBlocksOpaque; // QSOpacity
 	public static boolean useSkinOverlay; // QSCover
 	public static boolean useCustomAirHUD; // QSCAir
@@ -57,6 +58,7 @@ public class ConfigHandler {
 		
 		category = "Options";
 		config.addCustomCategoryComment(category, "Changes aspects of the game");
+		onlyMFQM = config.getBoolean("Use Only MFQM", category, false, "Removes everything but what was in MFQM");
 		makeBlocksOpaque = config.getBoolean("Make Blocks Opaque", category, false, "Prevents light from traveling through blocks");
 		useSkinOverlay = config.getBoolean("Use Skin Overlay", category, true, "Enables muddy skin overlay on players");
 		useCustomAirHUD = config.getBoolean("Use Custom Air HUD", category, true, "Enables custom air overlay");

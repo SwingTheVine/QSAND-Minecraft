@@ -823,7 +823,7 @@ public class Mud extends Block implements IMetaBlockName {
 			if (preMudLevel > playerMudControl.getMudLevel() * (playerMudControl.getMudTime() / 1000.0f)) {
 				playerMudControl.setMudLevel(preMudLevel); // Sets the players mud level to the pre-mud level
 				
-				final int mudType = 10;
+				final int mudType = 10; // TODO: Fix
 				playerMudControl.setMudType(mudType); // Sets the mud type to the mud type of this block
 				
 				// If the mud time is less than 1000 ticks...

@@ -1,11 +1,16 @@
 package com.SwingTheVine.QSAND.init;
 
+import java.util.ArrayList;
+
 import com.SwingTheVine.QSAND.QSAND;
 import com.SwingTheVine.QSAND.entity.Bubble;
+import com.SwingTheVine.QSAND.entity.SlimeMud;
 import com.SwingTheVine.QSAND.entity.SlimeSand;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 public class QSAND_Entities {
@@ -14,6 +19,7 @@ public class QSAND_Entities {
 	
 	public static void registerEntities() {
 		registerEntity(Bubble.class, "bubble", 120, 2, true); // Registers the bubble entity
+		registerEntity(SlimeMud.class, "slime_mud", 80, 3, true);
 		registerEntity(SlimeSand.class, "slime_sand", 80, 3, true); // Registers the sand slime entity
 	}
 	
@@ -27,12 +33,66 @@ public class QSAND_Entities {
      * @param biomes List of biomes
      */
 	public static void setEntityToSpawn() {
-		//EntityRegistry.addSpawn((Class)Bubble.class, 1, 1, 1, EnumCreatureType.AMBIENT); // Makes the entity spawn naturally
+		
+		// Generates lists of different biome types
+		final ArrayList<BiomeGenBase> allBiomesList = new ArrayList<BiomeGenBase>();
+		final ArrayList<BiomeGenBase> swampBiomesList = new ArrayList<BiomeGenBase>();
+		final ArrayList<BiomeGenBase> desertBiomesList = new ArrayList<BiomeGenBase>();
+		
+		// For every biome...
+		for (final BiomeGenBase biome : BiomeGenBase.getBiomeGenArray()) {
+			
+			// If the biome is NOT null...
+			if (biome != null) {
+				
+				// Add the biome to the "all biomes" list
+				allBiomesList.add(biome);
+				
+				// If the biome is a swamp,
+				//    AND the biome is NOT hills,
+				//    AND the biome is NOT magical,
+				//    AND the biome is NOT mushroom,
+				//    AND the biome is NOT plains,
+				//    AND the biome is NOT forest,
+				//    AND the biome is NOT wet...
+				if (BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.SWAMP) 
+						&& !BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.HILLS)
+						&& !BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.MAGICAL)
+						&& !BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.MUSHROOM)
+						&& !BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.PLAINS)
+						&& !BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.FOREST)
+						&& !BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.WET)) {
+					
+					// Add the biome to the "swamp biomes" list
+					swampBiomesList.add(biome);
+				}
+				
+				// If the biome is sandy (previously desert)...
+				if (BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.SANDY)) {
+					desertBiomesList.add(biome); // Add the biome to the "desert biomes" list
+				}
+			}
+			
+			swampBiomesList.add(BiomeGenBase.swampland); // Adds swampland to the "swamp biomes" list
+			desertBiomesList.add(BiomeGenBase.desert); // Adds desert to the "desert biomes" list
+			desertBiomesList.add(BiomeGenBase.desertHills); // Adds desert hills to the "desert biomes" list
+		}
+		
+		final BiomeGenBase[] allBiomesArray = new BiomeGenBase[allBiomesList.size()];
+		final BiomeGenBase[] swampBiomesArray = new BiomeGenBase[swampBiomesList.size()];
+		final BiomeGenBase[] desertBiomesArray = new BiomeGenBase[desertBiomesList.size()];
+		
+		final BiomeGenBase[] allBiomes = allBiomesList.toArray(allBiomesArray);
+		final BiomeGenBase[] swampBiomes = swampBiomesList.toArray(swampBiomesArray);
+		final BiomeGenBase[] desertBiomes = desertBiomesList.toArray(desertBiomesArray);
+		
+		EntityRegistry.addSpawn(SlimeMud.class, 2, 1, 1, EnumCreatureType.MONSTER, swampBiomes);
 	}
 	
 	// Generates a spawn egg for the entity
 	public static void generateSpawnEgg() {
 		EntityRegistry.registerEgg(SlimeSand.class, 16049320, 14858107);
+		EntityRegistry.registerEgg(SlimeMud.class, 7428915, 5787429);
 	}
 
 	/**

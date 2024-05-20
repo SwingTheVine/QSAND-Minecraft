@@ -2,7 +2,7 @@ package com.SwingTheVine.QSAND.entity.ai;
 
 import java.util.Random;
 
-import com.SwingTheVine.QSAND.entity.SlimeSand;
+import com.SwingTheVine.QSAND.entity.SlimeMud;
 import com.SwingTheVine.QSAND.handler.ConfigHandler;
 
 import net.minecraft.entity.Entity;
@@ -15,17 +15,17 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.world.World;
 
-public class SlimeSandAI {
+public class SlimeMudAI {
 
 	private World world;
 	private Class <? extends Entity> player;
-	private SlimeSand slime;
+	private SlimeMud slime;
 	private final EntityAINearestAttackableTarget.Sorter sorter;
 	
 	private Random random = new Random(30);
 	
 	// Constructor
-	public SlimeSandAI(World world, Class <? extends Entity> player, SlimeSand slime) {
+	public SlimeMudAI(World world, Class <? extends Entity> player, SlimeMud slime) {
 		this.world = world; // The current world
 		this.player = player; // The current player
 		this.slime = slime; // The current slime
@@ -34,11 +34,11 @@ public class SlimeSandAI {
 	
 	// How to handle attacking
 	public static class AISlimeAttack extends EntityAIBase {
-        private SlimeSand slime; // The current slime
+        private SlimeMud slime; // The current slime
         private int field_179465_b; // Starts at 300 and decreases every execution that the player has disabled damage
 
         // Constructor
-        public AISlimeAttack(SlimeSand slime) {
+        public AISlimeAttack(SlimeMud slime) {
             this.slime = slime; // The current slime
             this.setMutexBits(2); // If this task has to run async or sync
         }
@@ -77,18 +77,18 @@ public class SlimeSandAI {
             this.slime.faceEntity(this.slime.getAttackTarget(), 10.0F, 20.0F); // Faces the entity to attack
             
             // Unknown
-            ((SlimeSandAI.SlimeMoveHelper)this.slime.getMoveHelper()).func_179920_a(this.slime.rotationYaw, this.slime.canDamagePlayer());
+            ((SlimeMudAI.SlimeMoveHelper)this.slime.getMoveHelper()).func_179920_a(this.slime.rotationYaw, this.slime.canDamagePlayer());
         }
     }
 
 	// Makes the slime face a random direction
 	public static class AISlimeFaceRandom extends EntityAIBase {
-	        private SlimeSand slime; // The current slime
+	        private SlimeMud slime; // The current slime
 	        private float slimeYaw; // Slime Yaw rotation in degrees
 	        private int field_179460_c; // Unknown
 	
 	        // Constructor
-	        public AISlimeFaceRandom(SlimeSand slime) {
+	        public AISlimeFaceRandom(SlimeMud slime) {
 	            this.slime = slime; // The current slime
 	            this.setMutexBits(2); // If this task has to run async or sync
 	        }
@@ -112,16 +112,16 @@ public class SlimeSandAI {
 	            }
 	
 	            // Rotates the slime
-	            ((SlimeSandAI.SlimeMoveHelper)this.slime.getMoveHelper()).func_179920_a(this.slimeYaw, false);
+	            ((SlimeMudAI.SlimeMoveHelper)this.slime.getMoveHelper()).func_179920_a(this.slimeYaw, false);
 	        }
 	    }
 	
 	// Allows the slime to hop. Return false in "shouldExecute" to disable
 	public static class AISlimeHop extends EntityAIBase {
-	        private SlimeSand slime; // The current slime
+	        private SlimeMud slime; // The current slime
 	
 	        // Constructor
-	        public AISlimeHop(SlimeSand slime) {
+	        public AISlimeHop(SlimeMud slime) {
 	            this.slime = slime; // The current slime
 	            this.setMutexBits(5); // // If this task has to run async or sync
 	        }
@@ -135,18 +135,18 @@ public class SlimeSandAI {
 	        public void updateTask() {
 	        	
 	        	// Sets the speed the slime hops at
-	            ((SlimeSandAI.SlimeMoveHelper)this.slime.getMoveHelper()).setSpeed(1.0D);
+	            ((SlimeMudAI.SlimeMoveHelper)this.slime.getMoveHelper()).setSpeed(1.0D);
 	        }
 	    }
 	
 	public static class SlimeMoveHelper extends EntityMoveHelper {
 	        private float field_179922_g; // Unknown
 	        private int slimeJumpDelay; // How long to wait between jumps
-	        private SlimeSand slime; // The current slime
+	        private SlimeMud slime; // The current slime
 	        private boolean slimeAggro; // If the slime is aggroed
 	
 	        // Constructor
-	        public SlimeMoveHelper(SlimeSand slime) {
+	        public SlimeMoveHelper(SlimeMud slime) {
 	            super(slime); // Runs all the code in the super implementation
 	            this.slime = slime; // The current slime
 	            
@@ -196,7 +196,7 @@ public class SlimeSandAI {
 	
 		                    // If something unknown...
 	                        if (this.slimeAggro) {
-	                            this.slimeJumpDelay /= 10; // Set the jump delay to 10% of what it previously was
+	                            this.slimeJumpDelay /= 3; // Set the jump delay to 33% of what it previously was
 	                        }
 	                        
 	                        // If there is no entity ridding the slime...
@@ -207,9 +207,8 @@ public class SlimeSandAI {
 	                        	// If the slime makes a sound when it jumps...
 	                        	if (this.slime.makesSoundOnJump()) {
 	                        		
-	                        		// Play the sounds
+	                        		// Play the sound
 	                                this.slime.playSound(this.slime.getJumpSound(), this.slime.getSoundVolume(), ((this.slime.getRNG().nextFloat() - this.slime.getRNG().nextFloat()) * 0.2F + 1.0F) * 0.8F);
-	                                this.slime.playSound("dig.sand", 0.5f, this.slime.getRNG().nextFloat() * 0.5f + 0.5f);
 	                            }
 	                        	
 	                        	this.slime.moveStrafing = 1.0f - this.slime.getRNG().nextFloat() * 2.0f; // Strafes between 1 and -0.98

@@ -145,7 +145,7 @@ public class SlimeSand extends EntityLiving implements IMob {
         this.setSlimeSize(size + 1); // Set the size of the slime to the size + 1
     }
     
-    // 
+    // Depth of slime
     protected void syncronizeDepth() {
     	
     	// If the code is NOT executing server-side...
