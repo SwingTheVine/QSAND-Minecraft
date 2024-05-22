@@ -33,7 +33,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class Mud extends Block implements IMetaBlockName {
+public class Mud extends QuicksandBlock implements IMetaBlockName {
 	private static final String[] types = {"0", "1", "2", "3"}; // Values of the different metadata levels
 	private static final boolean useOneTexture = true; // Should all metadata variants use the same texture?
 	private static final float[] sinkTypes = {0.35F, 0.50F, 0.75F, 1.00F}; // The maximum sink level for each metadata variant
@@ -712,7 +712,7 @@ public class Mud extends Block implements IMetaBlockName {
 	// Declares that this block ID has metadata values.
 	// Declares the metadata values for this block.
 	// The metadata value corrosponds with its index in "types".
-	// THIS FUNCTION IS NEEDED FOR BLOCK DECLARATION
+	// THIS FUNCTION IS NEEDED FOR BLOCK DECLARATION WITH METADATA
 	@SideOnly(Side.CLIENT)
     public void getSubBlocks(Item block, CreativeTabs creativeTabs, List<ItemStack> list) {
 		
@@ -723,14 +723,14 @@ public class Mud extends Block implements IMetaBlockName {
     }
 	
 	// Obtains the block's metadata from the block's blockstate.
-	// THIS FUNCTION IS NEEDED FOR BLOCK DECLARATION
+	// THIS FUNCTION IS NEEDED FOR BLOCK DECLARATION WITH METADATA
 	@Override
 	public int getMetaFromState(IBlockState state) {
         return (Integer)state.getValue(SINK).intValue();
     }
 	
 	// Obtains the block's blockstate from the block's metadata.
-	// THIS FUNCTION IS NEEDED FOR BLOCK DECLARATION
+	// THIS FUNCTION IS NEEDED FOR BLOCK DECLARATION WITH METADATA
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(SINK, Integer.valueOf(meta));
@@ -743,7 +743,7 @@ public class Mud extends Block implements IMetaBlockName {
 	}
 	
 	// Creates a new block state for this block ID.
-	// THIS FUNCTION IS NEEDED FOR BLOCK DECLARATION
+	// THIS FUNCTION IS NEEDED FOR BLOCK DECLARATION WITH METADATA
 	@Override
 	protected BlockState createBlockState() {
         return new BlockState(this, new IProperty[] {SINK});
@@ -838,11 +838,13 @@ public class Mud extends Block implements IMetaBlockName {
 	}
 	
 	// Returns types of metadata for the block
+	@Override
 	public String[] getTypes() {
 		return types;
 	}
 	
 	// Returns if only one texture should be used for all metadata types
+	@Override
 	public boolean getUseOneTexture() {
 		return useOneTexture;
 	}

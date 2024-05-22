@@ -4,6 +4,7 @@ import org.lwjgl.Sys;
 import org.lwjgl.opengl.GL11;
 
 import com.SwingTheVine.QSAND.ModInfo;
+import com.SwingTheVine.QSAND.blocks.QuicksandBlock;
 import com.SwingTheVine.QSAND.entity.Bubble;
 
 import net.minecraft.client.Minecraft;
@@ -16,6 +17,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
@@ -26,7 +28,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BubbleRender extends Render<Bubble> {
 
 	//static BubbleModel model = new BubbleModel();
-    private static final ResourceLocation entityTexture = new ResourceLocation(ModInfo.id, "blocks/mud_0"); // The texture the entity will use
+    private static final ResourceLocation entityTexture = new ResourceLocation(ModInfo.id, "blocks/larvae_0"); // The texture the entity will use
     
     // Constructor
     public <T extends Entity> BubbleRender(RenderManager renderManager) {
@@ -40,6 +42,16 @@ public class BubbleRender extends Render<Bubble> {
             return; // Don't render the bubble
         }
     	
+    	// X, Y, Z coordinates of the bubble
+        final BlockPos bubblePos = new BlockPos((int)Math.floor(bubble.posX), (int)Math.floor(bubble.posY), (int)Math.floor(bubble.posZ));
+        
+        if (bubble.worldObj.getBlockState(bubblePos.down()).getBlock() == Blocks.air 
+        		|| bubble.worldObj.getBlockState(bubblePos.down()).getBlock() == Blocks.water 
+        		|| bubble.worldObj.getBlockState(bubblePos.down()).getBlock() == Blocks.lava) {
+        	System.out.println("Fail: " + bubble.worldObj.getBlockState(bubblePos.down()).getBlock());
+        	return;
+        }
+        
         final Tessellator tessellator = Tessellator.getInstance(); // Drawing engine I think
         
         //final IIcon Icon = bubble.block.getIcon(1, bubble.entityMetadata);
@@ -55,15 +67,37 @@ public class BubbleRender extends Render<Bubble> {
         GL11.glEnable(3042);
         GL11.glBlendFunc(770, 771);
         
-        // X, Y, Z coordinates of the bubble
-        final BlockPos bubblePos = new BlockPos((int)Math.floor(bubble.posX), (int)Math.floor(bubble.posY), (int)Math.floor(bubble.posZ));
-        
         int intColor;
         
         try {
-        	intColor = bubble.block.getBlockColor();
+        	try {
+        		System.out.println("Bubble: " + bubble);
+        		System.out.println("Bubble.blockpos: " + bubble.worldObj.getBlockState(bubblePos.down()));
+        		System.out.println("Bubble.block: " + bubble.block);
+        		//System.out.println("color: " + bubble.block.getQuicksandColorMultiplier(bubble.worldObj, bubblePos.down()));
+        	} catch (Exception ignored) {
+        		System.out.println("The sys logs failed...");
+        	}
+        	
+        	try {
+	        	if (bubble.block == null) {
+	        		System.out.println("null");
+	        		intColor = ((QuicksandBlock)bubble.worldObj.getBlockState(bubblePos.down()).getBlock()).getQuicksandColorMultiplier(bubble.worldObj, bubblePos.down());
+	        		System.out.println(intColor);
+	        	} else {
+	        		System.out.println("not null");
+	        		intColor = bubble.block.getQuicksandColorMultiplier(bubble.worldObj, bubblePos.down());
+	        		System.out.println(intColor);
+	        	}
+        	} catch (Exception ignored) {
+        		System.out.println("Fail 2");
+        		intColor = 16777215;
+        		System.out.println(intColor);
+        	}
         } catch (Exception ignored) {
+        	System.out.println("There was an error obtaining the color multiplier");
         	intColor = 16777215;
+        	System.out.println(intColor);
         }
         
         final int red = (0xFF0000 & intColor) / 65536;

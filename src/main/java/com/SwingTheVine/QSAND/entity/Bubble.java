@@ -3,6 +3,7 @@ package com.SwingTheVine.QSAND.entity;
 import org.lwjgl.Sys;
 
 import com.SwingTheVine.QSAND.ModInfo;
+import com.SwingTheVine.QSAND.blocks.QuicksandBlock;
 import com.SwingTheVine.QSAND.handler.ConfigHandler;
 
 import net.minecraft.block.Block;
@@ -18,7 +19,7 @@ public class Bubble extends Entity {
 	public long entitySpawnTime; // When the bubble spawned
 	public int entityLiveTime; // How long the bubble should live for
 	public float size; // The size of the bubble
-	public Block block; // The block that spawned the bubble
+	public QuicksandBlock block; // The block that spawned the bubble
 	public int entityMetadata; // The metadata of the bubble
 	public float randomRotation; // A randomized rotation to spawn at
 	public static final String textureLocation = ModInfo.id + ":textures/blocks/mud_0.png"; // The location of the texture used for the bubble
@@ -39,7 +40,7 @@ public class Bubble extends Entity {
 	}
 	
 	// Constructor
-	public Bubble(final World world, final double bubblePosX, final double bubblePosY, final double bubblePosZ, final Block block, final int blockMetadata, final float size, final int time) {
+	public Bubble(final World world, final double bubblePosX, final double bubblePosY, final double bubblePosZ, final QuicksandBlock block, final int blockMetadata, final float size, final int time) {
         
 		this(world); // What world the bubble is in
         this.block = block; // What block spawned the bubble
@@ -80,7 +81,7 @@ public class Bubble extends Entity {
     }
 	
 	// Constructor
-	public Bubble(final World world, final double blockPosX, final double blockPosY, final double blockPosZ, final Block block, final int metadata, final float size, final int time, final int delay) {
+	public Bubble(final World world, final double blockPosX, final double blockPosY, final double blockPosZ, final QuicksandBlock block, final int metadata, final float size, final int time, final int delay) {
         this(world, blockPosX, blockPosY, blockPosZ, block, metadata, size, time);
         this.entitySpawnTime += delay; // Increases the time until death
     }

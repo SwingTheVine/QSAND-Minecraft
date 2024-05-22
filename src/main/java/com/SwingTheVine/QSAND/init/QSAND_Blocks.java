@@ -6,6 +6,7 @@ import com.SwingTheVine.QSAND.blocks.BlockTest;
 import com.SwingTheVine.QSAND.blocks.ItemBlockMeta;
 import com.SwingTheVine.QSAND.blocks.Mud;
 import com.SwingTheVine.QSAND.blocks.Quicksand;
+import com.SwingTheVine.QSAND.blocks.QuicksandBlock;
 import com.SwingTheVine.QSAND.blocks.SoftSnow;
 
 import net.minecraft.block.Block;
@@ -21,10 +22,10 @@ public class QSAND_Blocks {
 	
 	// MFQM blocks that you can sink in
 	public static Block bog;
-	public static Block snowSoft;
+	public static QuicksandBlock snowSoft;
 	public static Block quicksandDry;
 	public static Block morass;
-	public static Block quicksand;
+	public static QuicksandBlock quicksand;
 	public static Block quicksandJungle;
 	public static Block slimeSinking;
 	public static Block mire;
@@ -46,10 +47,11 @@ public class QSAND_Blocks {
 	public static Block larvae;
 	public static Block chocolateLiquid;
 	public static Block slurry;
-	public static Block mud;
+	public static QuicksandBlock mud;
 	public static Block gravelSoft;
 	public static Block honey;
 	
+	// MFQM blocks not included in the sink list
 	public static Block clayHardened;
 	public static Block meat;
 	public static Block meatHole;
@@ -113,9 +115,9 @@ public class QSAND_Blocks {
 		
 		// Constructs all blocks with their names and tab
 		test_block = new BlockTest(Material.ground).setUnlocalizedName("test_block").setCreativeTab(QSAND.QSANDTab);
-		mud = new Mud(Material.ground).setUnlocalizedName("mud").setCreativeTab(QSAND.QSANDTab);
-		quicksand = new Quicksand(Material.ground).setUnlocalizedName("quicksand").setCreativeTab(QSAND.QSANDTab);
-		snowSoft = new SoftSnow(Material.ground).setUnlocalizedName("snow_soft").setCreativeTab(QSAND.QSANDTab);
+		mud = (QuicksandBlock)new Mud(Material.ground).setUnlocalizedName("mud").setCreativeTab(QSAND.QSANDTab);
+		quicksand = (QuicksandBlock)new Quicksand(Material.ground).setUnlocalizedName("quicksand").setCreativeTab(QSAND.QSANDTab);
+		snowSoft = (QuicksandBlock)new SoftSnow(Material.ground).setUnlocalizedName("snow_soft").setCreativeTab(QSAND.QSANDTab);
 	}
 	
 	public static void registerBlocks() {

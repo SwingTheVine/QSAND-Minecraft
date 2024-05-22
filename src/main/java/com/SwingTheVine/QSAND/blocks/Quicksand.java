@@ -3,6 +3,7 @@ package com.SwingTheVine.QSAND.blocks;
 import java.util.List;
 
 import com.SwingTheVine.QSAND.entity.SlimeSand;
+import com.SwingTheVine.QSAND.handler.BeaconHandler;
 import com.SwingTheVine.QSAND.handler.ConfigHandler;
 import com.SwingTheVine.QSAND.manager.QuicksandManager;
 
@@ -26,11 +27,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class Quicksand extends Block implements IMetaBlockName {
+public class Quicksand extends QuicksandBlock implements IMetaBlockName {
 	private static final String[] types = {"0"}; // Values of the different metadata levels
 	private static final boolean useOneTexture = true; // Should all metadata variants use the same texture?
 	private static final float[] sinkTypes = {1.00F}; // The maximum sink level for each metadata variant
-
+	private BeaconHandler beacon = new BeaconHandler(false); // Constructs a beacon handler. Enabled if "true" passed in
+	
 	// Constructor
 	public Quicksand(Material material) {
 		super(material);
@@ -323,10 +325,10 @@ public class Quicksand extends Block implements IMetaBlockName {
             // If the entity's velocity is greater than -0.1...
             if (triggeringEntity.motionY > -0.1) {
                 // This only happens when the entity is NOT moving downwards very fast
-            	System.out.println("MotionY Beacon 2.1: " + triggeringEntity.motionY);
+            	beacon.logBeacon("MotionY", "2.1", triggeringEntity.motionY);
             	triggeringEntity.motionY = 0.0; // Make the entity stop moving
             } else {
-            	System.out.println("MotionY Beacon 2.2: " + triggeringEntity.motionY);
+            	beacon.logBeacon("MotionY", "2.2", triggeringEntity.motionY);
             	triggeringEntity.motionY /= 2.0; // Slow the downwards motion of the entity by 100%
             	// TODO: Changed. 1.5 -> 2.0
             }
@@ -376,9 +378,9 @@ public class Quicksand extends Block implements IMetaBlockName {
                 		// Basically, "thicknessLower" is the maximum value, and the further the player has sunk, the closer it approaches 0.
                 		// After a while (happens sooner the higher the punishment value is), the rate it approaches 0 changes and becomes faster
                 		// https://www.desmos.com/calculator/klpmbgz7je
-                		System.out.println("MotionY Beacon 6");
+                		beacon.logBeacon("MotionY", "6", thicknessLower / Math.max((movementPunish_mofKofDiv - 1.0) * (Math.max(triggEntitySunkMod_kof1m - 0.5, 0.75) * 1.6), 1.0) / Math.pow(Math.max(triggEntitySunkMod_kof1m / 1.25, 1.0), 2.0));
                 		triggeringEntity.motionY += thicknessLower / Math.max((movementPunish_mofKofDiv - 1.0) * (Math.max(triggEntitySunkMod_kof1m - 0.5, 0.75) * 1.6), 1.0) / Math.pow(Math.max(triggEntitySunkMod_kof1m / 1.25, 1.0), 2.0);
-                		System.out.println("Equation Beacon 2: " + thicknessLower / Math.max((movementPunish_mofKofDiv - 1.0) * (Math.max(triggEntitySunkMod_kof1m - 0.5, 0.75) * 1.6), 1.0) / Math.pow(Math.max(triggEntitySunkMod_kof1m / 1.25, 1.0), 2.0));
+                		beacon.logBeacon("Equation", "2", thicknessLower / Math.max((movementPunish_mofKofDiv - 1.0) * (Math.max(triggEntitySunkMod_kof1m - 0.5, 0.75) * 1.6), 1.0) / Math.pow(Math.max(triggEntitySunkMod_kof1m / 1.25, 1.0), 2.0));
                 		
                 		triggeringEntity.onGround = false; // The entity is marked as NOT on the ground
                 		triggeringEntity.fallDistance = 0.0f; // The entity takes no fall damage
@@ -426,7 +428,7 @@ public class Quicksand extends Block implements IMetaBlockName {
                 		
                 		// EQUATION BEACON 3. 2nd complex
                 		triggeringEntity.motionY += thicknessLower / Math.max((movementPunish_mofKofDiv - 1.0) * (Math.max(triggEntitySunkMod_kof1m - 0.5, 0.75) * 1.6), 1.0) / Math.pow(Math.max(triggEntitySunkMod_kof1m / 1.25, 1.0), 2.0);
-                		System.out.println("Equation Beacon 3: " + thicknessLower / Math.max((movementPunish_mofKofDiv - 1.0) * (Math.max(triggEntitySunkMod_kof1m - 0.5, 0.75) * 1.6), 1.0) / Math.pow(Math.max(triggEntitySunkMod_kof1m / 1.25, 1.0), 2.0));
+                		beacon.logBeacon("Equation", "3", thicknessLower / Math.max((movementPunish_mofKofDiv - 1.0) * (Math.max(triggEntitySunkMod_kof1m - 0.5, 0.75) * 1.6), 1.0) / Math.pow(Math.max(triggEntitySunkMod_kof1m / 1.25, 1.0), 2.0));
                 		
                 		
                 		QuicksandManager.setStuckEffect((EntityLivingBase)triggeringEntity, mr_blackgoo); // Makes the entity stuck
@@ -508,13 +510,13 @@ public class Quicksand extends Block implements IMetaBlockName {
 
                                 // If the entity is NOT marked as moving...
                                 if (!triggEntityMoving) {
-                                    System.out.println("MotionY Beacon 8.1");
+                                    beacon.logBeacon("MotionY", "8.1");
                                     // Bumps the entity downwards slightly.
                                     // 0.0725 (plus a modifer) amplified by "thicknessHigher". If thicknessHigher is 1.05, the entity does not sink
                                     triggeringEntity.motionY += (0.0725 + sinkRateMod_mys) * thicknessHigher;
                                 }
                                 else {
-                                    System.out.println("MotionY Beacon 8.2");
+                                    beacon.logBeacon("MotionY", "8.2");
                                     // Bumps the entity downwards slightly.
                                     // 0.0725 (plus a modifier) amplified by "thicknessHigher". If thicknessHigher is 1.05, the entity does not sink
                                     // Then, it is divided by the punishment value plus 0.025
@@ -524,13 +526,13 @@ public class Quicksand extends Block implements IMetaBlockName {
                                 }
                             } // ...if the entity is NOT marked as moving...
                             else if (!triggEntityMoving) {
-                            	System.out.println("MotionY Beacon 9");
+                            	beacon.logBeacon("MotionY", "9");
                             	// Moves the entity downwards slightly.
                                 // 0.075 (plus a modifer) amplified by "thicknessHigher". If thicknessHigher is 1.05, the entity goes upwards for a tick
                                 triggeringEntity.motionY += (0.075 + sinkRateMod_mys) * thicknessHigher; // Unknown modifer to entity's Y velocity
                             }
                             else {
-                            	System.out.println("MotionY Beacon 10");
+                            	beacon.logBeacon("MotionY", "10");
                             	// Bumps the entity downwards slightly.
                                 // 0.075 (plus a modifier) amplified by "thicknessHigher". If thicknessHigher is 1.05, the entity goes upwards for a tick
                                 // Then, it is divided by the punishment value plus 0.025
@@ -547,13 +549,13 @@ public class Quicksand extends Block implements IMetaBlockName {
                         	
                             // If the entity is marked as not moving...
                             if (!triggEntityMoving) {
-                            	System.out.println("MotionY Beacon 11.1: " + (0.0725 + sinkRateMod_mys) * thicknessHigher);
+                            	beacon.logBeacon("MotionY", "11.1", (0.0725 + sinkRateMod_mys) * thicknessHigher);
                             	// Moves the entity downwards slightly.
                                 // 0.0725 (plus a modifer) amplified by "thicknessHigher". If thicknessHigher is 1.05, the entity does not sink
                                 triggeringEntity.motionY += (0.0725 + sinkRateMod_mys) * thicknessHigher;
                             }
                             else {
-                            	System.out.println("MotionY Beacon 11.2: " + (0.0725 + sinkRateMod_mys) * thicknessHigher / (movementPunish_mofKofDiv + 0.025));
+                            	beacon.logBeacon("MotionY", "11.2", (0.0725 + sinkRateMod_mys) * thicknessHigher / (movementPunish_mofKofDiv + 0.025));
                             	// Bumps the entity downwards slightly.
                                 // 0.0725 (plus a modifier) amplified by "thicknessHigher". If thicknessHigher is 1.05, the entity does not sink
                                 // Then, it is divided by the punishment value plus 0.025
@@ -657,27 +659,32 @@ public class Quicksand extends Block implements IMetaBlockName {
         }
     }
 	
+	@Override
 	@SideOnly(Side.CLIENT)
-    public int getBlockColor() {
-        return 16777215;
+    public int getQuicksandBlockColor() {
+        return 15658734;//16777215;
     }
     
+	@Override
     @SideOnly(Side.CLIENT)
-    public int getRenderColor(final int par1) {
-        return 16777215;
+    public int getQuicksandRenderColor(IBlockState state) {
+        return 15658734;//16777215;
     }
     
+    @Override
     @SideOnly(Side.CLIENT)
-    public int colorMultiplier(IBlockAccess world, BlockPos pos, int renderPass) {
-        return 16777215;
+    public int getQuicksandColorMultiplier(IBlockAccess world, BlockPos pos, int renderPass) {
+        return 15658734;//16777215;
     }
 	
 	// Returns types of metadata for the block
+    @Override
 	public String[] getTypes() {
 		return types;
 	}
 	
 	// Returns if only one texture should be used for all metadata types
+    @Override
 	public boolean getUseOneTexture() {
 		return useOneTexture;
 	}

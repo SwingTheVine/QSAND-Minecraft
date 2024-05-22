@@ -2,6 +2,7 @@ package com.SwingTheVine.QSAND.manager;
 
 import java.util.UUID;
 
+import com.SwingTheVine.QSAND.blocks.QuicksandBlock;
 import com.SwingTheVine.QSAND.client.player.CustomPlayerGUIRenderer;
 import com.SwingTheVine.QSAND.entity.Bubble;
 import com.SwingTheVine.QSAND.entity.EntityLongStick;
@@ -628,17 +629,17 @@ public class QuicksandManager {
 	}
 	
 	// Spawns a bubble on a delay
-	public static void spawnBubble(final World world, final double blockPosX, final double blockPosY, final double blockPosZ, final Block block, final int metadata, final float size, final int time) {
+	public static void spawnBubble(final World world, final double blockPosX, final double blockPosY, final double blockPosZ, final QuicksandBlock block, final int metadata, final float size, final int time) {
         world.spawnEntityInWorld((Entity)new Bubble(world, blockPosX, blockPosY, blockPosZ, block, metadata, size, time));
     }
 	
 	// Spawns a bubble on a delay
-	public static void spawnBubbleDelay(final World world, final double blockPosX, final double blockPosY, final double blockPosZ, final Block block, final int metadata, final float size, final int time, final int delay) {
+	public static void spawnBubbleDelay(final World world, final double blockPosX, final double blockPosY, final double blockPosZ, final QuicksandBlock block, final int metadata, final float size, final int time, final int delay) {
         world.spawnEntityInWorld((Entity)new Bubble(world, blockPosX, blockPosY, blockPosZ, block, metadata, size, time, delay));
     }
 	
 	// Spawns a random body bubble
-	public static void spawnBodyBubble(final World world, final Entity entity, final int blockPosX, final int blockPosY, final int blockPosZ, final Block block, boolean useMetadata) {
+	public static void spawnBodyBubble(final World world, final Entity entity, final int blockPosX, final int blockPosY, final int blockPosZ, final QuicksandBlock block, boolean useMetadata) {
 		int blockMetadata = 0;
 		
 		// If the world is NOT a server instance, AND the user does NOT want to spawn singleplayer bubbles...
@@ -671,7 +672,7 @@ public class QuicksandManager {
 	}
 	
 	// Spawns a random body bubble
-	public static void spawnBodyBubbleRandom(final World world, final Entity entity, final int blockPosX, final int blockPosY, final int blockPosZ, final Block block, boolean useMetadata) {
+	public static void spawnBodyBubbleRandom(final World world, final Entity entity, final int blockPosX, final int blockPosY, final int blockPosZ, final QuicksandBlock block, boolean useMetadata) {
 		int blockMetadata = 0;
 		
 		// If the world is NOT a server instance, AND the user does NOT want to spawn singleplayer bubbles...
@@ -704,7 +705,7 @@ public class QuicksandManager {
 	}
 	
 	// Spawns bubbles for when an entity is drowning
-	public static void spawnDrowningBubble(final World world, final Entity entity, final Block block, boolean useMetadata) {
+	public static void spawnDrowningBubble(final World world, final Entity entity, final QuicksandBlock block, boolean useMetadata) {
 		int blockMetadata = 0;
 		
 		// If the world is NOT a server instance, AND the user does NOT want to spawn singleplayer bubbles...
@@ -771,7 +772,7 @@ public class QuicksandManager {
     }
 	
 	// Spawns Bubbles for Long Stick
-	public static void spawnStickBubble(final World world, final double x, final double y, final double z, final Block block, boolean useMetadata, final boolean deep) {
+	public static void spawnStickBubble(final World world, final double x, final double y, final double z, final QuicksandBlock block, boolean useMetadata, final boolean deep) {
         
 		// If the code is NOT executing server-side...
 		if (!world.isRemote) {

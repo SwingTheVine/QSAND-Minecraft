@@ -3,6 +3,7 @@ package com.SwingTheVine.QSAND.blocks;
 import java.util.List;
 import java.util.Random;
 
+import com.SwingTheVine.QSAND.handler.BeaconHandler;
 import com.SwingTheVine.QSAND.handler.ConfigHandler;
 import com.SwingTheVine.QSAND.manager.QuicksandManager;
 
@@ -34,12 +35,13 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class SoftSnow extends Block implements IMetaBlockName {
+public class SoftSnow extends QuicksandBlock implements IMetaBlockName {
 	private static final String[] types = {"0", "1"}; // Values of the different metadata levels
 	private static final boolean useOneTexture = true; // Should all metadata variants use the same texture?
 	public static final PropertyInteger SINK = PropertyInteger.create("sink", 0, Integer.valueOf(types.length-1)); // Creates a metadata value for every "types" metadata value
 	private static final float[] sinkTypes = {1.00F, 1.00F}; // The maximum sink level for each metadata variant
-
+	private BeaconHandler beacon = new BeaconHandler(false); // Constructs a beacon handler. Enabled if "true" passed in
+	
 	// Constructor
 	public SoftSnow(Material material) {
 		super(material);
@@ -225,10 +227,10 @@ public class SoftSnow extends Block implements IMetaBlockName {
             // If the entity's velocity is greater than -0.1...
             if (triggeringEntity.motionY > -0.1) {
                 // This only happens when the entity is NOT moving downwards very fast
-            	System.out.println("MotionY Beacon 2.1: " + triggeringEntity.motionY);
+            	beacon.logBeacon("MotionY", "2.1", triggeringEntity.motionY);
             	triggeringEntity.motionY = 0.0; // Make the entity stop moving
             } else {
-            	System.out.println("MotionY Beacon 2.2: " + triggeringEntity.motionY);
+            	beacon.logBeacon("MotionY", "2.2", triggeringEntity.motionY);
             	triggeringEntity.motionY /= 2.0; // Slow the downwards motion of the entity by 100%
             }
             
@@ -360,7 +362,7 @@ public class SoftSnow extends Block implements IMetaBlockName {
 
                             // If the entity is NOT marked as moving...
                             if (!triggEntityMoving) {
-                                System.out.println("MotionY Beacon 8.1");
+                                beacon.logBeacon("MotionY", "8.1");
                                 // Bumps the entity downwards slightly.
 
                                 // TODO: Quicksand Changed. Equation changed
@@ -383,12 +385,12 @@ public class SoftSnow extends Block implements IMetaBlockName {
                                 }
                             	
                             } else {
-                                System.out.println("MotionY Beacon 8.2");
+                                beacon.logBeacon("MotionY", "8.2");
                                 // TODO: Quicksand changed equation
                                 triggeringEntity.motionY += thicknessHigher;
                             }
                         } else { // TODO: Quciksand changed. Removed else if
-                        	System.out.println("MotionY Beacon 10");
+                        	beacon.logBeacon("MotionY", "10");
                         	// TODO: Quicksand changed equation
                             triggeringEntity.motionY += thicknessHigher;
                         }
@@ -403,7 +405,7 @@ public class SoftSnow extends Block implements IMetaBlockName {
 	                        // If the entity is marked as not moving...
 	                        if (!triggEntityMoving) {
 	                        	
-	                        	System.out.println("MotionY Beacon 11.1: " + (0.0725 + sinkRateMod_mys) * thicknessHigher);
+	                        	beacon.logBeacon("MotionY", "11.1", (0.0725 + sinkRateMod_mys) * thicknessHigher);
 	                        	// Moves the entity downwards slightly.
 	                        	triggeringEntity.motionY--; // TODO: Quicksand changed. Added in place of other motion Y
 	                        	
@@ -420,7 +422,7 @@ public class SoftSnow extends Block implements IMetaBlockName {
                                     world.playSound(triggeringEntity.posX, triggEntityPosY, triggeringEntity.posZ, "dig.snow", 1.0f, world.rand.nextFloat() * 0.5f + 0.5f, false);
                                 }
 	                        } else {
-	                        	System.out.println("MotionY Beacon 11.2: " + (0.0725 + sinkRateMod_mys) * thicknessHigher / (movementPunish_mofKofDiv + 0.025));
+	                        	beacon.logBeacon("MotionY", "11.2", (0.0725 + sinkRateMod_mys) * thicknessHigher / (movementPunish_mofKofDiv + 0.025));
 	                        	// Bumps the entity downwards slightly.
 	                        	triggeringEntity.motionY--; // TODO: Quicksand changed. Added in place of other motion Y
 	                        }
@@ -639,13 +641,15 @@ public class SoftSnow extends Block implements IMetaBlockName {
 		return getDefaultState().withProperty(SINK, Integer.valueOf(meta));
     }
 	
+	@Override
 	@SideOnly(Side.CLIENT)
-    public int getBlockColor() {
+    public int getQuicksandBlockColor() {
         return 16777215;
     }
     
+	@Override
     @SideOnly(Side.CLIENT)
-    public int getRenderColor(IBlockState state) {
+    public int getQuicksandRenderColor(IBlockState state) {
     	final int metadata = state.getValue(SINK);
         if (metadata == 1) {
             return 15658734;
@@ -653,8 +657,9 @@ public class SoftSnow extends Block implements IMetaBlockName {
         return 16777215;
     }
     
+	@Override
     @SideOnly(Side.CLIENT)
-    public int colorMultiplier(IBlockAccess world, BlockPos pos, int renderPass) {
+    public int getQuicksandColorMultiplier(IBlockAccess world, BlockPos pos, int renderPass) {
         final int metadata = world.getBlockState(pos).getValue(SINK);
         if (metadata == 1) {
             return 15658734;
@@ -663,11 +668,13 @@ public class SoftSnow extends Block implements IMetaBlockName {
     }
 	
 	// Returns types of metadata for the block
+	@Override
 	public String[] getTypes() {
 		return types;
 	}
 	
 	// Returns if only one texture should be used for all metadata types
+	@Override
 	public boolean getUseOneTexture() {
 		return useOneTexture;
 	}
