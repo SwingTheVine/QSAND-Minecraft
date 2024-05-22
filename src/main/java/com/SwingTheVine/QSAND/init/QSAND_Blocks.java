@@ -6,6 +6,7 @@ import com.SwingTheVine.QSAND.blocks.BlockTest;
 import com.SwingTheVine.QSAND.blocks.ItemBlockMeta;
 import com.SwingTheVine.QSAND.blocks.Mud;
 import com.SwingTheVine.QSAND.blocks.Quicksand;
+import com.SwingTheVine.QSAND.blocks.SoftSnow;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -16,21 +17,44 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class QSAND_Blocks {
 	public static Block test_block;
-	public static Block mud;
+	
+	
+	// MFQM blocks that you can sink in
+	public static Block bog;
+	public static Block snowSoft;
+	public static Block quicksandDry;
+	public static Block morass;
 	public static Block quicksand;
-	public static Block quicksandSoft;
 	public static Block quicksandJungle;
-	public static Block moss;
+	public static Block slimeSinking;
 	public static Block mire;
 	public static Block mireLiquid;
 	public static Block mireLiquidStable;
+	public static Block moor;
+	public static Block claySinking;
+	public static Block tar;
+	public static Block quicksandCorrupted;
+	public static Block woolSinking;
+	public static Block quicksandSoft;
+	public static Block webDense;
+	public static Block swallowingFlesh;
+	public static Block mucus;
+	public static Block moss;
+	public static Block clayBrown;
+	public static Block peatWet;
+	public static Block wax;
+	public static Block larvae;
+	public static Block chocolateLiquid;
+	public static Block slurry;
+	public static Block mud;
+	public static Block gravelSoft;
+	public static Block honey;
+	
+	public static Block clayHardened;
 	public static Block meat;
 	public static Block meatHole;
 	public static Block voidHole;
-	public static Block swallowingFlesh;
-	public static Block larvae;
-	public static Block tar;
-	public static Block[] blockList = {
+	/*public static Block[] blockList = {
 			test_block,
 			mud,
 			quicksand,
@@ -45,11 +69,43 @@ public class QSAND_Blocks {
 			voidHole,
 			swallowingFlesh,
 			larvae,
-			tar};
-	public static int[] mudTypesColors = {4538917, 14611967, 16777215, 2431764, 6444596, 3089167, 2431764, 2431764, 15007713, 2431764, 2431764, 10197137, 1973277, 16777215, 16777215, 16777189, 16777215, 6180923, 14803425, 16777189, 14013598, 16777189, 7041868, 10056782, 8554890, 2431764, 12298319, 3806471, 5720614, 2431764, 5389343, 16758567};
-	public static int[] mudMaxOpacity = {2000, 500, 0, 1000, 5000, 5000, 500, 500, 500, 5000, 5000, 5000, 10000, 0, 0, 250, 0, 2000, 3000, 250, 500, 250, 1000, 5000, 5000, 1000, 10000, 7000, 2000, 2000, 5000, 600};
-	public static int[] mudLastOpacity = {500, 0, 0, 750, 750, 750, 250, 250, 0, 750, 750, 750, 1000, 0, 0, 0, 0, 500, 0, 0, 0, 0, 0, 750, 750, 750, 1000, 1000, 750, 750, 750, 600};
-	public static int[] mudIncOpacity = {50, 25, 0, 100, 100, 100, 50, 50, 50, 100, 100, 100, 500, 0, 0, 25, 0, 100, 75, 25, 50, 25, 100, 100, 100, 100, 500, 500, 50, 100, 100, 50};
+			tar,
+			snowSoft};*/
+	
+	// Block, Types Colors, Max Opacity, Last Opacity, Inc Opacity
+	public static Object[] blockObjectList = {
+			bog,              4538917,  2000,  500,  50,
+			null,             14611967, null,  null, null, // 1
+			null,             16777215, null,  null, null, // 2
+			morass,           2431764,  1000,  750,  100,
+			quicksand,        6444596,  5000,  750,  100,
+			quicksandJungle,  3089167,  5000,  750,  100,
+			mireLiquid,       2431764,  500,   250,  50,
+			mireLiquidStable, 2431764,  500,   250,  50,
+			slimeSinking,     15007713, 500,   0,    50,
+			mire,             2431764,  5000,  750,  100,
+			moor,             1973277,  5000,  750,  100,
+			claySinking,      10197137, 5000,  750,  100,
+			tar,              1973277,  10000, 1000, 500,
+			null,             16777215, null,  null, null, // 13
+			null,             16777215, null,  null, null, // 14
+			meatHole,         16777189, 250,   0,    25,
+			null,             16777215, null,  null, null, // 16
+			quicksandSoft,    6180923,  2000,  500,  100,
+			webDense,         14803425, 3000,  0,    75,
+			swallowingFlesh,  16777189, 250,   0,    25,
+			mucus,            14013598, 500,   0,    50,
+			voidHole,         16777189, 250,   0,    25,
+			moss,             7041868,  1000,  0,    100,
+			clayBrown,        10056782, 5000,  750,  100,
+			null,             8554890,  null,  null, null, // 24
+			peatWet,          2431764,  1000,  750,  100,
+			wax,              12298319, 10000, 1000, 500,
+			chocolateLiquid,  3806471,  7000,  1000, 500,
+			slurry,           5720614,  2000,  750,  50,
+			null,             2431764,  null,  null, null, // 29
+			gravelSoft,       5389343,  5000,  750,  100,
+			honey,            16758567, 600,   600,  50};
 	// Test World Seed: 1637864495647481288
 	// Entities fall at a rate of 0.076125 blocks
 	
@@ -59,6 +115,7 @@ public class QSAND_Blocks {
 		test_block = new BlockTest(Material.ground).setUnlocalizedName("test_block").setCreativeTab(QSAND.QSANDTab);
 		mud = new Mud(Material.ground).setUnlocalizedName("mud").setCreativeTab(QSAND.QSANDTab);
 		quicksand = new Quicksand(Material.ground).setUnlocalizedName("quicksand").setCreativeTab(QSAND.QSANDTab);
+		snowSoft = new SoftSnow(Material.ground).setUnlocalizedName("snow_soft").setCreativeTab(QSAND.QSANDTab);
 	}
 	
 	public static void registerBlocks() {
@@ -67,6 +124,7 @@ public class QSAND_Blocks {
 		GameRegistry.registerBlock(test_block, ItemBlockMeta.class, test_block.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mud, ItemBlockMeta.class, mud.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(quicksand, ItemBlockMeta.class, quicksand.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(snowSoft, ItemBlockMeta.class, snowSoft.getUnlocalizedName().substring(5));
 	}
 	
 	public static void registerRenders() {
@@ -75,6 +133,7 @@ public class QSAND_Blocks {
 		registerRenderInventory(test_block, ((BlockTest)test_block).getTypes(), ((BlockTest)test_block).getUseOneTexture());
 		registerRenderInventory(mud, ((Mud)mud).getTypes(), ((Mud)mud).getUseOneTexture());
 		registerRenderInventory(quicksand, ((Quicksand)quicksand).getTypes(), ((Quicksand)quicksand).getUseOneTexture());
+		registerRenderInventory(snowSoft, ((SoftSnow)snowSoft).getTypes(), ((SoftSnow)snowSoft).getUseOneTexture());
 	}
 	
 	// Registers the inventory image for all block variants

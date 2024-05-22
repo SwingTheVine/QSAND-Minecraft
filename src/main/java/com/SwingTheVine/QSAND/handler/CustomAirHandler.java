@@ -1,5 +1,6 @@
 package com.SwingTheVine.QSAND.handler;
 
+import com.SwingTheVine.QSAND.client.player.CustomPlayerGUIRenderer;
 import com.SwingTheVine.QSAND.init.QSAND_Blocks;
 import com.SwingTheVine.QSAND.init.QSAND_Items;
 import com.SwingTheVine.QSAND.items.ItemLongStick;
@@ -175,7 +176,7 @@ public class CustomAirHandler {
             	}
             }
             
-            for (int currentBlockIndex = 0; currentBlockIndex < QSAND_Blocks.blockList.length; currentBlockIndex++) {
+            for (int currentBlockIndex = 0; currentBlockIndex < CustomPlayerGUIRenderer.blockList.length; currentBlockIndex++) {
             	
             	// If the entity is inside moss
         		if (QuicksandManager.isEntityInsideOfBlockM((Entity)event.entityLiving, QSAND_Blocks.moss)) {
@@ -185,7 +186,7 @@ public class CustomAirHandler {
         			}
         			
         			return;
-        		} else if (QuicksandManager.isEntityInsideOfBlock((Entity)event.entityLiving, QSAND_Blocks.blockList[currentBlockIndex])) {
+        		} else if (QuicksandManager.isEntityInsideOfBlock((Entity)event.entityLiving, CustomPlayerGUIRenderer.blockList[currentBlockIndex])) {
         			
         			if (gma > -1) {
         				QuicksandManager.addCustomDrownAir((Entity)event.entityLiving, -1);

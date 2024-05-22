@@ -5,9 +5,11 @@ import java.util.List;
 import com.SwingTheVine.QSAND.QSAND;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemMonsterPlacer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -35,4 +37,11 @@ public class ItemSpawnEgg extends ItemMonsterPlacer {
             subItems.add(stack);
         }
     }
+	
+	// Sets the tooltips that should be added to the block
+	// Leave blank for no tooltip
+	@Override
+	public void addInformation(final ItemStack item, final EntityPlayer player, final List list, final boolean bool) {
+		list.add(StatCollector.translateToLocal("mfqm.tooltip_1"));
+	}
 }

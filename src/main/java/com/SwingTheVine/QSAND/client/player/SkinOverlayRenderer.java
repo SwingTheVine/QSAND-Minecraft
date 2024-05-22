@@ -109,9 +109,9 @@ public class SkinOverlayRenderer extends ModelRenderer {
         beacon.logBeacon("mudType", "1", mudType);
         beacon.logBeacon("mudTime", "1", mudTime);
         
-        if (mudTime > 50 && mudType >= 0 && mudType <= QSAND_Blocks.mudTypesColors.length && mudLevel > 0) {
+        if (mudTime > 50 && mudType >= 0 && mudType <= QSAND_Blocks.blockObjectList.length / 5 && mudLevel > 0) {
             
-        	final int color = QSAND_Blocks.mudTypesColors[mudType];
+        	final int color = (int)(Integer)QSAND_Blocks.blockObjectList[(mudType*5) + 1];
             final float red = (color >> 16 & 0xFF) / 255.0f;
             final float green = (color >> 8 & 0xFF) / 255.0f;
             final float blue = (color & 0xFF) / 255.0f;

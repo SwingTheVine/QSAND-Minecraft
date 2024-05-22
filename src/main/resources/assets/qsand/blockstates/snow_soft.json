@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "sink=0": {"model": "qsand:snow_soft"},
+        "sink=1": {"model": "qsand:snow_soft"}
+    }
+}

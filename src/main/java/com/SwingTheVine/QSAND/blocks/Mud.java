@@ -208,8 +208,8 @@ public class Mud extends Block implements IMetaBlockName {
 			// If the entity is a Mud Slime
 			if (triggeringEntity instanceof SlimeMud) {
 				
-				// Adds a potion effect of Regeneration for 5 seconds, 1.0 amplifier, ambient, and with no particles
-				((EntityLivingBase)triggeringEntity).addPotionEffect(new PotionEffect(10, 5, 1, true, false));
+				// Adds a potion effect of Regeneration for 5 seconds, 1.0 amplifier
+				((EntityLivingBase)triggeringEntity).addPotionEffect(new PotionEffect(10, 5, 1, false, false));
 				
 				// If the block above this one does NOT equal this type of block...
 				if (world.getBlockState(pos.up(1)).getBlock() != this) {

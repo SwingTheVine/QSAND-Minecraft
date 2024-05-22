@@ -47,6 +47,37 @@ public class CustomPlayerGUIRenderer {
 			QSAND_Blocks.swallowingFlesh,
 			QSAND_Blocks.larvae*/};
 	
+	/*public static Block[] sinkableBlockList = {
+			QSAND_Blocks.bog,
+			QSAND_Blocks.snowSoft,
+			QSAND_Blocks.quicksandDry,
+			QSAND_Blocks.morass,
+			QSAND_Blocks.quicksand,
+			QSAND_Blocks.quicksandJungle,
+			QSAND_Blocks.slimeSinking,
+			QSAND_Blocks.mire,
+			QSAND_Blocks.mireLiquid,
+			QSAND_Blocks.mireLiquidStable,
+			QSAND_Blocks.moor,
+			QSAND_Blocks.claySinking,
+			QSAND_Blocks.tar,
+			QSAND_Blocks.quicksandCorrupted,
+			QSAND_Blocks.woolSinking,
+			QSAND_Blocks.quicksandSoft,
+			QSAND_Blocks.webDense,
+			QSAND_Blocks.swallowingFlesh,
+			QSAND_Blocks.mucus,
+			QSAND_Blocks.moss,
+			QSAND_Blocks.clayBrown,
+			QSAND_Blocks.peatWet,
+			QSAND_Blocks.wax,
+			QSAND_Blocks.larvae,
+			QSAND_Blocks.chocolateLiquid,
+			QSAND_Blocks.slurry,
+			QSAND_Blocks.mud,
+			QSAND_Blocks.gravelSoft,
+			QSAND_Blocks.honey};*/
+	
 	@SubscribeEvent
     @SideOnly(Side.CLIENT)
     public void renderAirGUI(final RenderGameOverlayEvent.Pre event) {
@@ -102,14 +133,14 @@ public class CustomPlayerGUIRenderer {
             	TextureAtlasSprite texture;
                 
                 if (i == 19) {
-                	ModelResourceLocation model = new ModelResourceLocation(new ModelResourceLocation(ModInfo.id + ":" + QSAND_Blocks.blockList[i].getUnlocalizedName().substring(5)), "sink=0");
+                	ModelResourceLocation model = new ModelResourceLocation(new ModelResourceLocation(ModInfo.id + ":" + CustomPlayerGUIRenderer.blockList[i].getUnlocalizedName().substring(5)), "sink=0");
                 	//texture = new ResourceLocation(model.getResourcePath());
                 	texture = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(new ResourceLocation(ModInfo.id, model.getResourcePath()).toString());
                 }
                 else {
                 	ModelResourceLocation model;
                 	try {
-                		model = new ModelResourceLocation(new ModelResourceLocation(ModInfo.id + ":" + QSAND_Blocks.blockList[i].getUnlocalizedName().substring(5)), "normal");
+                		model = new ModelResourceLocation(new ModelResourceLocation(ModInfo.id + ":" + CustomPlayerGUIRenderer.blockList[i].getUnlocalizedName().substring(5)), "normal");
             			//texture = new ResourceLocation(model.getResourcePath());
                 	} catch (Exception ignored) {
                 		//System.out.println("No model found");

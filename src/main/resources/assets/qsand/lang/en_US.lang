@@ -12,12 +12,15 @@ tile.mud_3.name=Bottomless Mud
 
 tile.quicksand_0.name=Quicksand
 
+tile.snow_soft_0.name=Soft Snow
+tile.snow_soft_1.name=Soft Ash
+
 item.spawn_egg.name=Spawn
 entity.QSAND.slime_void.name=Void Slime
 entity.QSAND.slime_mud.name=Mud Slime
 entity.QSAND.slime_sand.name=Sand Slime
 entity.QSAND.slime_tar.name=Tar Slime
 
-mfqm.tooltip_1=Faithful Recreation of MFQM Block
+mfqm.tooltip_1=Faithful recreation from MFQM
 
 itemGroup.QSANDTab=QSAND Mod

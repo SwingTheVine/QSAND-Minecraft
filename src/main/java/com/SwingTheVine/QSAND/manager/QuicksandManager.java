@@ -2,6 +2,7 @@ package com.SwingTheVine.QSAND.manager;
 
 import java.util.UUID;
 
+import com.SwingTheVine.QSAND.client.player.CustomPlayerGUIRenderer;
 import com.SwingTheVine.QSAND.entity.Bubble;
 import com.SwingTheVine.QSAND.entity.EntityLongStick;
 import com.SwingTheVine.QSAND.entity.TentaclesMud;
@@ -235,10 +236,10 @@ public class QuicksandManager {
 	public static int getMudType(final Block block) {
 		
 		// For every block in the block list...
-		for (int i = 0; i < QSAND_Blocks.blockList.length; i++) {
+		for (int i = 0; i < CustomPlayerGUIRenderer.blockList.length; i++) {
 			
 			// If the block in a certain block index equals this block...
-            if (QSAND_Blocks.blockList[i] == block) {
+            if (CustomPlayerGUIRenderer.blockList[i] == block) {
                 return i; // Return the index
             }
         }
@@ -254,13 +255,13 @@ public class QuicksandManager {
         }
 		
 		// If type is greater than the length of the block list...
-        if (type > QSAND_Blocks.blockList.length) {
+        if (type > QSAND_Blocks.blockObjectList.length / 5) {
             return 0; // Return 0
         }
         
         try {
 	        // Otherwise, return the light opacity of the block at the index "type"
-	        return QSAND_Blocks.blockList[type].getLightOpacity();
+	        return (int)(Integer)QSAND_Blocks.blockObjectList[(type*5) + 3];
         } catch (Exception ignored) {
         	return 0;
         }
