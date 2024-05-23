@@ -14,6 +14,7 @@ public class QSAND_Items {
 	public static Item spawnEgg;
 	public static Item bootsWading;
 	public static Item longStick;
+	public static Item larvaeRaw;
 	
 	public static void init() {
 		test_item = new Item().setUnlocalizedName("test_item").setCreativeTab(QSAND.QSANDTab);

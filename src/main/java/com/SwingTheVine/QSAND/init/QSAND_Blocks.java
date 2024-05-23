@@ -4,6 +4,7 @@ import com.SwingTheVine.QSAND.ModInfo;
 import com.SwingTheVine.QSAND.QSAND;
 import com.SwingTheVine.QSAND.blocks.BlockTest;
 import com.SwingTheVine.QSAND.blocks.ItemBlockMeta;
+import com.SwingTheVine.QSAND.blocks.BlockLarvae;
 import com.SwingTheVine.QSAND.blocks.Mud;
 import com.SwingTheVine.QSAND.blocks.Quicksand;
 import com.SwingTheVine.QSAND.blocks.QuicksandBlock;
@@ -118,6 +119,7 @@ public class QSAND_Blocks {
 		mud = (QuicksandBlock)new Mud(Material.ground).setUnlocalizedName("mud").setCreativeTab(QSAND.QSANDTab);
 		quicksand = (QuicksandBlock)new Quicksand(Material.ground).setUnlocalizedName("quicksand").setCreativeTab(QSAND.QSANDTab);
 		snowSoft = (QuicksandBlock)new SoftSnow(Material.ground).setUnlocalizedName("snow_soft").setCreativeTab(QSAND.QSANDTab);
+		larvae = (QuicksandBlock)new BlockLarvae(Material.coral).setUnlocalizedName("larvae").setCreativeTab(QSAND.QSANDTab);
 	}
 	
 	public static void registerBlocks() {
@@ -127,6 +129,7 @@ public class QSAND_Blocks {
 		GameRegistry.registerBlock(mud, ItemBlockMeta.class, mud.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(quicksand, ItemBlockMeta.class, quicksand.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(snowSoft, ItemBlockMeta.class, snowSoft.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(larvae, ItemBlockMeta.class, larvae.getUnlocalizedName().substring(5));
 	}
 	
 	public static void registerRenders() {
@@ -136,6 +139,7 @@ public class QSAND_Blocks {
 		registerRenderInventory(mud, ((Mud)mud).getTypes(), ((Mud)mud).getUseOneTexture());
 		registerRenderInventory(quicksand, ((Quicksand)quicksand).getTypes(), ((Quicksand)quicksand).getUseOneTexture());
 		registerRenderInventory(snowSoft, ((SoftSnow)snowSoft).getTypes(), ((SoftSnow)snowSoft).getUseOneTexture());
+		registerRenderInventory(larvae, ((BlockLarvae)larvae).getTypes(), ((BlockLarvae)larvae).getUseOneTexture());
 	}
 	
 	// Registers the inventory image for all block variants
