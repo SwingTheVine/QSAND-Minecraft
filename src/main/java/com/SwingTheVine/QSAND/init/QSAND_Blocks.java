@@ -2,13 +2,16 @@ package com.SwingTheVine.QSAND.init;
 
 import com.SwingTheVine.QSAND.ModInfo;
 import com.SwingTheVine.QSAND.QSAND;
+import com.SwingTheVine.QSAND.block.BlockBog;
 import com.SwingTheVine.QSAND.block.BlockLarvae;
-import com.SwingTheVine.QSAND.block.BlockTest;
-import com.SwingTheVine.QSAND.block.ItemBlockMeta;
 import com.SwingTheVine.QSAND.block.BlockMud;
 import com.SwingTheVine.QSAND.block.BlockQuicksand;
-import com.SwingTheVine.QSAND.block.SinkingBlock;
 import com.SwingTheVine.QSAND.block.BlockSnowSoft;
+import com.SwingTheVine.QSAND.block.BlockTest;
+import com.SwingTheVine.QSAND.block.ItemBlockMeta;
+import com.SwingTheVine.QSAND.block.SinkingBlock;
+import com.SwingTheVine.QSAND.block.SinkingBlockFluidClassic;
+import com.SwingTheVine.QSAND.fluid.FluidBog;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -22,7 +25,7 @@ public class QSAND_Blocks {
 	
 	
 	// MFQM blocks that you can sink in
-	public static Block bog;
+	public static SinkingBlockFluidClassic bog;
 	public static SinkingBlock snowSoft;
 	public static Block quicksandDry;
 	public static Block morass;
@@ -53,6 +56,7 @@ public class QSAND_Blocks {
 	public static Block honey;
 	
 	// MFQM blocks not included in the sink list
+	public static FluidBog fluidBog;
 	public static Block clayHardened;
 	public static Block meat;
 	public static Block meatHole;
@@ -115,31 +119,33 @@ public class QSAND_Blocks {
 	public static void init() {
 		
 		// Constructs all blocks with their names and tab
-		test_block = new BlockTest(Material.ground).setUnlocalizedName("test_block").setCreativeTab(QSAND.QSANDTab);
-		mud = (SinkingBlock)new BlockMud(Material.ground).setUnlocalizedName("mud").setCreativeTab(QSAND.QSANDTab);
-		quicksand = (SinkingBlock)new BlockQuicksand(Material.ground).setUnlocalizedName("quicksand").setCreativeTab(QSAND.QSANDTab);
+		bog = (SinkingBlockFluidClassic)new BlockBog(fluidBog, BlockBog.materialBog).setUnlocalizedName("bog").setCreativeTab(QSAND.QSANDTab);
 		snowSoft = (SinkingBlock)new BlockSnowSoft(Material.ground).setUnlocalizedName("snow_soft").setCreativeTab(QSAND.QSANDTab);
+		quicksand = (SinkingBlock)new BlockQuicksand(Material.ground).setUnlocalizedName("quicksand").setCreativeTab(QSAND.QSANDTab);
 		larvae = (SinkingBlock)new BlockLarvae(Material.coral).setUnlocalizedName("larvae").setCreativeTab(QSAND.QSANDTab);
+		mud = (SinkingBlock)new BlockMud(Material.ground).setUnlocalizedName("mud").setCreativeTab(QSAND.QSANDTab);
+		test_block = new BlockTest(Material.ground).setUnlocalizedName("test_block").setCreativeTab(QSAND.QSANDTab);
 	}
 	
 	public static void registerBlocks() {
 		
 		// Registers the blocks with the Game Registry
-		GameRegistry.registerBlock(test_block, ItemBlockMeta.class, test_block.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(mud, ItemBlockMeta.class, mud.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(quicksand, ItemBlockMeta.class, quicksand.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(snowSoft, ItemBlockMeta.class, snowSoft.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(quicksand, ItemBlockMeta.class, quicksand.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(larvae, ItemBlockMeta.class, larvae.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(mud, ItemBlockMeta.class, mud.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(test_block, ItemBlockMeta.class, test_block.getUnlocalizedName().substring(5));
 	}
 	
 	public static void registerRenders() {
 		
 		// Registers the inventory image. Block to render, number of metadata types, should one texture be used
-		registerRenderInventory(test_block, ((BlockTest)test_block).getTypes(), ((BlockTest)test_block).getUseOneTexture());
-		registerRenderInventory(mud, ((BlockMud)mud).getTypes(), ((BlockMud)mud).getUseOneTexture());
-		registerRenderInventory(quicksand, ((BlockQuicksand)quicksand).getTypes(), ((BlockQuicksand)quicksand).getUseOneTexture());
+		
 		registerRenderInventory(snowSoft, ((BlockSnowSoft)snowSoft).getTypes(), ((BlockSnowSoft)snowSoft).getUseOneTexture());
+		registerRenderInventory(quicksand, ((BlockQuicksand)quicksand).getTypes(), ((BlockQuicksand)quicksand).getUseOneTexture());
 		registerRenderInventory(larvae, ((BlockLarvae)larvae).getTypes(), ((BlockLarvae)larvae).getUseOneTexture());
+		registerRenderInventory(mud, ((BlockMud)mud).getTypes(), ((BlockMud)mud).getUseOneTexture());
+		registerRenderInventory(test_block, ((BlockTest)test_block).getTypes(), ((BlockTest)test_block).getUseOneTexture());
 	}
 	
 	// Registers the inventory image for all block variants

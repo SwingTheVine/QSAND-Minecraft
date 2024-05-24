@@ -74,8 +74,8 @@ public class BlockLarvae extends SinkingBlock implements IMetaBlockName {
 	
 	@SideOnly(Side.CLIENT)
     public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
-        //return side.getIndex() == 1;
-		return true;
+        return side.getIndex() == 1;
+		//return true;
     }
 	
 	@SideOnly(Side.CLIENT)
