@@ -662,19 +662,19 @@ public class Quicksand extends QuicksandBlock implements IMetaBlockName {
 	@Override
 	@SideOnly(Side.CLIENT)
     public int getQuicksandBlockColor() {
-        return 15658734;//16777215;
+        return 16777215;
     }
     
 	@Override
     @SideOnly(Side.CLIENT)
     public int getQuicksandRenderColor(IBlockState state) {
-        return 15658734;//16777215;
+        return 16777215;
     }
     
     @Override
     @SideOnly(Side.CLIENT)
     public int getQuicksandColorMultiplier(IBlockAccess world, BlockPos pos, int renderPass) {
-        return 15658734;//16777215;
+        return 16777215;
     }
 	
 	// Returns types of metadata for the block

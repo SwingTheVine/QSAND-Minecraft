@@ -28,7 +28,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BubbleRender extends Render<Bubble> {
 
 	//static BubbleModel model = new BubbleModel();
-    private static final ResourceLocation entityTexture = new ResourceLocation(ModInfo.id, "blocks/larvae_0"); // The texture the entity will use
+    private static ResourceLocation entityTexture = new ResourceLocation(ModInfo.id, "blocks/larvae_0"); // The texture the entity will use
     
     // Constructor
     public <T extends Entity> BubbleRender(RenderManager renderManager) {
@@ -54,6 +54,18 @@ public class BubbleRender extends Render<Bubble> {
         
         final Tessellator tessellator = Tessellator.getInstance(); // Drawing engine I think
         
+        if (bubble.block != null) {
+        	if (bubble.block.getUseOneTexture()) {
+        		entityTexture = new ResourceLocation(ModInfo.id, "blocks/" + bubble.block.getUnlocalizedName().substring(5) + "_0");
+        	} else {
+        		entityTexture = new ResourceLocation(ModInfo.id, "blocks/" + bubble.block.getUnlocalizedName().substring(5) + "_" + bubble.block.getMetaFromState(bubble.worldObj.getBlockState(bubblePos)));
+        	}
+        	System.out.println(entityTexture);
+        } else {
+        	entityTexture = new ResourceLocation(ModInfo.id, bubble.worldObj.getBlockState(bubblePos.down()).getBlock().getUnlocalizedName().substring(5) + "_0");
+        }
+        
+        
         //final IIcon Icon = bubble.block.getIcon(1, bubble.entityMetadata);
         // Creates a texture atlas of the texture the bubble will use
         final TextureAtlasSprite texture = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(entityTexture.toString());
@@ -62,10 +74,10 @@ public class BubbleRender extends Render<Bubble> {
         
         // Generates a OpenGL 11 matrix
         GL11.glPushMatrix();
-        GL11.glEnable(3008);
-        GL11.glEnable(3553);
-        GL11.glEnable(3042);
-        GL11.glBlendFunc(770, 771);
+        GL11.glEnable(GL11.GL_ALPHA_TEST); // 3008
+        GL11.glEnable(GL11.GL_TEXTURE_2D); // 3553
+        GL11.glEnable(GL11.GL_BLEND); // 3042
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA); // 770, 771
         
         int intColor;
         
@@ -104,7 +116,8 @@ public class BubbleRender extends Render<Bubble> {
         final int green = (0xFF00 & intColor) / 256;
         final int blue = 0xFF & intColor;
         GlStateManager.color(red, green, blue);
-        GL11.glColor4f(0.75f * (red / 255.0f), 0.75f * (green / 255.0f), 0.75f * (blue / 255.0f), 0.9f);
+        GL11.glColor4f(red, green, blue, 0.9f);
+        //GL11.glColor4f(0.75f * (red / 255.0f), 0.75f * (green / 255.0f), 0.75f * (blue / 255.0f), 0.9f);
         GL11.glEnable(32826);
         
         
@@ -117,7 +130,7 @@ public class BubbleRender extends Render<Bubble> {
         this.renderModel(tessellator, 0.0, 0.0, 0.0, texture, scx, scy);
         GL11.glDisable(32826);
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-        GL11.glDisable(3042);
+        GL11.glDisable(GL11.GL_BLEND); // 3042
         GL11.glPopMatrix();
     }
     
