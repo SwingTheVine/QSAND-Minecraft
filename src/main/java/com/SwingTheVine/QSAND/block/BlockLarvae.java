@@ -62,14 +62,12 @@ public class BlockLarvae extends SinkingBlock implements IMetaBlockName {
 	
 	@SideOnly(Side.CLIENT)
 	public void setBlockBoundsForItemRender() {
-		final int j = 0;
 		final float f = 0.75f;
 		this.setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, f, 1.0f);
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public void setBlockBoundsBasedOnState() {
-		final int j = 0;
+	public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos) {
 		final float f = 0.75f;
 		this.setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, f, 1.0f);
 	}
@@ -139,7 +137,7 @@ public class BlockLarvae extends SinkingBlock implements IMetaBlockName {
 			boolean triggEntityRotating = false; // Is the triggering entity rotating?
 			final float blockMetadataBumped = 1.0f;
 			double triggEntityMovingDistance_movDis = 1.0;
-			double forceBubbleSpawn_movCof = 16.0; // Forces the block to attempt to spawn bubbles. This value is used when the entity is not moving
+			double forceFlavorEvent_movCof = 16.0; // Forces the block to attempt to spawn a flavor event (either bubbles, sound, or both)
 			double movementPunish_mofKofDiv = 1.0; // Punishes the entity for moving. Makes them sink faster.
 			
 			// EQUATION BEACON. 1st complex
@@ -183,7 +181,7 @@ public class BlockLarvae extends SinkingBlock implements IMetaBlockName {
 				// Exponentially increases the chance of a bubble spawn event the more the entity moves forwards.
 				// Outputs as a number between 16 and 32. Lower number equals higher chance
 				// https://www.desmos.com/calculator/rxdyif2tis
-				forceBubbleSpawn_movCof = Math.max(Math.min(32.0 / (1.0 + (triggEntityMovingDistance_movDis * 10.0)), 32.0), 16.0);
+				forceFlavorEvent_movCof = Math.max(Math.min(32.0 / (1.0 + (triggEntityMovingDistance_movDis * 10.0)), 32.0), 16.0);
 				
 				// Base punishment for punishing the player for moving.
 				// This value will be modified later
@@ -210,7 +208,7 @@ public class BlockLarvae extends SinkingBlock implements IMetaBlockName {
             	triggeringEntity.motionY /= 2.0; // Slow the downwards motion of the entity by 50%
             }
             
-            if ((triggEntityMoving && world.getTotalWorldTime() % Math.max((int)Math.floor(forceBubbleSpawn_movCof / 1.5), 1) == 0L) || (triggEntityJumping && world.getTotalWorldTime() % 8L == 0L) || triggEntitySplashing) {
+            if ((triggEntityMoving && world.getTotalWorldTime() % Math.max((int)Math.floor(forceFlavorEvent_movCof / 1.5), 1) == 0L) || (triggEntityJumping && world.getTotalWorldTime() % 8L == 0L) || triggEntitySplashing) {
                 if (triggEntitySplashing && triggEntityPrevSunk_kof2 > 1.5) {
                     world.playSoundEffect(triggeringEntity.posX, triggEntityPosY, triggeringEntity.posZ, "mob.silverfish.step", 0.5f, world.rand.nextFloat() * 0.25f + 0.25f);
                 }
@@ -334,7 +332,7 @@ public class BlockLarvae extends SinkingBlock implements IMetaBlockName {
                             }
                             
                         	if (triggEntitySunk_kof1 < 0.45 && QuicksandManager.isTrulySinking(triggeringEntity, triggEntitySunkMod_kof1m)) {
-                                QuicksandManager.setStuckEffect((EntityLivingBase)triggeringEntity, 128);
+                        		QuicksandManager.setStuckEffect((EntityLivingBase)triggeringEntity, 128);
                             }
                         }
                     }
@@ -408,7 +406,7 @@ public class BlockLarvae extends SinkingBlock implements IMetaBlockName {
             QuicksandManager.antiHoldJumpScript(triggeringEntity, triggEntitySunk_kof1, true);
             /*
             System.out.println("triggEntityMovingDistance_movDis: " + triggEntityMovingDistance_movDis);
-            System.out.println("forceBubbleSpawn_movCof: " + forceBubbleSpawn_movCof);
+            System.out.println("forceFlavorEvent_movCof: " + forceFlavorEvent_movCof);
             System.out.println("movementPunish_mofKofDiv: " + movementPunish_mofKofDiv);
             System.out.println("mr_blackgoo: " + mr_blackgoo);*/
 		} else {

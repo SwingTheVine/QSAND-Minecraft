@@ -89,7 +89,7 @@ public class BlockQuicksand extends SinkingBlock implements IMetaBlockName {
 			boolean triggEntityRotating = false; // Is the triggering entity rotating?
 			final float blockMetadataBumped = 10.0f; // TODO: Changed
 			double triggEntityMovingDistance_movDis = 1.0;
-			double forceBubbleSpawn_movCof = 16.0; // Forces the block to attempt to spawn bubbles. This value is used when the entity is not moving
+			double forceFlavorEvent_movCof = 16.0; // Forces the block to attempt to spawn a flavor event (either bubbles, sound, or both)
 			double movementPunish_mofKofDiv = 1.0; // Punishes the entity for moving. Makes them sink faster.
 			
 			// EQUATION BEACON. 1st complex
@@ -143,7 +143,7 @@ public class BlockQuicksand extends SinkingBlock implements IMetaBlockName {
 				// Exponentially increases the chance of a bubble spawn event the more the entity moves forwards.
 				// Outputs as a number between 16 and 32. Lower number equals higher chance
 				// https://www.desmos.com/calculator/rxdyif2tis
-				forceBubbleSpawn_movCof = Math.max(Math.min(32.0 / (1.0 + (triggEntityMovingDistance_movDis * 10.0)), 32.0), 16.0);
+				forceFlavorEvent_movCof = Math.max(Math.min(32.0 / (1.0 + (triggEntityMovingDistance_movDis * 10.0)), 32.0), 16.0);
 				
 				// Base punishment for punishing the player for moving.
 				// This value will be modified later
@@ -234,7 +234,7 @@ public class BlockQuicksand extends SinkingBlock implements IMetaBlockName {
             //     OR the entity is marked as jumping, AND the remainder of the current world time divided by 8 is zero,
             //     OR the entity is marked as splashing...
 			if (world.getTotalWorldTime() % 128L == 0L
-					|| (triggEntityMoving && world.getTotalWorldTime() % Math.max((int)Math.floor(forceBubbleSpawn_movCof), 1) == 0L)
+					|| (triggEntityMoving && world.getTotalWorldTime() % Math.max((int)Math.floor(forceFlavorEvent_movCof), 1) == 0L)
 					|| (triggEntityJumping && world.getTotalWorldTime() % 8L == 0L)
 					|| triggEntitySplashing) {
 				// This is the part that makes most of the bubbles

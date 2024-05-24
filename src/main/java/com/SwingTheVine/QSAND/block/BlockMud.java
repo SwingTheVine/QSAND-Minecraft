@@ -35,15 +35,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockMud extends SinkingBlock implements IMetaBlockName {
 	
-	private static final String[] types = {"0", "1", "2", "3"}; // Values of the different metadata levels
-	private static final boolean useOneTexture = true; // Should all metadata variants use the same texture?
+	private static final String[] types = {"0", "1", "2", "3"}; // Names of all metadata variants
 	private static final float[] sinkTypes = {0.35F, 0.50F, 0.75F, 1.00F}; // The maximum sink level for each metadata variant
+	private static final boolean useOneTexture = true; // Should all metadata variants use the same texture?
 	public static final PropertyInteger SINK = PropertyInteger.create("sink", 0, Integer.valueOf(types.length-1)); // Creates a metadata value for every "types" metadata value
 	private BeaconHandler beacon = new BeaconHandler(false); // Constructs a beacon handler. Enabled if "true" passed in
 	
 	// Constructor
 	public BlockMud(Material material) {
-		super(material);
+		super(material); // Runs all code in the super implementation
 		this.setHardness(0.6f); // Sets the hardness of the block
 		this.setHarvestLevel("shovel", 0); // Sets the hardness of the block when mined with a shovel
 		this.setStepSound(Block.soundTypeSand); // Sets the sound that plays when the block is stepped on
@@ -52,7 +52,7 @@ public class BlockMud extends SinkingBlock implements IMetaBlockName {
 		// Makes the block opaque if the user desires
 		int opacity = (ConfigHandler.makeBlocksOpaque)
 				? 255 : 3;
-		this.setLightOpacity(opacity);
+		this.setLightOpacity(opacity); // Sets the opacity level of the block
 	}
 	
 	// Changes the collision box. This is not the texture bounding box. This is not the hitbox.
@@ -98,8 +98,8 @@ public class BlockMud extends SinkingBlock implements IMetaBlockName {
 			boolean triggEntityHasBoots = false; // Is the triggering entity wearing boots?
 			boolean triggEntityBootsFloat = false; // Can the boots the triggering entity is wearing float in quicksand?
 			final float blockMetadataBumped = (float)(blockMetadata + 1); // Adds 1 to the block's metadata value
-			double triggEntityMovingDistance_movDis = 1.0;
-			double forceBubbleSpawn_movCof = 16.0; // Forces the block to attempt to spawn bubbles. This value is used when the entity is not moving
+			double triggEntityMovingDistance_movDis = 1.0; // The distance the entity moves along the X/Z plane
+			double forceFlavorEvent_movCof = 16.0; // Forces the block to attempt to spawn a flavor event (either bubbles, sound, or both)
 			double movementPunish_mofKofDiv = 1.0; // Punishes the entity for moving. Makes them sink faster.
 			
 			// EQUATION BEACON. 1st complex
@@ -167,7 +167,7 @@ public class BlockMud extends SinkingBlock implements IMetaBlockName {
 				// Exponentially increases the chance of a bubble spawn event the more the entity moves forwards.
 				// Outputs as a number between 16 and 32. Lower number equals higher chance
 				// https://www.desmos.com/calculator/rxdyif2tis
-				forceBubbleSpawn_movCof = Math.max(Math.min(32.0 / (1.0 + (triggEntityMovingDistance_movDis * 10.0)), 32.0), 16.0);
+				forceFlavorEvent_movCof = Math.max(Math.min(32.0 / (1.0 + (triggEntityMovingDistance_movDis * 10.0)), 32.0), 16.0);
 				
 				// Base punishment for punishing the player for moving.
 				// This value will be modified later
@@ -277,7 +277,7 @@ public class BlockMud extends SinkingBlock implements IMetaBlockName {
             //     OR the entity is marked as jumping, AND the remainder of the current world time divided by 8 is zero,
             //     OR the entity is marked as splashing...
 			if (world.getTotalWorldTime() % 128L == 0L
-					|| (triggEntityMoving && world.getTotalWorldTime() % Math.max((int)Math.floor(forceBubbleSpawn_movCof), 1) == 0L)
+					|| (triggEntityMoving && world.getTotalWorldTime() % Math.max((int)Math.floor(forceFlavorEvent_movCof), 1) == 0L)
 					|| (triggEntityJumping && world.getTotalWorldTime() % 8L == 0L)
 					|| triggEntitySplashing) {
 				// This is the part that makes most of the bubbles
@@ -693,7 +693,7 @@ public class BlockMud extends SinkingBlock implements IMetaBlockName {
             }
             /*
             System.out.println("triggEntityMovingDistance_movDis: " + triggEntityMovingDistance_movDis);
-            System.out.println("forceBubbleSpawn_movCof: " + forceBubbleSpawn_movCof);
+            System.out.println("forceFlavorEvent_movCof: " + forceFlavorEvent_movCof);
             System.out.println("movementPunish_mofKofDiv: " + movementPunish_mofKofDiv);
             System.out.println("mr_blackgoo: " + mr_blackgoo);*/
 		} else {

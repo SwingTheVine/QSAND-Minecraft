@@ -8,6 +8,11 @@ public class BeaconHandler {
 		this.enableBeacons = enableBeacons;
 	}
 	
+	// Enables or disables beacon logging
+	public void enableBeaconLogs(boolean enableBeaconLogs) {
+		this.enableBeacons = enableBeaconLogs;
+	}
+	
 	// Logs a beacon with only a name
 	public void logBeacon(String name) {
 		if (this.enableBeacons) {
@@ -41,10 +46,5 @@ public class BeaconHandler {
 		if (this.enableBeacons) {
 			System.out.println(name + " Beacon " + id + ": " + value);
 		}
-	}
-	
-	// Enables or disables beacon logging
-	public void enableBeaconLogs(boolean enableBeaconLogs) {
-		this.enableBeacons = enableBeaconLogs;
 	}
 }
