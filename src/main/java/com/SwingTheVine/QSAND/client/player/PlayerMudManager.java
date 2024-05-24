@@ -1,6 +1,6 @@
 package com.SwingTheVine.QSAND.client.player;
 
-import com.SwingTheVine.QSAND.handler.ConfigHandler;
+import com.SwingTheVine.QSAND.util.ConfigHandler;
 
 import net.minecraft.crash.CrashReport;
 import net.minecraft.entity.Entity;

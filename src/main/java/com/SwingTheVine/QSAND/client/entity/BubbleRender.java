@@ -4,8 +4,8 @@ import org.lwjgl.Sys;
 import org.lwjgl.opengl.GL11;
 
 import com.SwingTheVine.QSAND.ModInfo;
-import com.SwingTheVine.QSAND.blocks.QuicksandBlock;
-import com.SwingTheVine.QSAND.entity.Bubble;
+import com.SwingTheVine.QSAND.block.SinkingBlock;
+import com.SwingTheVine.QSAND.entity.effect.EntityBubble;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -25,7 +25,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class BubbleRender extends Render<Bubble> {
+public class BubbleRender extends Render<EntityBubble> {
 
 	//static BubbleModel model = new BubbleModel();
     private static ResourceLocation entityTexture = new ResourceLocation(ModInfo.id, "blocks/larvae_0"); // The texture the entity will use
@@ -35,7 +35,7 @@ public class BubbleRender extends Render<Bubble> {
     	super(renderManager);
     }
     
-    public void doRenderBubble(final Bubble bubble, final double par2, final double par4, final double par6, final float par8, final float par9) {
+    public void doRenderBubble(final EntityBubble bubble, final double par2, final double par4, final double par6, final float par8, final float par9) {
         
     	// If the bubble has been spawned in for longer than the time it should be spawned in...
     	if (Sys.getTime() - bubble.entitySpawnTime < 0L) {
@@ -94,7 +94,7 @@ public class BubbleRender extends Render<Bubble> {
         	try {
 	        	if (bubble.block == null) {
 	        		System.out.println("null");
-	        		intColor = ((QuicksandBlock)bubble.worldObj.getBlockState(bubblePos.down()).getBlock()).getQuicksandColorMultiplier(bubble.worldObj, bubblePos.down());
+	        		intColor = ((SinkingBlock)bubble.worldObj.getBlockState(bubblePos.down()).getBlock()).getQuicksandColorMultiplier(bubble.worldObj, bubblePos.down());
 	        		System.out.println(intColor);
 	        	} else {
 	        		System.out.println("not null");
@@ -135,11 +135,11 @@ public class BubbleRender extends Render<Bubble> {
     }
     
     // Obtains the entity's texture
-    protected ResourceLocation getEntityTexture(Bubble bubble) {
+    protected ResourceLocation getEntityTexture(EntityBubble bubble) {
         return this.entityTexture; // Returns the entity's texture
     }
     
-    public void doRender(Bubble bubble, final double par2, final double par4, final double par6, final float par8, final float par9) {
+    public void doRender(EntityBubble bubble, final double par2, final double par4, final double par6, final float par8, final float par9) {
         this.doRenderBubble(bubble, par2, par4, par6, par8, par9);
     }
     

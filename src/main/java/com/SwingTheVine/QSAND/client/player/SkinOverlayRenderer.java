@@ -5,8 +5,8 @@ import java.util.UUID;
 import org.lwjgl.opengl.GL11;
 
 import com.SwingTheVine.QSAND.ModInfo;
-import com.SwingTheVine.QSAND.handler.BeaconHandler;
 import com.SwingTheVine.QSAND.init.QSAND_Blocks;
+import com.SwingTheVine.QSAND.util.BeaconHandler;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -26,28 +26,28 @@ public class SkinOverlayRenderer extends ModelRenderer {
 	public World world;
 	public boolean showOverlay;
 	public static final ResourceLocation[] skinOverlayMud = {
-			new ResourceLocation(ModInfo.id, "textures/entities/skinOverlays/MudOverlay0.png"),
-			new ResourceLocation(ModInfo.id, "textures/entities/skinOverlays/MudOverlay1.png"),
-			new ResourceLocation(ModInfo.id, "textures/entities/skinOverlays/MudOverlay2.png"),
-			new ResourceLocation(ModInfo.id, "textures/entities/skinOverlays/MudOverlay3.png"),
-			new ResourceLocation(ModInfo.id, "textures/entities/skinOverlays/MudOverlay4.png"),
-			new ResourceLocation(ModInfo.id, "textures/entities/skinOverlays/MudOverlay5.png"),
-			new ResourceLocation(ModInfo.id, "textures/entities/skinOverlays/MudOverlay6.png"),
-			new ResourceLocation(ModInfo.id, "textures/entities/skinOverlays/MudOverlay7.png"),
-			new ResourceLocation(ModInfo.id, "textures/entities/skinOverlays/MudOverlay8.png"),
-			new ResourceLocation(ModInfo.id, "textures/entities/skinOverlays/MudOverlay9.png")};
+			new ResourceLocation(ModInfo.id, "textures/entity/player/overlay/mud/MudOverlay0.png"),
+			new ResourceLocation(ModInfo.id, "textures/entity/player/overlay/mud/MudOverlay1.png"),
+			new ResourceLocation(ModInfo.id, "textures/entity/player/overlay/mud/MudOverlay2.png"),
+			new ResourceLocation(ModInfo.id, "textures/entity/player/overlay/mud/MudOverlay3.png"),
+			new ResourceLocation(ModInfo.id, "textures/entity/player/overlay/mud/MudOverlay4.png"),
+			new ResourceLocation(ModInfo.id, "textures/entity/player/overlay/mud/MudOverlay5.png"),
+			new ResourceLocation(ModInfo.id, "textures/entity/player/overlay/mud/MudOverlay6.png"),
+			new ResourceLocation(ModInfo.id, "textures/entity/player/overlay/mud/MudOverlay7.png"),
+			new ResourceLocation(ModInfo.id, "textures/entity/player/overlay/mud/MudOverlay8.png"),
+			new ResourceLocation(ModInfo.id, "textures/entity/player/overlay/mud/MudOverlay9.png")};
 	
 	public static final ResourceLocation[] skinOverlaySlime = {
-			new ResourceLocation(ModInfo.id, "textures/entities/skinOverlays/SlimeOverlay0.png"),
-			new ResourceLocation(ModInfo.id, "textures/entities/skinOverlays/SlimeOverlay1.png"),
-			new ResourceLocation(ModInfo.id, "textures/entities/skinOverlays/SlimeOverlay2.png"),
-			new ResourceLocation(ModInfo.id, "textures/entities/skinOverlays/SlimeOverlay3.png"),
-			new ResourceLocation(ModInfo.id, "textures/entities/skinOverlays/SlimeOverlay4.png"),
-			new ResourceLocation(ModInfo.id, "textures/entities/skinOverlays/SlimeOverlay5.png"),
-			new ResourceLocation(ModInfo.id, "textures/entities/skinOverlays/SlimeOverlay6.png"),
-			new ResourceLocation(ModInfo.id, "textures/entities/skinOverlays/SlimeOverlay7.png"),
-			new ResourceLocation(ModInfo.id, "textures/entities/skinOverlays/SlimeOverlay8.png"),
-			new ResourceLocation(ModInfo.id, "textures/entities/skinOverlays/SlimeOverlay9.png")};
+			new ResourceLocation(ModInfo.id, "textures/entity/player/overlay/slime/SlimeOverlay0.png"),
+			new ResourceLocation(ModInfo.id, "textures/entity/player/overlay/slime/SlimeOverlay1.png"),
+			new ResourceLocation(ModInfo.id, "textures/entity/player/overlay/slime/SlimeOverlay2.png"),
+			new ResourceLocation(ModInfo.id, "textures/entity/player/overlay/slime/SlimeOverlay3.png"),
+			new ResourceLocation(ModInfo.id, "textures/entity/player/overlay/slime/SlimeOverlay4.png"),
+			new ResourceLocation(ModInfo.id, "textures/entity/player/overlay/slime/SlimeOverlay5.png"),
+			new ResourceLocation(ModInfo.id, "textures/entity/player/overlay/slime/SlimeOverlay6.png"),
+			new ResourceLocation(ModInfo.id, "textures/entity/player/overlay/slime/SlimeOverlay7.png"),
+			new ResourceLocation(ModInfo.id, "textures/entity/player/overlay/slime/SlimeOverlay8.png"),
+			new ResourceLocation(ModInfo.id, "textures/entity/player/overlay/slime/SlimeOverlay9.png")};
 	
 	// Constructor
 	public SkinOverlayRenderer(final ModelBase model, final String string) {

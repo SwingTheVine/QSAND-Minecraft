@@ -3,11 +3,11 @@ package com.SwingTheVine.QSAND.init;
 import java.util.ArrayList;
 
 import com.SwingTheVine.QSAND.QSAND;
-import com.SwingTheVine.QSAND.entity.Bubble;
-import com.SwingTheVine.QSAND.entity.SlimeMud;
-import com.SwingTheVine.QSAND.entity.SlimeSand;
-import com.SwingTheVine.QSAND.entity.SlimeTar;
-import com.SwingTheVine.QSAND.entity.SlimeVoid;
+import com.SwingTheVine.QSAND.entity.effect.EntityBubble;
+import com.SwingTheVine.QSAND.entity.monster.EntitySlimeMud;
+import com.SwingTheVine.QSAND.entity.monster.EntitySlimeSand;
+import com.SwingTheVine.QSAND.entity.monster.EntitySlimeTar;
+import com.SwingTheVine.QSAND.entity.monster.EntitySlimeVoid;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
@@ -20,11 +20,11 @@ public class QSAND_Entities {
 	private static int entityID = 0; // Starting ID of the entity
 	
 	public static void registerEntities() {
-		registerEntity(Bubble.class, "bubble", 120, 2, true); // Registers the bubble entity
-		registerEntity(SlimeVoid.class, "slime_void", 80, 3, true); // Registers the void slime entity
-		registerEntity(SlimeMud.class, "slime_mud", 80, 3, true); // Registers the mud slime entity
-		registerEntity(SlimeSand.class, "slime_sand", 80, 3, true); // Registers the sand slime entity
-		registerEntity(SlimeTar.class, "slime_tar", 80, 3, true); // Registers the tar slime entity
+		registerEntity(EntityBubble.class, "bubble", 120, 2, true); // Registers the bubble entity
+		registerEntity(EntitySlimeVoid.class, "slime_void", 80, 3, true); // Registers the void slime entity
+		registerEntity(EntitySlimeMud.class, "slime_mud", 80, 3, true); // Registers the mud slime entity
+		registerEntity(EntitySlimeSand.class, "slime_sand", 80, 3, true); // Registers the sand slime entity
+		registerEntity(EntitySlimeTar.class, "slime_tar", 80, 3, true); // Registers the tar slime entity
 	}
 	
 	/**
@@ -90,18 +90,18 @@ public class QSAND_Entities {
 		final BiomeGenBase[] swampBiomes = swampBiomesList.toArray(swampBiomesArray);
 		final BiomeGenBase[] desertBiomes = desertBiomesList.toArray(desertBiomesArray);
 		
-		EntityRegistry.addSpawn(SlimeVoid.class, 2, 1, 1, EnumCreatureType.MONSTER, allBiomes);
-		EntityRegistry.addSpawn(SlimeMud.class, 2, 1, 1, EnumCreatureType.MONSTER, swampBiomes);
-		EntityRegistry.addSpawn(SlimeSand.class, 2, 1, 1, EnumCreatureType.MONSTER, desertBiomes);
-		EntityRegistry.addSpawn(SlimeTar.class, 2, 1, 1, EnumCreatureType.MONSTER, allBiomes);
+		EntityRegistry.addSpawn(EntitySlimeVoid.class, 2, 1, 1, EnumCreatureType.MONSTER, allBiomes);
+		EntityRegistry.addSpawn(EntitySlimeMud.class, 2, 1, 1, EnumCreatureType.MONSTER, swampBiomes);
+		EntityRegistry.addSpawn(EntitySlimeSand.class, 2, 1, 1, EnumCreatureType.MONSTER, desertBiomes);
+		EntityRegistry.addSpawn(EntitySlimeTar.class, 2, 1, 1, EnumCreatureType.MONSTER, allBiomes);
 	}
 	
 	// Generates a spawn egg for the entity
 	public static void generateSpawnEgg() {
-		EntityRegistry.registerEgg(SlimeVoid.class, 10205416, 10993884);
-		EntityRegistry.registerEgg(SlimeMud.class, 7428915, 5787429);
-		EntityRegistry.registerEgg(SlimeSand.class, 16049320, 14858107);
-		EntityRegistry.registerEgg(SlimeTar.class, 1973277, 2696228);
+		EntityRegistry.registerEgg(EntitySlimeVoid.class, 10205416, 10993884);
+		EntityRegistry.registerEgg(EntitySlimeMud.class, 7428915, 5787429);
+		EntityRegistry.registerEgg(EntitySlimeSand.class, 16049320, 14858107);
+		EntityRegistry.registerEgg(EntitySlimeTar.class, 1973277, 2696228);
 	}
 
 	/**

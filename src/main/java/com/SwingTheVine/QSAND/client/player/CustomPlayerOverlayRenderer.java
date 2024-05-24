@@ -4,8 +4,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.SwingTheVine.QSAND.handler.BeaconHandler;
-import com.SwingTheVine.QSAND.handler.FieldsHandler;
+import com.SwingTheVine.QSAND.util.BeaconHandler;
+import com.SwingTheVine.QSAND.util.FieldsHandler;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;

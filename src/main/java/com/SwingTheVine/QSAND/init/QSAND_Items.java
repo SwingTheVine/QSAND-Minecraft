@@ -2,7 +2,7 @@ package com.SwingTheVine.QSAND.init;
 
 import com.SwingTheVine.QSAND.ModInfo;
 import com.SwingTheVine.QSAND.QSAND;
-import com.SwingTheVine.QSAND.items.ItemSpawnEgg;
+import com.SwingTheVine.QSAND.item.ItemSpawnEgg;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelResourceLocation;

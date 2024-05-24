@@ -3,9 +3,9 @@ package com.SwingTheVine.QSAND.client.player;
 import org.lwjgl.opengl.GL11;
 
 import com.SwingTheVine.QSAND.ModInfo;
-import com.SwingTheVine.QSAND.handler.ConfigHandler;
 import com.SwingTheVine.QSAND.init.QSAND_Blocks;
-import com.SwingTheVine.QSAND.manager.QuicksandManager;
+import com.SwingTheVine.QSAND.util.ConfigHandler;
+import com.SwingTheVine.QSAND.util.QuicksandManager;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;

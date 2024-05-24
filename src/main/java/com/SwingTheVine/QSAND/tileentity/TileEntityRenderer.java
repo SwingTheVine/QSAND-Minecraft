@@ -4,7 +4,7 @@ import org.lwjgl.Sys;
 import org.lwjgl.opengl.GL11;
 
 import com.SwingTheVine.QSAND.ModInfo;
-import com.SwingTheVine.QSAND.blocks.BlockLarvae;
+import com.SwingTheVine.QSAND.block.BlockLarvae;
 import com.SwingTheVine.QSAND.init.QSAND_Blocks;
 
 import net.minecraft.client.Minecraft;

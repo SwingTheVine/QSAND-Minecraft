@@ -4,12 +4,13 @@ import java.io.File;
 
 import com.SwingTheVine.QSAND.client.player.CustomPlayerGUIRenderer;
 import com.SwingTheVine.QSAND.client.player.CustomPlayerOverlayRenderer;
-import com.SwingTheVine.QSAND.handler.ConfigHandler;
+import com.SwingTheVine.QSAND.creativetab.QSAND_Tab;
 import com.SwingTheVine.QSAND.init.QSAND_Blocks;
 import com.SwingTheVine.QSAND.init.QSAND_Entities;
 import com.SwingTheVine.QSAND.init.QSAND_Items;
-import com.SwingTheVine.QSAND.manager.PlayerManager;
 import com.SwingTheVine.QSAND.proxy.CommonProxy;
+import com.SwingTheVine.QSAND.util.ConfigHandler;
+import com.SwingTheVine.QSAND.util.PlayerManager;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;

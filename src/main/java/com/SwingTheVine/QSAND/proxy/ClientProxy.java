@@ -5,11 +5,11 @@ import com.SwingTheVine.QSAND.client.entity.SlimeMudRender;
 import com.SwingTheVine.QSAND.client.entity.SlimeSandRender;
 import com.SwingTheVine.QSAND.client.entity.SlimeTarRender;
 import com.SwingTheVine.QSAND.client.entity.SlimeVoidRender;
-import com.SwingTheVine.QSAND.entity.Bubble;
-import com.SwingTheVine.QSAND.entity.SlimeMud;
-import com.SwingTheVine.QSAND.entity.SlimeSand;
-import com.SwingTheVine.QSAND.entity.SlimeTar;
-import com.SwingTheVine.QSAND.entity.SlimeVoid;
+import com.SwingTheVine.QSAND.entity.effect.EntityBubble;
+import com.SwingTheVine.QSAND.entity.monster.EntitySlimeMud;
+import com.SwingTheVine.QSAND.entity.monster.EntitySlimeSand;
+import com.SwingTheVine.QSAND.entity.monster.EntitySlimeTar;
+import com.SwingTheVine.QSAND.entity.monster.EntitySlimeVoid;
 import com.SwingTheVine.QSAND.init.QSAND_Blocks;
 import com.SwingTheVine.QSAND.init.QSAND_Items;
 
@@ -30,11 +30,11 @@ public class ClientProxy extends CommonProxy {
 	// Registers the renders for the entities
 	@Override
 	public void registerEntityRenders() {
-		RenderingRegistry.registerEntityRenderingHandler(Bubble.class, new BubbleRender.Factory());
-		RenderingRegistry.registerEntityRenderingHandler(SlimeVoid.class, new SlimeVoidRender.Factory());
-		RenderingRegistry.registerEntityRenderingHandler(SlimeMud.class, new SlimeMudRender.Factory());
-		RenderingRegistry.registerEntityRenderingHandler(SlimeSand.class, new SlimeSandRender.Factory());
-		RenderingRegistry.registerEntityRenderingHandler(SlimeTar.class, new SlimeTarRender.Factory());
+		RenderingRegistry.registerEntityRenderingHandler(EntityBubble.class, new BubbleRender.Factory());
+		RenderingRegistry.registerEntityRenderingHandler(EntitySlimeVoid.class, new SlimeVoidRender.Factory());
+		RenderingRegistry.registerEntityRenderingHandler(EntitySlimeMud.class, new SlimeMudRender.Factory());
+		RenderingRegistry.registerEntityRenderingHandler(EntitySlimeSand.class, new SlimeSandRender.Factory());
+		RenderingRegistry.registerEntityRenderingHandler(EntitySlimeTar.class, new SlimeTarRender.Factory());
 	}
 	
 	// Registers the models for the items

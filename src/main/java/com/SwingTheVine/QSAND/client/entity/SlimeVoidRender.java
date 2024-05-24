@@ -3,7 +3,7 @@ package com.SwingTheVine.QSAND.client.entity;
 import org.lwjgl.opengl.GL11;
 
 import com.SwingTheVine.QSAND.ModInfo;
-import com.SwingTheVine.QSAND.entity.SlimeVoid;
+import com.SwingTheVine.QSAND.entity.monster.EntitySlimeVoid;
 
 import assets.qsand.models.entity.ModelSlimeVoid;
 import net.minecraft.client.model.ModelBase;
@@ -16,9 +16,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class SlimeVoidRender extends RenderLiving<SlimeVoid> {
+public class SlimeVoidRender extends RenderLiving<EntitySlimeVoid> {
 
-    private static final ResourceLocation entityTexture = new ResourceLocation(ModInfo.id + SlimeVoid.textureLocation); // The texture the entity will use
+    private static final ResourceLocation entityTexture = new ResourceLocation(ModInfo.id, EntitySlimeVoid.textureLocation); // The texture the entity will use
     private static ModelBase model = new ModelSlimeVoid(0);
     private static float shadowSize = 0.5F;
     
@@ -27,12 +27,12 @@ public class SlimeVoidRender extends RenderLiving<SlimeVoid> {
     }
     
     @Override
-    public void doRender(SlimeVoid entity, double x, double y, double z, float entityYaw, float partialTicks) {
+    public void doRender(EntitySlimeVoid entity, double x, double y, double z, float entityYaw, float partialTicks) {
         this.shadowSize = 0.25F * (float)entity.getSlimeSize();
         super.doRender(entity, x, y, z, entityYaw, partialTicks);
     }
     
-    protected int shouldRenderPass(final SlimeVoid slime, final int p_77032_2_, final float p_77032_3_) {
+    protected int shouldRenderPass(final EntitySlimeVoid slime, final int p_77032_2_, final float p_77032_3_) {
         if (slime.isInvisible()) {
             return 0;
         }
@@ -51,7 +51,7 @@ public class SlimeVoidRender extends RenderLiving<SlimeVoid> {
     }
     
     @Override
-    protected void preRenderCallback(SlimeVoid entity, float partialTickTime) {
+    protected void preRenderCallback(EntitySlimeVoid entity, float partialTickTime) {
         final float slimeSize = (float)entity.getSlimeSize();
         final float var4 = (entity.squishFactorPrev + (entity.squishFactor - entity.squishFactorPrev) * partialTickTime) / (slimeSize * 0.5f + 1.0f);
         final float var5 = 1.0f / (var4 + 1.0f);
@@ -60,11 +60,11 @@ public class SlimeVoidRender extends RenderLiving<SlimeVoid> {
     }
     
     protected int shouldRenderPass(final EntityLivingBase entity, final int p_77032_2_, final float p_77032_3_) {
-        return this.shouldRenderPass((SlimeVoid)entity, p_77032_2_, p_77032_3_);
+        return this.shouldRenderPass((EntitySlimeVoid)entity, p_77032_2_, p_77032_3_);
     }
     
     @Override
-    protected ResourceLocation getEntityTexture(SlimeVoid entity) {
+    protected ResourceLocation getEntityTexture(EntitySlimeVoid entity) {
         return entityTexture;
     }
     
