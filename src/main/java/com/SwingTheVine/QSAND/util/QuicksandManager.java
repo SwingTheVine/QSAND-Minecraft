@@ -27,6 +27,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
@@ -670,6 +671,25 @@ public class QuicksandManager {
         spawnBubble(world, bubblePosX, blockPosY + surfaceY(block), bubblePosZ, block, blockMetadata, bubbleSize, bubbleTime);
 	}
 	
+	public static void spawnQSBubble(final World world, final double x, final double y, final double z, final Block block, final int metadata, final float volume) {
+        if (!world.isRemote) {
+            return;
+        }
+        if (!ConfigHandler.spawnBubbles) {
+            if (volume > 0.4f) {
+                for (int i = 0; i < 3; ++i) {
+                    world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, x, y, z, 0.0, 0.0, 0.0, Block.getIdFromBlock(block));
+                }
+            }
+        } else if (volume > 0.4f) {
+            final float size = 2.5f - world.rand.nextFloat() * 1.75f;
+            final int time = (int)Math.floor((1000 + world.rand.nextInt(500)) * size);
+            spawnBubble(world, x, y, z, (SinkingBlock)block, metadata, size, time);
+            return;
+        }
+        world.playSound(x, y, z, "liquid.lavapop", volume + world.rand.nextFloat() * 0.25f, 0.25f + world.rand.nextFloat() * 0.5f, false);
+    }
+	
 	// Spawns a random body bubble
 	public static void spawnBodyBubbleRandom(final World world, final Entity entity, final int blockPosX, final int blockPosY, final int blockPosZ, final SinkingBlock block, boolean useMetadata) {
 		int blockMetadata = 0;
@@ -705,7 +725,7 @@ public class QuicksandManager {
 	
 	// Spawns bubbles for when an entity is drowning
 	public static void spawnDrowningBubble(final World world, final Entity entity, final SinkingBlock block, boolean useMetadata) {
-		int blockMetadata = 0;
+		int blockMetadata = 0; // False = 0; True = -1
 		
 		// If the world is NOT a server instance, AND the user does NOT want to spawn singleplayer bubbles...
         if (!world.isRemote && !ConfigHandler.spawnUnseenBubbles) {

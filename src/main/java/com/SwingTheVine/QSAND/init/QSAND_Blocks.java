@@ -18,6 +18,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class QSAND_Blocks {
@@ -56,7 +57,7 @@ public class QSAND_Blocks {
 	public static Block honey;
 	
 	// MFQM blocks not included in the sink list
-	public static FluidBog fluidBog;
+	public static FluidBog fluidBog = new FluidBog();
 	public static Block clayHardened;
 	public static Block meat;
 	public static Block meatHole;
@@ -118,6 +119,8 @@ public class QSAND_Blocks {
 	
 	public static void init() {
 		
+		FluidRegistry.registerFluid(fluidBog);
+		
 		// Constructs all blocks with their names and tab
 		bog = (SinkingBlockFluidClassic)new BlockBog(fluidBog, BlockBog.materialBog).setUnlocalizedName("bog").setCreativeTab(QSAND.QSANDTab);
 		snowSoft = (SinkingBlock)new BlockSnowSoft(Material.ground).setUnlocalizedName("snow_soft").setCreativeTab(QSAND.QSANDTab);
@@ -130,6 +133,7 @@ public class QSAND_Blocks {
 	public static void registerBlocks() {
 		
 		// Registers the blocks with the Game Registry
+		GameRegistry.registerBlock(bog, ItemBlockMeta.class, bog.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(snowSoft, ItemBlockMeta.class, snowSoft.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(quicksand, ItemBlockMeta.class, quicksand.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(larvae, ItemBlockMeta.class, larvae.getUnlocalizedName().substring(5));
@@ -140,7 +144,7 @@ public class QSAND_Blocks {
 	public static void registerRenders() {
 		
 		// Registers the inventory image. Block to render, number of metadata types, should one texture be used
-		
+		registerRenderInventory(bog, ((BlockBog)bog).getTypes(), ((BlockBog)bog).getUseOneTexture());
 		registerRenderInventory(snowSoft, ((BlockSnowSoft)snowSoft).getTypes(), ((BlockSnowSoft)snowSoft).getUseOneTexture());
 		registerRenderInventory(quicksand, ((BlockQuicksand)quicksand).getTypes(), ((BlockQuicksand)quicksand).getUseOneTexture());
 		registerRenderInventory(larvae, ((BlockLarvae)larvae).getTypes(), ((BlockLarvae)larvae).getUseOneTexture());

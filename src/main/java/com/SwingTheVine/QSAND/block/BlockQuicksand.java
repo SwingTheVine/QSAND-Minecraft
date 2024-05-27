@@ -1,6 +1,7 @@
 package com.SwingTheVine.QSAND.block;
 
 import java.util.List;
+import java.util.Random;
 
 import com.SwingTheVine.QSAND.entity.monster.EntitySlimeSand;
 import com.SwingTheVine.QSAND.util.BeaconHandler;
@@ -629,6 +630,18 @@ public class BlockQuicksand extends SinkingBlock implements IMetaBlockName {
 	@Override
 	public boolean isFullCube() {
 		return false;
+    }
+	
+	@SideOnly(Side.CLIENT)
+    public void randomDisplayTick(final World world, final int x, final int y, final int z, final Random random) {
+        if (world.getBlockState(new BlockPos(x, y + 1, z)).getBlock().getMaterial() == Material.air) {
+            final int md = world.getBlockState(new BlockPos(x, y, z)).getBlock().getMetaFromState(world.getBlockState(new BlockPos(x, y, z)));
+            if (world.rand.nextInt(1000) == 0) {
+                final double xx = x + (double)random.nextFloat();
+                final double zz = z + (double)random.nextFloat();
+                QuicksandManager.spawnQSBubble(world, xx, y + 1.0, zz, this, 0, 0.5f);
+            }
+        }
     }
 	
 	// Obtains the special name of the block variant.

@@ -1,7 +1,9 @@
 package com.SwingTheVine.QSAND.block;
 
+import java.util.List;
 import java.util.Random;
 
+import com.SwingTheVine.QSAND.client.player.PlayerMudManager;
 import com.SwingTheVine.QSAND.entity.monster.EntitySlimeMud;
 import com.SwingTheVine.QSAND.init.QSAND_Blocks;
 import com.SwingTheVine.QSAND.init.QSAND_Items;
@@ -13,24 +15,29 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialLiquid;
-import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.StatCollector;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockBog extends SinkingBlockFluidClassic {
+public class BlockBog extends SinkingBlockFluidClassic implements IMetaBlockName {
 	
 	private static final String[] types = {"0"}; // Names of all metadata variants
 	private static final float[] sinkTypes = {1.00F}; // The maximum sink level for each metadata variant
 	private static final boolean useOneTexture = true; // Should all metadata variants use the same texture?
-	public static final PropertyInteger SINK = PropertyInteger.create("sink", 0, Integer.valueOf(types.length-1)); // Creates a metadata value for every "types" metadata value
+	//public static final PropertyInteger SINK = PropertyInteger.create("sink", 0, Integer.valueOf(types.length-1)); // Creates a metadata value for every "types" metadata value
 	public static final Material materialBog = new MaterialLiquid(MapColor.grassColor);
 	public static final int typeColor = 4538917;
 	public static final int maxOpacity = 2000;
@@ -110,7 +117,7 @@ public class BlockBog extends SinkingBlockFluidClassic {
 				: Math.max((pos.getY() - triggEntityPrevPosY - 0.5), 0.0); 
 					
 		double triggEntitySunkMod_kof1m = Math.max(triggEntitySunk_kof1, 0.0); // A modified version of trigger entity sunk
-		final int blockMetadata = state.getValue(SINK).intValue(); // Obtains this block's variant/metadata
+		final int blockMetadata = state.getBlock().getMetaFromState(state); // Obtains this block's variant/metadata
 		
 		// If the triggering entity is living (as opposed to a death animation)...
 		if (triggeringEntity instanceof EntityLivingBase) {
@@ -226,8 +233,8 @@ public class BlockBog extends SinkingBlockFluidClassic {
 					
 					// If the entity is a player, AND the number in the world's random number generator sequence is 0 (1/3 chance)...
 					if (triggeringEntity instanceof EntityPlayer && world.rand.nextInt(3) == 0) {
-						QuicksandManager.spawnBodyBubbleRandom(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), this, false);
-						QuicksandManager.spawnBodyBubbleRandom(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), this, false);
+						QuicksandManager.spawnBodyBubbleRandom(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), (SinkingBlock)(Block)this, false);
+						QuicksandManager.spawnBodyBubbleRandom(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), (SinkingBlock)(Block)this, false);
 					}
 				}
 				
@@ -241,7 +248,7 @@ public class BlockBog extends SinkingBlockFluidClassic {
                     
                     // ...AND the number in the world's random number generator sequence equals 0 (1/5 chance)...
                     if (world.rand.nextInt(5) == 0) { // TODO: Mud Changed. 7 -> 5
-                    	QuicksandManager.spawnBodyBubbleRandom(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), this, false);
+                    	QuicksandManager.spawnBodyBubbleRandom(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), (SinkingBlock)(Block)this, false);
                     }
 				}
 				
@@ -252,9 +259,9 @@ public class BlockBog extends SinkingBlockFluidClassic {
 					
 					// If the entity is a player, AND the number in the world's random number generator sequence equals 0 (1/5 chance)...
                     if (triggeringEntity instanceof EntityPlayer && world.rand.nextInt(2) == 0) { // TODO: Mud Changed. 5 -> 2
-                    	QuicksandManager.spawnBodyBubbleRandom(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), this, false);
-                    	QuicksandManager.spawnBodyBubbleRandom(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), this, false);
-                    	QuicksandManager.spawnBodyBubbleRandom(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), this, false);
+                    	QuicksandManager.spawnBodyBubbleRandom(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), (SinkingBlock)(Block)this, false);
+                    	QuicksandManager.spawnBodyBubbleRandom(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), (SinkingBlock)(Block)this, false);
+                    	QuicksandManager.spawnBodyBubbleRandom(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), (SinkingBlock)(Block)this, false);
                     }
 				}
 				
@@ -279,7 +286,7 @@ public class BlockBog extends SinkingBlockFluidClassic {
             //    AND the remainder of the total world time divided by 16 is 0,
             //    AND the number in the world's random number generator sequence equals 0 (1/10 chance)...
             if (!triggEntityBootsFloat && world.getTotalWorldTime() % 16L == 0L && world.rand.nextInt(10) == 0) {
-            	QuicksandManager.spawnBodyBubble(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), this, false);
+            	QuicksandManager.spawnBodyBubble(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), (SinkingBlock)(Block)this, false);
             }
                 
             triggeringEntity.motionX = 0.0; // Make the entity stop moving
@@ -684,8 +691,11 @@ public class BlockBog extends SinkingBlockFluidClassic {
             final Block block = world.getBlockState(new BlockPos(pos.getX(), pos.getY() + this.densityDir, pos.getZ())).getBlock();
             final int bMeta = world.getBlockState(new BlockPos(pos.getX(), pos.getY() + this.densityDir, pos.getZ())).getBlock().getMetaFromState(world.getBlockState(new BlockPos(pos.getX(), pos.getY() + this.densityDir, pos.getZ())));
             if (block == this && bMeta != 0) {
-                world.setBlockState(new BlockPos(pos.getX(), pos.getY() + this.densityDir, pos.getZ()), state, 1);
-                world.setBlockMetadataWithNotify(new BlockPos(pos.getX(), pos.getY() + this.densityDir, pos.getZ()), 0, 2);
+            	BlockPos tempPos = new BlockPos(pos.getX(), pos.getY() + this.densityDir, pos.getZ());
+                world.setBlockState(tempPos, state, 1);
+                //world.setBlockMetadataWithNotify(new BlockPos(pos.getX(), pos.getY() + this.densityDir, pos.getZ()), 0, 2);
+                // TODO: Make sure this works properly
+                world.setBlockState(tempPos, world.getBlockState(tempPos).getBlock().getStateFromMeta(0));
                 world.setBlockToAir(pos);
                 return;
             }
@@ -694,38 +704,121 @@ public class BlockBog extends SinkingBlockFluidClassic {
             int inThisBlocks = 0;
             int inMetaBlocks = 0;
             if (world.rand.nextInt(5) == 0) {
-                if (world.getBlock(x + 1, y, z) == this) {
+                if (world.getBlockState(pos.add(1, 0, 0)).getBlock() == this) {
                     ++inThisBlocks;
-                    if (world.getBlockMetadata(x + 1, y, z) == 0) {
+                    if (world.getBlockState(pos.add(1, 0, 0)).getBlock().getMetaFromState(world.getBlockState(pos.add(1, 0, 0))) == 0) {
                         ++inMetaBlocks;
                     }
                 }
-                if (world.getBlock(x - 1, y, z) == this) {
+                if (world.getBlockState(pos.add(-1, 0, 0)).getBlock() == this) {
                     ++inThisBlocks;
-                    if (world.getBlockMetadata(x - 1, y, z) == 0) {
+                    if (world.getBlockState(pos.add(-1, 0, 0)).getBlock().getMetaFromState(world.getBlockState(pos.add(-1, 0, 0))) == 0) {
                         ++inMetaBlocks;
                     }
                 }
-                if (world.getBlock(x, y, z - 1) == this) {
+                if (world.getBlockState(pos.add(0, 0, -1)).getBlock() == this) {
                     ++inThisBlocks;
-                    if (world.getBlockMetadata(x, y, z - 1) == 0) {
+                    if (world.getBlockState(pos.add(0, 0, -1)).getBlock().getMetaFromState(world.getBlockState(pos.add(0, 0, -1))) == 0) {
                         ++inMetaBlocks;
                     }
                 }
-                if (world.getBlock(x, y, z + 1) == this) {
+                if (world.getBlockState(pos.add(0, 0, 1)).getBlock() == this) {
                     ++inThisBlocks;
-                    if (world.getBlockMetadata(x, y, z + 1) == 0) {
+                    if (world.getBlockState(pos.add(0, 0, 1)).getBlock().getMetaFromState(world.getBlockState(pos.add(0, 0, 1))) == 0) {
                         ++inMetaBlocks;
                     }
                 }
                 if (inThisBlocks > 2 && inMetaBlocks > 1) {
-                    world.setBlockMetadataWithNotify(x, y, z, world.getBlockMetadata(x, y, z) - 1, 2);
+                    //world.setBlockMetadataWithNotify(pos, world.getBlockState(pos).getBlock().getMetaFromState(world.getBlockState(pos)) - 1, 2);
+                    // TODO: Make sure this works properly. It is so janky...
+                	world.setBlockState(pos, world.getBlockState(pos).getBlock().getStateFromMeta(world.getBlockState(pos).getBlock().getMetaFromState(world.getBlockState(pos)) - 1), 2);
                 }
             }
         }
         this.quantaPerBlockFloat = 1.75f;
-        super.updateTick(world, x, y, z, rand);
+        super.updateTick(world, pos, state, rand);
     }
     
+    public void velocityToAddToEntity(final World par1World, final int par2, final int par3, final int par4, final Entity par5Entity, final Vec3 par6Vec3) {
+    	
+    }
     
+    @SideOnly(Side.CLIENT)
+    public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random random) {
+        if (world.getBlockState(pos.up()).getBlock().getMaterial() == Material.air) {
+            final int md = world.getBlockState(pos).getBlock().getMetaFromState(world.getBlockState(pos));
+            if (world.rand.nextInt(3000) == 0) {
+                final double xx = pos.getX() + (double)random.nextFloat();
+                final double zz = pos.getZ() + (double)random.nextFloat();
+                QuicksandManager.spawnQSBubble(world, xx, pos.getY() + 1, zz, (Block)this, 0, 0.5f);
+            }
+        }
+    }
+    
+    public boolean canDisplace(IBlockAccess world, BlockPos pos) {
+        return !world.getBlockState(pos).getBlock().getMaterial().isLiquid() && super.canDisplace(world, pos);
+    }
+    
+    public boolean displaceIfPossible(World world, BlockPos pos) {
+        return !world.getBlockState(pos).getBlock().getMaterial().isLiquid() && super.displaceIfPossible(world, pos);
+    }
+    
+    public boolean isNormalCube() {
+        return false;
+    }
+    
+    public void runSubmergedChecks(final Entity ent) {
+        if (QuicksandManager.isEntityInsideOfBlock(ent, (Block)this) && QuicksandManager.isDrowning(ent)) {
+            QuicksandManager.spawnDrowningBubble(ent.worldObj, ent, (SinkingBlock)(Block)this, false);
+            if (!ent.worldObj.isRemote && ent.isEntityAlive()) {
+                ent.attackEntityFrom(DamageSource.drown, Math.max(((EntityLivingBase)ent).getMaxHealth() * 0.1f, 2.0f));
+            }
+        }
+    }
+    
+    public void checkPlayerMuddy(final EntityPlayer triggeringPlayer, final int blockPosX, final int blockPosY, final int blockPosZ, final World world) {
+    	// If the skin overlay is disabled by the user...
+ 		if (!ConfigHandler.useSkinOverlay) {
+ 			return; // The user does not want the skin overlay. Don't run this function
+ 		}
+        if (!world.isRemote) {
+        	final PlayerMudManager playerMudControl = PlayerMudManager.get(triggeringPlayer);
+ 			final int preMudLevel = QuicksandManager.getMudLevel(triggeringPlayer, blockPosY, world);
+            if (preMudLevel * (this.maxOpacity / 1000.0f) > playerMudControl.getMudLevel() * (playerMudControl.getMudTime() / 1000.0f)) {
+            	playerMudControl.setMudLevel(preMudLevel);
+                final int mdtp = QuicksandManager.getMudType((Block)this);
+                playerMudControl.setMudType(mdtp);
+                if (playerMudControl.getMudTime() < this.maxOpacity) {
+                	playerMudControl.addMudTime(this.incOpacity);
+                }
+                playerMudControl.setMudTime(Math.min(playerMudControl.getMudTime(), this.maxOpacity));
+            }
+        }
+    }
+
+    // Obtains the special name of the block variant.
+ 	// This is used to add a custom name to a block variant in the language file
+ 	@Override
+ 	public String getSpecialName(ItemStack stack) {
+ 		return BlockBog.types[stack.getItemDamage()];
+ 	}
+
+ 	// Sets the tooltips that should be added to the block
+ 	// Leave blank for no tooltip
+ 	@Override
+ 	public void setTooltip(final ItemStack item, final EntityPlayer player, final List list, final boolean bool) {
+ 		list.add(StatCollector.translateToLocal("mfqm.tooltip_1"));
+ 	}
+ 	
+ 	// Returns types of metadata for the block
+ 	@Override
+ 	public String[] getTypes() {
+ 		return types;
+ 	}
+ 	
+ 	// Returns if only one texture should be used for all metadata types
+ 	@Override
+ 	public boolean getUseOneTexture() {
+ 		return useOneTexture;
+ 	}
 }
