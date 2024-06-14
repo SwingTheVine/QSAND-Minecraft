@@ -7,12 +7,14 @@ import com.SwingTheVine.QSAND.client.player.CustomPlayerOverlayRenderer;
 import com.SwingTheVine.QSAND.creativetab.QSAND_Tab;
 import com.SwingTheVine.QSAND.init.QSAND_Blocks;
 import com.SwingTheVine.QSAND.init.QSAND_Entities;
+import com.SwingTheVine.QSAND.init.QSAND_Fluids;
 import com.SwingTheVine.QSAND.init.QSAND_Items;
 import com.SwingTheVine.QSAND.proxy.CommonProxy;
 import com.SwingTheVine.QSAND.util.ConfigHandler;
 import com.SwingTheVine.QSAND.util.PlayerManager;
 
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -38,12 +40,17 @@ public class QSAND {
 	
 	public static final QSAND_Tab QSANDTab = new QSAND_Tab("QSANDTab"); // Makes the Modded Creative Inventory tab
 	
+	static {
+		FluidRegistry.enableUniversalBucket();
+	}
+	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		ModInfo.init(event); // Overwrites the mcmodinfo with the latest information
 		ConfigHandler.init(new File(event.getModConfigurationDirectory() + "/QSAND.cfg"));
 		QSAND_Blocks.init(); // Initializes the blocks
 		QSAND_Blocks.registerBlocks(); // Registers the blocks in the game registry
+		QSAND_Fluids.registerFluids(); // Registers the fluids in the game registry
 		QSAND_Items.init(); // Initializes the items
 		QSAND_Items.registerItems(); // Registers the items in the game registry
 		QSAND_Entities.registerEntities(); // Registers the entities

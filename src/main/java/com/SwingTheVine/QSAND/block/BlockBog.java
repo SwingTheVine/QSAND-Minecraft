@@ -233,8 +233,8 @@ public class BlockBog extends SinkingBlockFluidClassic implements IMetaBlockName
 					
 					// If the entity is a player, AND the number in the world's random number generator sequence is 0 (1/3 chance)...
 					if (triggeringEntity instanceof EntityPlayer && world.rand.nextInt(3) == 0) {
-						QuicksandManager.spawnBodyBubbleRandom(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), (SinkingBlock)(Block)this, false);
-						QuicksandManager.spawnBodyBubbleRandom(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), (SinkingBlock)(Block)this, false);
+						//QuicksandManager.spawnBodyBubbleRandom(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), (SinkingBlock)(Block)this, false);
+						//QuicksandManager.spawnBodyBubbleRandom(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), (SinkingBlock)(Block)this, false);
 					}
 				}
 				
@@ -248,7 +248,7 @@ public class BlockBog extends SinkingBlockFluidClassic implements IMetaBlockName
                     
                     // ...AND the number in the world's random number generator sequence equals 0 (1/5 chance)...
                     if (world.rand.nextInt(5) == 0) { // TODO: Mud Changed. 7 -> 5
-                    	QuicksandManager.spawnBodyBubbleRandom(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), (SinkingBlock)(Block)this, false);
+                    	//QuicksandManager.spawnBodyBubbleRandom(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), (SinkingBlock)(Block)this, false);
                     }
 				}
 				
@@ -259,9 +259,9 @@ public class BlockBog extends SinkingBlockFluidClassic implements IMetaBlockName
 					
 					// If the entity is a player, AND the number in the world's random number generator sequence equals 0 (1/5 chance)...
                     if (triggeringEntity instanceof EntityPlayer && world.rand.nextInt(2) == 0) { // TODO: Mud Changed. 5 -> 2
-                    	QuicksandManager.spawnBodyBubbleRandom(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), (SinkingBlock)(Block)this, false);
-                    	QuicksandManager.spawnBodyBubbleRandom(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), (SinkingBlock)(Block)this, false);
-                    	QuicksandManager.spawnBodyBubbleRandom(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), (SinkingBlock)(Block)this, false);
+                    	//QuicksandManager.spawnBodyBubbleRandom(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), (SinkingBlock)(Block)this, false);
+                    	//QuicksandManager.spawnBodyBubbleRandom(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), (SinkingBlock)(Block)this, false);
+                    	//QuicksandManager.spawnBodyBubbleRandom(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), (SinkingBlock)(Block)this, false);
                     }
 				}
 				
@@ -286,7 +286,7 @@ public class BlockBog extends SinkingBlockFluidClassic implements IMetaBlockName
             //    AND the remainder of the total world time divided by 16 is 0,
             //    AND the number in the world's random number generator sequence equals 0 (1/10 chance)...
             if (!triggEntityBootsFloat && world.getTotalWorldTime() % 16L == 0L && world.rand.nextInt(10) == 0) {
-            	QuicksandManager.spawnBodyBubble(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), (SinkingBlock)(Block)this, false);
+            	//QuicksandManager.spawnBodyBubble(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), (SinkingBlock)(Block)this, false);
             }
                 
             triggeringEntity.motionX = 0.0; // Make the entity stop moving
@@ -750,7 +750,7 @@ public class BlockBog extends SinkingBlockFluidClassic implements IMetaBlockName
             if (world.rand.nextInt(3000) == 0) {
                 final double xx = pos.getX() + (double)random.nextFloat();
                 final double zz = pos.getZ() + (double)random.nextFloat();
-                QuicksandManager.spawnQSBubble(world, xx, pos.getY() + 1, zz, (Block)this, 0, 0.5f);
+                //QuicksandManager.spawnQSBubble(world, xx, pos.getY() + 1, zz, (Block)this, 0, 0.5f);
             }
         }
     }
@@ -769,7 +769,7 @@ public class BlockBog extends SinkingBlockFluidClassic implements IMetaBlockName
     
     public void runSubmergedChecks(final Entity ent) {
         if (QuicksandManager.isEntityInsideOfBlock(ent, (Block)this) && QuicksandManager.isDrowning(ent)) {
-            QuicksandManager.spawnDrowningBubble(ent.worldObj, ent, (SinkingBlock)(Block)this, false);
+            //QuicksandManager.spawnDrowningBubble(ent.worldObj, ent, (SinkingBlock)(Block)this, false);
             if (!ent.worldObj.isRemote && ent.isEntityAlive()) {
                 ent.attackEntityFrom(DamageSource.drown, Math.max(((EntityLivingBase)ent).getMaxHealth() * 0.1f, 2.0f));
             }

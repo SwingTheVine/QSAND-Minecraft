@@ -1,0 +1,11 @@
+{
+    "variants": {
+        "test_fluid": [
+            {
+                "custom": {
+                    "fluid": "test_fluid"
+                }
+            }
+        ]
+    }
+}

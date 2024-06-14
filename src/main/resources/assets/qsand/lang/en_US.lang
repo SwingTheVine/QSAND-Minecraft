@@ -17,6 +17,8 @@ tile.snow_soft_1.name=Soft Ash
 
 tile.larvae_0.name=Larvae
 
+tile.bog_0.name=Bog
+
 item.spawn_egg.name=Spawn
 entity.QSAND.slime_void.name=Void Slime
 entity.QSAND.slime_mud.name=Mud Slime

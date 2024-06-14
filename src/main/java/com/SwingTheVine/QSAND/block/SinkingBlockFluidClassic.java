@@ -9,7 +9,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class SinkingBlockFluidClassic extends BlockFluidClassic{
+public class SinkingBlockFluidClassic extends BlockFluidClassic {
 	
 	// Constructor
 	public SinkingBlockFluidClassic(Fluid fluid, Material material) {
