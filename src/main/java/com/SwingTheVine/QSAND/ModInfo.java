@@ -7,10 +7,11 @@ import java.util.List;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class ModInfo {
+	
 	public static final String id = "QSAND";
 	public static final String name = "QuickSand And Numerous Dungeons";
 	public static final String description = "This mod adds a large variety of unique quicksands and custom structures to the game.";
-	public static final String version = "0.1.0";
+	public static final String version = "0.54.0";
 	public static final String url = "";
 	public static final List<String> authorList = new ArrayList<String>(Arrays.asList("SwingTheVine"));
 	public static final String credits = "MrBlackGoo, elix_x, CrishNate, VanderCat, and Sanic for making the More Fun Quicksand Mod";
@@ -19,7 +20,8 @@ public class ModInfo {
 	public static final String clientProxyClass = "com.SwingTheVine.QSAND.proxy.ClientProxy";
 	public static final String serverProxyClass = "com.SwingTheVine.QSAND.proxy.CommonProxy";
 	
-	public static void init(FMLPreInitializationEvent event) {
+	public static void init(final FMLPreInitializationEvent event) {
+		
 		event.getModMetadata().modId = id;
 		event.getModMetadata().name = name;
 		event.getModMetadata().description = description;
