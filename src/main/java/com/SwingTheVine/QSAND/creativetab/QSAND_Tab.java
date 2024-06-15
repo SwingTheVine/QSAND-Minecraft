@@ -1,5 +1,6 @@
 package com.SwingTheVine.QSAND.creativetab;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.SwingTheVine.QSAND.init.QSAND_Items;
@@ -14,7 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class QSAND_Tab extends CreativeTabs {
 	
-	private final ItemSorter itemSorter = new ItemSorter();
+	private final ItemSorter itemSorter = new ItemSorter(); // Constructs a new item sorter for the custom creative tab
 
 	public QSAND_Tab(String label) {
 		super(label);
@@ -26,7 +27,6 @@ public class QSAND_Tab extends CreativeTabs {
 	}
 	
 	@SideOnly(Side.CLIENT)
-	//@SuppressWarnings("unchecked")
 	@Override
 	public void displayAllReleventItems(List items) {
 		super.displayAllReleventItems(items);
@@ -45,16 +45,20 @@ public class QSAND_Tab extends CreativeTabs {
 		
 		// Adds every fluid type above as a bucket item in the creative tab
 		for (String fluid : fluidType) {
+			ItemStack bucket = new ItemStack(UniversalBucket.getByNameOrId("forge:bucketFilled")); // Creates a new universal bucket instance
 			NBTTagCompound nbtTag = new NBTTagCompound(); // Creates a new NBT Tag
 			nbtTag.setString("FluidName", fluid); // Adds an attribute holding the name of the fluid
 			nbtTag.setInteger("Amount", 1); // Adds an attribute holding the quantity of fluid in the bucket
-			ItemStack bucket = new ItemStack(UniversalBucket.getByNameOrId("forge:bucketFilled")); // Creates a new universal bucket instance
 			bucket.setTagCompound(nbtTag); // Adds the NBT tag to the universal bucket instance
 			items.add(bucket); // Adds the universal bucket instance to the creative tab
 		}
 		
+		for (int index = 1; index < items.size(); index++) {
+			itemSorter.compare((ItemStack)items.get(index - 1), (ItemStack)items.get(index));
+		}
+		
 		// Sort the item list using the ItemSorter instance
-		//Collections.sort(items, itemSorter);
+		Collections.sort(items, itemSorter);
 	}
 
 }

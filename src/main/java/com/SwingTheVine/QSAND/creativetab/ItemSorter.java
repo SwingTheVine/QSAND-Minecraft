@@ -17,19 +17,26 @@ public class ItemSorter implements Comparator<ItemStack> {
 			return priority;
 		}
 
-		priority = OreDictionaryPriority.NONE;
+		priority = OreDictionaryPriority.None;
 
 		for (int oreID : OreDictionary.getOreIDs(itemStack)) {
 			String oreName = OreDictionary.getOreName(oreID);
+			System.out.println(oreName);
 
-			if (oreName.startsWith("ore")) {
-				priority = OreDictionaryPriority.ORE;
+			if (oreName.startsWith("quicksandBlock_")) {
+				priority = OreDictionaryPriority.QuicksandBlock;
 				break;
-			} else if (oreName.startsWith("ingot")) {
-				priority = OreDictionaryPriority.INGOT;
+			} else if (oreName.startsWith("quicksandFluid_")) {
+				priority = OreDictionaryPriority.QuicksandFluid;
 				break;
-			} else if (oreName.startsWith("dust")) {
-				priority = OreDictionaryPriority.DUST;
+			} else if (oreName.equals("quicksandBucket")) {
+				priority = OreDictionaryPriority.QuicksandBucket;
+				break;
+			} else if (oreName.startsWith("block_")) {
+				priority = OreDictionaryPriority.Block;
+				break;
+			} else if (oreName.startsWith("item_")) {
+				priority = OreDictionaryPriority.Item;
 				break;
 			}
 		}

@@ -15,14 +15,15 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class QSAND_Blocks {
 	public static Block test_block;
 	
 	
 	// MFQM blocks that you can sink in
-	//public static SinkingBlockFluidClassic bog;
 	public static SinkingBlock snowSoft;
 	public static Block quicksandDry;
 	public static Block morass;
@@ -115,10 +116,7 @@ public class QSAND_Blocks {
 	
 	public static void init() {
 		
-		//FluidRegistry.registerFluid(fluidBog);
-		
 		// Constructs all blocks with their names and tab
-		//bog = (SinkingBlockFluidClassic)new BlockBog(fluidBog, BlockBog.materialBog).setUnlocalizedName("bog").setCreativeTab(QSAND.QSANDTab);
 		snowSoft = (SinkingBlock)new BlockSnowSoft(Material.ground).setUnlocalizedName("snow_soft").setCreativeTab(QSAND.QSANDTab);
 		quicksand = (SinkingBlock)new BlockQuicksand(Material.ground).setUnlocalizedName("quicksand").setCreativeTab(QSAND.QSANDTab);
 		larvae = (SinkingBlock)new BlockLarvae(Material.coral).setUnlocalizedName("larvae").setCreativeTab(QSAND.QSANDTab);
@@ -129,7 +127,6 @@ public class QSAND_Blocks {
 	public static void registerBlocks() {
 		
 		// Registers the blocks with the Game Registry
-		//GameRegistry.registerBlock(bog, ItemBlockMeta.class, bog.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(snowSoft, ItemBlockMeta.class, snowSoft.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(quicksand, ItemBlockMeta.class, quicksand.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(larvae, ItemBlockMeta.class, larvae.getUnlocalizedName().substring(5));
@@ -140,7 +137,6 @@ public class QSAND_Blocks {
 	public static void registerRenders() {
 		
 		// Registers the inventory image. Block to render, number of metadata types, should one texture be used
-		//registerRenderInventory(bog, ((BlockBog)bog).getTypes(), ((BlockBog)bog).getUseOneTexture());
 		registerRenderInventory(snowSoft, ((BlockSnowSoft)snowSoft).getTypes(), ((BlockSnowSoft)snowSoft).getUseOneTexture());
 		registerRenderInventory(quicksand, ((BlockQuicksand)quicksand).getTypes(), ((BlockQuicksand)quicksand).getUseOneTexture());
 		registerRenderInventory(larvae, ((BlockLarvae)larvae).getTypes(), ((BlockLarvae)larvae).getUseOneTexture());
@@ -152,6 +148,7 @@ public class QSAND_Blocks {
 	public static void registerRenderInventory(Block block, String[] types, boolean useOneTexture) {
 		
 		Item item = Item.getItemFromBlock(block); // The item variant of the block
+		OreDictionary.registerOre("quicksandBlock_" + block.getUnlocalizedName().substring(5), new ItemStack(block, 1, OreDictionary.WILDCARD_VALUE)); // Registers the block to the ore dictionary for creative tab sorting
 		
 		// If the block should only use one texture...
 		if (useOneTexture) {

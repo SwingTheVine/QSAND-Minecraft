@@ -1,8 +1,10 @@
-package com.SwingTheVine.QSAND.block;
+package com.SwingTheVine.QSAND.fluid;
 
 import java.util.List;
 import java.util.Random;
 
+import com.SwingTheVine.QSAND.block.IMetaBlockName;
+import com.SwingTheVine.QSAND.block.SinkingBlockFluidClassic;
 import com.SwingTheVine.QSAND.client.player.PlayerMudManager;
 import com.SwingTheVine.QSAND.entity.monster.EntitySlimeMud;
 import com.SwingTheVine.QSAND.init.QSAND_Blocks;
@@ -32,7 +34,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockBog extends SinkingBlockFluidClassic implements IMetaBlockName {
+public class FluidBog extends SinkingBlockFluidClassic implements IMetaBlockName {
 	
 	private static final String[] types = {"0"}; // Names of all metadata variants
 	private static final float[] sinkTypes = {1.00F}; // The maximum sink level for each metadata variant
@@ -45,7 +47,7 @@ public class BlockBog extends SinkingBlockFluidClassic implements IMetaBlockName
 	public static final int incOpacity = 50;
 	private BeaconHandler beacon = new BeaconHandler(false); // Constructs a beacon handler. Enabled if "true" passed in
 
-	public BlockBog(Fluid fluid, Material material) {
+	public FluidBog(Fluid fluid, Material material) {
 		super(fluid, material);
 		this.setResistance(1000.0f);
 		this.setQuantaPerBlock(2);
@@ -800,7 +802,7 @@ public class BlockBog extends SinkingBlockFluidClassic implements IMetaBlockName
  	// This is used to add a custom name to a block variant in the language file
  	@Override
  	public String getSpecialName(ItemStack stack) {
- 		return BlockBog.types[stack.getItemDamage()];
+ 		return FluidBog.types[stack.getItemDamage()];
  	}
 
  	// Sets the tooltips that should be added to the block

@@ -1,7 +1,11 @@
 package com.SwingTheVine.QSAND.block;
 
+import java.util.List;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fluids.BlockFluidClassic;
@@ -9,11 +13,23 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class SinkingBlockFluidClassic extends BlockFluidClassic {
+public class SinkingBlockFluidClassic extends BlockFluidClassic implements IMetaBlockName {
 	
 	// Constructor
 	public SinkingBlockFluidClassic(Fluid fluid, Material material) {
 		super(fluid, material);
+	}
+	
+	// Special name of the block (e.g. "1")
+	@Override
+	public String getSpecialName(ItemStack stack) {
+		return null;
+	}
+
+	// Flavor text shown during mouseover event
+	@Override
+	public void setTooltip(ItemStack item, EntityPlayer player, List list, boolean bool) {
+		
 	}
 	
 	// The color of the quicksand block

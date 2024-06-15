@@ -7,18 +7,23 @@ import java.util.function.Function;
 
 import com.SwingTheVine.QSAND.ModInfo;
 import com.SwingTheVine.QSAND.QSAND;
-import com.SwingTheVine.QSAND.block.BlockBog;
+import com.SwingTheVine.QSAND.block.ItemBlockMeta;
 import com.SwingTheVine.QSAND.block.SinkingBlockFluidClassic;
+import com.SwingTheVine.QSAND.fluid.FluidBog;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.MaterialLiquid;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.IFluidBlock;
+import net.minecraftforge.fluids.UniversalBucket;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 
 // Big thanks to Choonster for having the only open source reference for custom fluids in 1.8.9!
 // It has comments too <3
@@ -48,7 +53,7 @@ public class QSAND_Fluids {
 		// Registers the bog fluid
 		bog = createFluid("bog", true, 
 				fluid -> fluid.setDensity(2500).setViscosity(8500).setTemperature(288),
-				fluid -> (SinkingBlockFluidClassic)new BlockBog(fluid, new MaterialLiquid(MapColor.grassColor)));
+				fluid -> (SinkingBlockFluidClassic)new FluidBog(fluid, new MaterialLiquid(MapColor.grassColor)));
 		
 		registerBucket(test_fluid); // Registers the bucket for the test fluid
 		registerBucket(bog); // Registers the bucket for the bog fluid
@@ -81,6 +86,13 @@ public class QSAND_Fluids {
 
 		modFluids.add(fluid);
 
+		ItemStack bucket = new ItemStack(UniversalBucket.getByNameOrId("forge:bucketFilled"), 1, OreDictionary.WILDCARD_VALUE); // Creates a new universal bucket instance
+		NBTTagCompound nbtTag = new NBTTagCompound(); // Creates a new NBT Tag
+		nbtTag.setString("FluidName", fluid.getName()); // Adds an attribute holding the name of the fluid
+		nbtTag.setInteger("Amount", 1); // Adds an attribute holding the quantity of fluid in the bucket
+		bucket.setTagCompound(nbtTag); // Adds the NBT tag to the universal bucket instance to fill it with the fluid
+		OreDictionary.registerOre("quicksandBucket", bucket); // Registers the filled bucket to the ore dictionary for creative tab sorting
+
 		return fluid;
 	}
 	
@@ -88,7 +100,9 @@ public class QSAND_Fluids {
 		block.setRegistryName(block.getFluid().getName());
 		block.setUnlocalizedName(block.getFluid().getName());
 		block.setCreativeTab(QSAND.QSANDTab);
-		GameRegistry.registerBlock(block);
+		GameRegistry.registerBlock(block, ItemBlockMeta.class);
+		
+		OreDictionary.registerOre("quicksandFluid_" + block.getUnlocalizedName().substring(5), new ItemStack(block, 1, OreDictionary.WILDCARD_VALUE)); // Registers the fluid block to the ore dictionary for creative tab sorting
 
 		modFluidBlocks.add(block);
 
