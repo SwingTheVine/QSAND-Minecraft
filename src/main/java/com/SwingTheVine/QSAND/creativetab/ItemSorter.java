@@ -9,27 +9,28 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class ItemSorter implements Comparator<ItemStack> {
+	
 	private final Map<ItemStack, OreDictionaryPriority> oreDictPriorityCache = new HashMap<>();
-
-	private OreDictionaryPriority getOreDictionaryPriority(ItemStack itemStack) {
+	
+	private OreDictionaryPriority getOreDictionaryPriority(final ItemStack itemStack) {
+		
 		OreDictionaryPriority priority = oreDictPriorityCache.get(itemStack);
 		if (priority != null) {
 			return priority;
 		}
-
+		
 		priority = OreDictionaryPriority.None;
-
-		for (int oreID : OreDictionary.getOreIDs(itemStack)) {
-			String oreName = OreDictionary.getOreName(oreID);
-			System.out.println(oreName);
-
+		
+		for (final int oreID : OreDictionary.getOreIDs(itemStack)) {
+			final String oreName = OreDictionary.getOreName(oreID);
+			
 			if (oreName.startsWith("quicksandBlock_")) {
 				priority = OreDictionaryPriority.QuicksandBlock;
 				break;
 			} else if (oreName.startsWith("quicksandFluid_")) {
 				priority = OreDictionaryPriority.QuicksandFluid;
 				break;
-			} else if (oreName.equals("quicksandBucket")) {
+			} else if (oreName.startsWith("quicksandBucket_")) {
 				priority = OreDictionaryPriority.QuicksandBucket;
 				break;
 			} else if (oreName.startsWith("block_")) {
@@ -40,20 +41,22 @@ public class ItemSorter implements Comparator<ItemStack> {
 				break;
 			}
 		}
-
+		
 		oreDictPriorityCache.put(itemStack, priority);
-
+		
 		return priority;
 	}
-
+	
 	@Override
-	public int compare(ItemStack stack1, ItemStack stack2) {
-		OreDictionaryPriority priority1 = getOreDictionaryPriority(stack1), priority2 = getOreDictionaryPriority(stack2);
-
+	public int compare(final ItemStack stack1, final ItemStack stack2) {
+		
+		final OreDictionaryPriority priority1 = getOreDictionaryPriority(stack1),
+				priority2 = getOreDictionaryPriority(stack2);
+				
 		if (priority1 == priority2) { // Both stacks have the same priority, order them by their ID/metadata
-			Item item1 = stack1.getItem();
-			Item item2 = stack2.getItem();
-
+			final Item item1 = stack1.getItem();
+			final Item item2 = stack2.getItem();
+			
 			if (item1 == item2) { // If the stacks have the same item, order them by their metadata
 				return stack1.getMetadata() - stack2.getMetadata();
 			} else { // Else order them by their ID

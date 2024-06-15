@@ -24,6 +24,7 @@ tile.snow_soft_1.name=Soft Ash
 tile.larvae_0.name=Larvae
 
 # ----- Fluids -----
+item.bucket.name=Bucket of
 fluid.test_fluid=Test Fluid
 tile.test_fluid.name=Test Fluid
 fluid.bog=Bog
