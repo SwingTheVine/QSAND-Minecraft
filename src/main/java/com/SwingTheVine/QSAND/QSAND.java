@@ -55,6 +55,7 @@ public class QSAND {
 		QSAND_Items.registerItems(); // Registers the items in the game registry
 		QSAND_Entities.registerEntities(); // Registers the entities
 		proxy.registerEntityRenders(); // Registers the render models for all entities
+		proxy.registerFluidModels();
 		
 		// If the user has enabled skin overlays...
 		if (ConfigHandler.useSkinOverlay) {
@@ -77,7 +78,7 @@ public class QSAND {
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		proxy.registerRenders(); // Registers the render models for all default blocks and items
-		proxy.registerModelQSAND(); // Registers the render models for all variants of the items
+		proxy.registerItemModels(); // Registers the render models for all variants of the items
 		QSAND_Entities.setEntityToSpawn(); // Sets the entity to spawn naturally in the world
 		QSAND_Entities.generateSpawnEgg(); // Generates the spawn eggs for all the entities
 	}

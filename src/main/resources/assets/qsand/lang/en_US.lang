@@ -1,30 +1,46 @@
-item.test_item.name=Test Item
+# ----- Blocks -----
+
+# Test Block
 tile.test_block_0.name=Test Block 0
 tile.test_block_1.name=Test Block 1
 tile.test_block_2.name=Test Block 2
 tile.test_block_3.name=Test Block 3
 tile.test_block_4.name=Test Block 4
 
+# Mud
 tile.mud_0.name=Mud
 tile.mud_1.name=Thinnish Mud
 tile.mud_2.name=Deep Mud
 tile.mud_3.name=Bottomless Mud
 
+# Quicksand
 tile.quicksand_0.name=Quicksand
 
+# Soft Snow
 tile.snow_soft_0.name=Soft Snow
 tile.snow_soft_1.name=Soft Ash
 
+# Larvae
 tile.larvae_0.name=Larvae
 
-tile.bog_0.name=Bog
+# ----- Fluids -----
+fluid.test_fluid=Test Fluid
+tile.test_fluid.name=Test Fluid
+fluid.bog=Bog
+tile.bog.name=Bog
 
+# ----- Items -----
+item.test_item.name=Test Item
+
+# Custom Spawn Egg
 item.spawn_egg.name=Spawn
 entity.QSAND.slime_void.name=Void Slime
 entity.QSAND.slime_mud.name=Mud Slime
 entity.QSAND.slime_sand.name=Sand Slime
 entity.QSAND.slime_tar.name=Tar Slime
 
+# ----- Tooltips -----
 mfqm.tooltip_1=Faithful recreation from MFQM
 
+# ----- Other -----
 itemGroup.QSANDTab=QSAND Mod

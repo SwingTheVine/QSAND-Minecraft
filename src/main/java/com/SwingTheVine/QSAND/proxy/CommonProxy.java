@@ -9,7 +9,11 @@ public class CommonProxy {
 		
 	}
 	
-	public void registerModelQSAND() {
+	public void registerFluidModels() {
+		
+	}
+	
+	public void registerItemModels() {
 		
 	}
 }

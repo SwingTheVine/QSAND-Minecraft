@@ -2,7 +2,6 @@ package com.SwingTheVine.QSAND.init;
 
 import com.SwingTheVine.QSAND.ModInfo;
 import com.SwingTheVine.QSAND.QSAND;
-import com.SwingTheVine.QSAND.block.BlockBog;
 import com.SwingTheVine.QSAND.block.BlockLarvae;
 import com.SwingTheVine.QSAND.block.BlockMud;
 import com.SwingTheVine.QSAND.block.BlockQuicksand;
@@ -10,15 +9,12 @@ import com.SwingTheVine.QSAND.block.BlockSnowSoft;
 import com.SwingTheVine.QSAND.block.BlockTest;
 import com.SwingTheVine.QSAND.block.ItemBlockMeta;
 import com.SwingTheVine.QSAND.block.SinkingBlock;
-import com.SwingTheVine.QSAND.block.SinkingBlockFluidClassic;
-import com.SwingTheVine.QSAND.fluid.FluidBog;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class QSAND_Blocks {
@@ -26,7 +22,7 @@ public class QSAND_Blocks {
 	
 	
 	// MFQM blocks that you can sink in
-	public static SinkingBlockFluidClassic bog;
+	//public static SinkingBlockFluidClassic bog;
 	public static SinkingBlock snowSoft;
 	public static Block quicksandDry;
 	public static Block morass;
@@ -57,7 +53,7 @@ public class QSAND_Blocks {
 	public static Block honey;
 	
 	// MFQM blocks not included in the sink list
-	public static FluidBog fluidBog = new FluidBog();
+	//public static FluidBog fluidBog = new FluidBog();
 	public static Block clayHardened;
 	public static Block meat;
 	public static Block meatHole;
@@ -82,7 +78,7 @@ public class QSAND_Blocks {
 	
 	// Block, Types Colors, Max Opacity, Last Opacity, Inc Opacity
 	public static Object[] blockObjectList = {
-			bog,              4538917,  2000,  500,  50,
+			//bog,              4538917,  2000,  500,  50,
 			null,             14611967, null,  null, null, // 1
 			null,             16777215, null,  null, null, // 2
 			morass,           2431764,  1000,  750,  100,
@@ -119,10 +115,10 @@ public class QSAND_Blocks {
 	
 	public static void init() {
 		
-		FluidRegistry.registerFluid(fluidBog);
+		//FluidRegistry.registerFluid(fluidBog);
 		
 		// Constructs all blocks with their names and tab
-		bog = (SinkingBlockFluidClassic)new BlockBog(fluidBog, BlockBog.materialBog).setUnlocalizedName("bog").setCreativeTab(QSAND.QSANDTab);
+		//bog = (SinkingBlockFluidClassic)new BlockBog(fluidBog, BlockBog.materialBog).setUnlocalizedName("bog").setCreativeTab(QSAND.QSANDTab);
 		snowSoft = (SinkingBlock)new BlockSnowSoft(Material.ground).setUnlocalizedName("snow_soft").setCreativeTab(QSAND.QSANDTab);
 		quicksand = (SinkingBlock)new BlockQuicksand(Material.ground).setUnlocalizedName("quicksand").setCreativeTab(QSAND.QSANDTab);
 		larvae = (SinkingBlock)new BlockLarvae(Material.coral).setUnlocalizedName("larvae").setCreativeTab(QSAND.QSANDTab);
@@ -133,7 +129,7 @@ public class QSAND_Blocks {
 	public static void registerBlocks() {
 		
 		// Registers the blocks with the Game Registry
-		GameRegistry.registerBlock(bog, ItemBlockMeta.class, bog.getUnlocalizedName().substring(5));
+		//GameRegistry.registerBlock(bog, ItemBlockMeta.class, bog.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(snowSoft, ItemBlockMeta.class, snowSoft.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(quicksand, ItemBlockMeta.class, quicksand.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(larvae, ItemBlockMeta.class, larvae.getUnlocalizedName().substring(5));
@@ -144,7 +140,7 @@ public class QSAND_Blocks {
 	public static void registerRenders() {
 		
 		// Registers the inventory image. Block to render, number of metadata types, should one texture be used
-		registerRenderInventory(bog, ((BlockBog)bog).getTypes(), ((BlockBog)bog).getUseOneTexture());
+		//registerRenderInventory(bog, ((BlockBog)bog).getTypes(), ((BlockBog)bog).getUseOneTexture());
 		registerRenderInventory(snowSoft, ((BlockSnowSoft)snowSoft).getTypes(), ((BlockSnowSoft)snowSoft).getUseOneTexture());
 		registerRenderInventory(quicksand, ((BlockQuicksand)quicksand).getTypes(), ((BlockQuicksand)quicksand).getUseOneTexture());
 		registerRenderInventory(larvae, ((BlockLarvae)larvae).getTypes(), ((BlockLarvae)larvae).getUseOneTexture());

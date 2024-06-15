@@ -1,10 +1,14 @@
 package com.SwingTheVine.QSAND.init;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 import com.SwingTheVine.QSAND.ModInfo;
 import com.SwingTheVine.QSAND.QSAND;
+import com.SwingTheVine.QSAND.block.BlockBog;
+import com.SwingTheVine.QSAND.block.SinkingBlockFluidClassic;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
@@ -22,15 +26,32 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 // Source: https://github.com/Choonster-Minecraft-Mods/TestMod3/blob/1.8.9/src/main/java/com/choonster/testmod3/init/ModFluids.java
 public class QSAND_Fluids {
 	public static Fluid test_fluid;
+	public static Fluid bog;
+	
+	/**
+	 * The fluids registered by this mod. Includes fluids that were already registered by another mod.
+	 */
+	public static final Set<Fluid> modFluids = new HashSet<>();
+	
+	/**
+	 * The fluid blocks from this mod only. Doesn't include blocks for fluids that were already registered by another mod.
+	 */
+	public static final Set<IFluidBlock> modFluidBlocks = new HashSet<>();
 	
 	public static void registerFluids() {
 		
-		// Registers the test fluid and it's block equivalent
+		// Registers the test fluid
 		test_fluid = createFluid("test_fluid", true, 
 				fluid -> fluid.setDensity(2500).setViscosity(8500).setTemperature(288),
 				fluid -> new BlockFluidClassic(fluid, new MaterialLiquid(MapColor.grassColor)));
 		
+		// Registers the bog fluid
+		bog = createFluid("bog", true, 
+				fluid -> fluid.setDensity(2500).setViscosity(8500).setTemperature(288),
+				fluid -> (SinkingBlockFluidClassic)new BlockBog(fluid, new MaterialLiquid(MapColor.grassColor)));
+		
 		registerBucket(test_fluid); // Registers the bucket for the test fluid
+		registerBucket(bog); // Registers the bucket for the bog fluid
 	}
 	
 	/**
@@ -58,18 +79,18 @@ public class QSAND_Fluids {
 			fluid = FluidRegistry.getFluid(name);
 		}
 
-		//fluids.add(fluid);
+		modFluids.add(fluid);
 
 		return fluid;
 	}
 	
 	private static <T extends Block & IFluidBlock> T registerFluidBlock(T block) {
-		block.setRegistryName("fluid." + block.getFluid().getName());
-		block.setUnlocalizedName(ModInfo.id + ":" + block.getFluid().getUnlocalizedName());
+		block.setRegistryName(block.getFluid().getName());
+		block.setUnlocalizedName(block.getFluid().getName());
 		block.setCreativeTab(QSAND.QSANDTab);
 		GameRegistry.registerBlock(block);
 
-		//modFluidBlocks.add(block);
+		modFluidBlocks.add(block);
 
 		return block;
 	}
