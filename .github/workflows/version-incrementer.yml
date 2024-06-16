@@ -39,7 +39,7 @@ jobs:
 
       - name: Update version in file
         run: |
-          new_version=${{ steps.increment_version.outputs.new_version }}
+          new_version=${{ steps.version_increment.outputs.new_version }}
           sed -i 's/version = "[^"]*"/version = "'$new_version'"/' src/main/java/com/SwingTheVine/QSAND/ModInfo.java
 
       - name: Commit changes
