@@ -47,5 +47,5 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add src/main/java/com/SwingTheVine/QSAND/ModInfo.java
-          git commit -m "Incremented version to ${{ steps.increment_version.outputs.new_version }}"
+          git commit -m "Incremented version to ${{ steps.version_increment.outputs.new_version }}"
           git push
