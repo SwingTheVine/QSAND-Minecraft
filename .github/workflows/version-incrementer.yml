@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  increment-version:
+  version-incrementer:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,8 +25,8 @@ jobs:
           echo "Current version: $current_version"
           echo "::set-output name=current_version::$current_version"
 
-      - name: Increment version
-        id: increment_version
+      - name: Version increment
+        id: version_increment
         run: |
           current_version=${{ steps.get_version.outputs.current_version }}
           major=$(echo $current_version | cut -d'.' -f1)
