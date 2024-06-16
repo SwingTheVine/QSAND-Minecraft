@@ -23,7 +23,7 @@ jobs:
         run: |
           current_version=$(grep 'version = ' src/main/java/com/SwingTheVine/QSAND/ModInfo.java | cut -d '"' -f2)
           echo "Current version: $current_version"
-          echo "::set-output name=current_version::$current_version"
+          echo "current_version=$current_version" >> $GITHUB_OUTPUT
 
       - name: Version increment
         id: version_increment
@@ -35,7 +35,7 @@ jobs:
           new_minor=$((minor + 1))
           new_version="$major.$new_minor.0"
           echo "New version: $new_version"
-          echo "::set-output name=new_version::$new_version"
+          echo "new_version=$new_version" >> $GITHUB_OUTPUT
 
       - name: Update version in file
         run: |
