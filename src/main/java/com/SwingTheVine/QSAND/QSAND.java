@@ -24,10 +24,8 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
-@Mod(modid = ModInfo.id, 
-		name = ModInfo.name, 
-		version = ModInfo.version,
-		acceptedMinecraftVersions = ModInfo.acceptedMCVersions)
+@Mod(modid = ModInfo.id, name = ModInfo.name, version = ModInfo.version,
+	acceptedMinecraftVersions = ModInfo.acceptedMCVersions)
 public class QSAND {
 	
 	// Declares proxy
@@ -45,7 +43,8 @@ public class QSAND {
 	}
 	
 	@EventHandler
-	public void preInit(FMLPreInitializationEvent event) {
+	public void preInit(final FMLPreInitializationEvent event) {
+		
 		ModInfo.init(event); // Overwrites the mcmodinfo with the latest information
 		ConfigHandler.init(new File(event.getModConfigurationDirectory() + "/QSAND.cfg"));
 		QSAND_Blocks.init(); // Initializes the blocks
@@ -59,24 +58,25 @@ public class QSAND {
 		
 		// If the user has enabled skin overlays...
 		if (ConfigHandler.useSkinOverlay) {
-			MinecraftForge.EVENT_BUS.register((Object)new PlayerManager()); // Registers a new player manager
+			MinecraftForge.EVENT_BUS.register(new PlayerManager()); // Registers a new player manager
 		}
 		
 		// If the code is executing client-side...
-		if (FMLCommonHandler.instance().getSide().equals((Object)Side.CLIENT)) {
+		if (FMLCommonHandler.instance().getSide().equals(Side.CLIENT)) {
 			
-			MinecraftForge.EVENT_BUS.register((Object)new CustomPlayerGUIRenderer()); // Registers a new GUI renderer
+			MinecraftForge.EVENT_BUS.register(new CustomPlayerGUIRenderer()); // Registers a new GUI renderer
 			
 			// If the user has enabled skin overlays...
 			if (ConfigHandler.useSkinOverlay) {
-				MinecraftForge.EVENT_BUS.register((Object)new CustomPlayerOverlayRenderer()); // Registers a new overlay renderer
+				MinecraftForge.EVENT_BUS.register(new CustomPlayerOverlayRenderer()); // Registers a new overlay renderer
 			}
 		}
 		
 	}
 	
 	@EventHandler
-	public void init(FMLInitializationEvent event) {
+	public void init(final FMLInitializationEvent event) {
+		
 		proxy.registerRenders(); // Registers the render models for all default blocks and items
 		proxy.registerItemModels(); // Registers the render models for all variants of the items
 		QSAND_Entities.setEntityToSpawn(); // Sets the entity to spawn naturally in the world
@@ -84,7 +84,7 @@ public class QSAND {
 	}
 	
 	@EventHandler
-	public void postInit(FMLPostInitializationEvent event) {
-		
+	public void postInit(final FMLPostInitializationEvent event) {
+	
 	}
 }

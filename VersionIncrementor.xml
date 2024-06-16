@@ -1,0 +1,40 @@
+<project name="VersionIncrementer" default="increment-version">
+    <property file="ModInfo.java"/>
+    <target name="increment-version">
+        <loadfile property="fileContent" srcFile="src/main/java/com/SwingTheVine/QSAND/ModInfo.java"/>
+        
+        <script language="javascript">
+            <![CDATA[
+            var fileContent = project.getProperty("fileContent"); // Gets the content of the Ant's target file
+            var lines = fileContent.split("\n"); // All file content is in a string. This splits the string into multiple lines (a multi-line string if you will) at the delimiter of a new line character
+            var newContent = []; // Will store each line as it comes across them (and potentially modifies them)
+            var versionPattern = /version\s*=\s*\"(\d+)\.(\d+)\.(\d+)\"/; // A RegEx to match the three numbers in the version
+            
+        	// For every line...
+            for (var i = 0; i < lines.length; i++) {
+                var currentLine = lines[i]; // Sets the current line to its own variable
+                var match = versionPattern.exec(currentLine); // (boolean) Does the line match the RegEx?
+                
+        	    // If the RegEx matches this line...
+                if (match) {
+                    var major = parseInt(match[1]); // Stores the major number as the first RegEx number matched
+                    var minor = parseInt(match[2]); // Stores the minor number as the second RegEx number matched
+                    var patch = parseInt(match[3]) + 1; // Stores the patch number as the third RegEx number matched and adds one
+                    
+                    var newVersion = 'version = "' + major + '.' + minor + '.' + patch + '";'; // Reforms the version string with the new version number
+                    
+                    newContent.push('\tpublic static final String ' + newVersion); // Reforms the entire line using the new version string
+                } else {
+                    newContent.push(currentLine); // This line is not the version. Add it to the new file without modifying
+                }
+            }
+        	var newFileContent = newContent.join("\n"); // Converts the Array into a string. Adds back the line delimiter of a new line character (except for on the last line)
+        	
+            project.setProperty("newFileContent", newFileContent); // Sets the new file content as a variable in the Ant instance
+            ]]>
+        </script>
+    	<echo message="New content:"/>
+        <echo message="${newFileContent}"/>
+        <echo file="src/main/java/com/SwingTheVine/QSAND/ModInfo.java" message="${newFileContent}"/>
+    </target>
+</project>
