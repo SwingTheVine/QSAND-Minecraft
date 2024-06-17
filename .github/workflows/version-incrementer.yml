@@ -42,7 +42,9 @@ jobs:
           new_version=${{ steps.version_increment.outputs.new_version }}
           sed -i 's/version = "[^"]*"/version = "'$new_version'"/' src/main/java/com/SwingTheVine/QSAND/ModInfo.java
           sed -i 's/"version": "[^"]*"/"version": "'$new_version'"/' src/main/resources/mcmod.info
-          sed -i 's/(Latest_Version-[0-9.]*--)[^?]*/\1'$new_version'/' README.md
+          latest_version = $(grep -oP 'Latest_Version-\K[0-9.]+(?=--)' README.md
+          echo "Latest version: $latest_version"
+          sed -i 's/Latest_Version-'$latest_version'--[0-9.]*-lightblue/Latest_Version-'$latest_version'--'$new_version'-lightblue/' README.md
 
       - name: Commit changes
         run: |
