@@ -11,7 +11,7 @@ public class ModInfo {
 	public static final String id = "QSAND";
 	public static final String name = "QuickSand And Numerous Dungeons";
 	public static final String description = "This mod adds a large variety of unique quicksands and custom structures to the game.";
-	public static final String version = "0.64.0";
+	public static final String version = "0.65.0";
 	public static final String totalPatches = "363";
 	public static final String url = "";
 	public static final List<String> authorList = new ArrayList<String>(Arrays.asList("SwingTheVine"));
