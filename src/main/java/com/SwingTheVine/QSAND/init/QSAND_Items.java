@@ -12,6 +12,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
+/** Registers items for this mod.
+ * 
+ * @since <b>0.1.0</b>
+ * @author <b>SwingTheVine</b> - Improved MrCrayFish's code
+ * @author <b>MrCrayfish</b> - 1.8.9 source code written here: <a href=
+ * "https://github.com/MrCrayfish/ModdingTutorials/blob/master/src/main/java/com/mrcrayfish/teleportmod/init/TeleportItems.java">
+ * https://github.com/MrCrayfish/ModdingTutorials/blob/master/src/main/java/com/mrcrayfish/teleportmod/init/TeleportItems.java</a>
+ * @see <a href=".@docroot/LICENSE.txt">License</a> */
 public class QSAND_Items {
 	
 	public static Item test_item;

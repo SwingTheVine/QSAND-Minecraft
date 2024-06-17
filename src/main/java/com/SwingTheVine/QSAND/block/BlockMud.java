@@ -38,7 +38,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @since <b>0.6.0</b>
  * @author <b>SwingTheVine</b> - Improved and updated MrBlackGoo's code to 1.8.9
  * @author <b>MrBlackGoo</b> - 1.7.10 source code
- * @see <a href="@docroot/LICENSE.txt">License</a> */
+ * @see <a href=".@docroot/LICENSE.txt">License</a> */
 public class BlockMud extends SinkingBlock implements IMetaBlockName {
 	
 	private static final String[] types = {"0", "1", "2", "3"}; // Names of all metadata variants

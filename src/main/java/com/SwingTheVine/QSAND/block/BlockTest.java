@@ -23,7 +23,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * 
  * @since <b>0.3.0</b>
  * @author <b>SwingTheVine</b> - 1.8.9 source code
- * @see <a href="@docroot/LICENSE.txt">License</a> */
+ * @see <a href=".@docroot/LICENSE.txt">License</a> */
 public class BlockTest extends SinkingBlock implements IMetaBlockName {
 	
 	// All the different special names of the metadata/subtype variants

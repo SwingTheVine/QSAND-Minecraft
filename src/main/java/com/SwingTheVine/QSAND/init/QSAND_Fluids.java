@@ -26,10 +26,17 @@ import net.minecraftforge.fluids.UniversalBucket;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
-// Big thanks to Choonster for having the only open source reference for custom fluids in 1.8.9!
-// It has comments too <3
-// Choonster: https://forums.minecraftforge.net/profile/70776-choonster/
-// Source: https://github.com/Choonster-Minecraft-Mods/TestMod3/blob/1.8.9/src/main/java/com/choonster/testmod3/init/ModFluids.java
+/** Registers the models for this mod
+ * <p>
+ * Big thanks to Choonster for having the only open source reference for custom fluids in 1.8.9!
+ * The reference has comments to which is a first for 1.8.9 Minecraft mods <3
+ * 
+ * @since <b>0.51.0</b>
+ * @author SwingTheVine - Additional comments
+ * @author Choonster - 1.8.9 source code written here: <a href=
+ * "https://github.com/Choonster-Minecraft-Mods/TestMod3/blob/1.8.9/src/main/java/com/choonster/testmod3/init/ModFluids.java">
+ * https://github.com/Choonster-Minecraft-Mods/TestMod3/blob/1.8.9/src/main/java/com/choonster/testmod3/init/ModFluids.java</a>
+ * @see <a href=".@docroot/LICENSE.txt">License</a> */
 public class QSAND_Fluids {
 	
 	public static Fluid test_fluid;

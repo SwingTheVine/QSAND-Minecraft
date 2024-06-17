@@ -8,6 +8,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+/** Sorts the items in the modded creative tab.
+ * 
+ * @since <b>0.52.0</b>
+ * @author <b>SwingTheVine</b> - Additional comments
+ * @author <b>Choonster</b> - 1.8.9 source code written here: <a href=
+ * "https://github.com/Choonster-Minecraft-Mods/TestMod2/blob/master/src/main/java/com/choonster/testmod2/creativetab/ItemSorter.java">
+ * https://github.com/Choonster-Minecraft-Mods/TestMod2/blob/master/src/main/java/com/choonster/testmod2/creativetab/ItemSorter.
+ * java</a>
+ * @see <a href=".@docroot/LICENSE.txt">License</a> */
 public class ItemSorter implements Comparator<ItemStack> {
 	
 	private final Map<ItemStack, OreDictionaryPriority> oreDictPriorityCache = new HashMap<>();

@@ -19,11 +19,20 @@ import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
+/** Implements client-side rendering
+ * 
+ * @since <b>0.1.0</b>
+ * @author <b>SwingTheVine</b> - Improved and updated MrCrayfish's code to 1.8.9
+ * @author <b>MrCrayfish</b> - 1.7.10 source code written here: <a href=
+ * "https://github.com/MrCrayfish/ModdingTutorials/blob/master/src/main/java/com/mrcrayfish/teleportmod/proxy/ClientProxy.java">
+ * https://github.com/MrCrayfish/ModdingTutorials/blob/master/src/main/java/com/mrcrayfish/teleportmod/proxy/ClientProxy.java</a>
+ * @see <a href=".@docroot/LICENSE.txt">License</a> */
 public class ClientProxy extends CommonProxy {
 	
 	// Registers the renders for the blocks, items, etc.
 	@Override
 	public void registerRenders() {
+		
 		QSAND_Blocks.registerRenders(); // Registers the renders for the blocks
 		QSAND_Items.registerRenders(); // Registers the renders for the items
 	}
@@ -31,6 +40,7 @@ public class ClientProxy extends CommonProxy {
 	// Registers the renders for the entities
 	@Override
 	public void registerEntityRenders() {
+		
 		RenderingRegistry.registerEntityRenderingHandler(EntityBubble.class, new BubbleRender.Factory());
 		RenderingRegistry.registerEntityRenderingHandler(EntitySlimeVoid.class, new SlimeVoidRender.Factory());
 		RenderingRegistry.registerEntityRenderingHandler(EntitySlimeMud.class, new SlimeMudRender.Factory());
@@ -41,6 +51,7 @@ public class ClientProxy extends CommonProxy {
 	// Registers the models for the fluids
 	@Override
 	public void registerFluidModels() {
+		
 		ModdedModelManager.INSTANCE.registerFluidModels();
 	}
 	
@@ -50,6 +61,6 @@ public class ClientProxy extends CommonProxy {
 		
 		// Registers the different renders/skins for each item variant/metadata
 		ModelBakery.registerItemVariants(Item.getItemFromBlock(QSAND_Blocks.test_block),
-				new ResourceLocation("QSAND:test_block"));
+			new ResourceLocation("QSAND:test_block"));
 	}
 }

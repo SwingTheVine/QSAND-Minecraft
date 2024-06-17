@@ -1,0 +1,9 @@
+Copyright (C) 2024 SwingTheVine
+
+These image, video, audio, and other forms of multimedia files
+are licensed under the terms of the Creative Commons
+Attribution-ShareAlike 4.0 International (CC-BY-SA-4.0) license.
+
+You should have received a copy of the Creative Commons
+Attribution-ShareAlike 4.0 International (CC-BY-SA-4.0) license
+along with these files. If not, see https://creativecommons.org/licenses/by-sa/4.0/

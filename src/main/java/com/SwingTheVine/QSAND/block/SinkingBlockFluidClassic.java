@@ -22,7 +22,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * 
  * @since <b>0.49.0</b>
  * @author <b>SwingTheVine</b> - 1.8.9 source code
- * @see <a href="@docroot/LICENSE.txt">License</a> */
+ * @see <a href=".@docroot/LICENSE.txt">License</a> */
 public class SinkingBlockFluidClassic extends BlockFluidClassic implements IMetaBlockName {
 	
 	/** Constructor

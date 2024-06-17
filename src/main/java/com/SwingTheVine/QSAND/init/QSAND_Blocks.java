@@ -19,6 +19,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
+/** Registers blocks for this mod.
+ * 
+ * @since <b>0.3.0</b>
+ * @author <b>SwingTheVine</b> - Improved and updated MrCrayfish's code
+ * @author <b>MrCrayfish</b> - 1.8.9 source code written here: <a href=
+ * "https://github.com/MrCrayfish/ModdingTutorials/blob/master/src/main/java/com/mrcrayfish/teleportmod/init/TeleportBlocks.java">
+ * https://github.com/MrCrayfish/ModdingTutorials/blob/master/src/main/java/com/mrcrayfish/teleportmod/init/TeleportBlocks.java
+ * </a>
+ * @see <a href=".@docroot/LICENSE.txt">License</a> */
 public class QSAND_Blocks {
 	
 	// QSAND blocks you can not sink in

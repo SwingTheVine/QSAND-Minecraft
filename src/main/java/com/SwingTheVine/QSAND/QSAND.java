@@ -24,6 +24,11 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
+/** The main file of the mod.
+ * 
+ * @since <b>0.1.0</b>
+ * @author <b>SwingTheVine</b> - 1.8.9 source code
+ * @see <a href=".@docroot/LICENSE.txt">License</a> */
 @Mod(modid = ModInfo.id, name = ModInfo.name, version = ModInfo.version,
 	acceptedMinecraftVersions = ModInfo.acceptedMCVersions)
 public class QSAND {
@@ -91,3 +96,4 @@ public class QSAND {
 	
 	}
 }
+

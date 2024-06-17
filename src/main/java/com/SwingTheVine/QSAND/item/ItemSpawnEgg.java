@@ -14,8 +14,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /** Creates a customizable interface for spawn eggs.
+ * <p>
  * Register this as an item with metadata/subtypes
  * 
+ * @since <b>0.41.0</b>
  * @author SwingTheVine - Updated Jabelar's code from 1.7.10 to 1.8.9
  * @author Jabelar - 1.7.10 <a href=
  * "https://web.archive.org/web/20190529171948/http://jabelarminecraft.blogspot.com/p/minecraft-forge-1721710-creating-custom.html">

@@ -1,0 +1,17 @@
+# ====================================
+# This file tells tokei what to ignore
+#   when calculating the total lines
+#   and comments of the repository.
+#
+#       This file is structured
+#   in the same manner as .gitignore
+# and includes all files listed there
+# ====================================
+
+# Text Files
+*.md
+*.txt
+
+# Gradle Files
+gradle
+gradlew

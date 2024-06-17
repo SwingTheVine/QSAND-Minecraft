@@ -10,6 +10,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 
+/** Implements Test fluid block calculation and physics.
+ * 
+ * @since <b>0.54.0</b>
+ * @author <b>SwingTheVine</b> - 1.8.9 source code
+ * @see <a href=".@docroot/LICENSE.txt">License</a> */
 public class FluidTest extends BlockFluidClassic implements IMetaBlockName {
 	
 	public FluidTest(final Fluid fluid, final Material material) {

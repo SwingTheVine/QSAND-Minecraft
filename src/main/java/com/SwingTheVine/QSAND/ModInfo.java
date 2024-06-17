@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
  * 
  * @since <b>0.1.0</b>
  * @author <b>SwingTheVine</b>
- * @see <a href="@docroot/LICENSE.txt">License</a> */
+ * @see <a href=".@docroot/LICENSE.txt">License</a> */
 public class ModInfo {
 	
 	public static final String id = "QSAND";

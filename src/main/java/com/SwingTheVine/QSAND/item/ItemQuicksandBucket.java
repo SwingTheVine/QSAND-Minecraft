@@ -15,6 +15,11 @@ import net.minecraftforge.fluids.UniversalBucket;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+/** Implements a custom forge universal bucket for quicksand.
+ * 
+ * @since <b>0.53.0</b>
+ * @author <b>SwingTheVine</b> - 1.8.9 source code
+ * @see <a href=".@docroot/LICENSE.txt">License</a> */
 public class ItemQuicksandBucket extends UniversalBucket {
 	
 	public final int capacity; // how much the bucket holds

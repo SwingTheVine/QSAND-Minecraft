@@ -13,7 +13,7 @@ import net.minecraft.item.ItemStack;
  * @since <b>0.3.0</b>
  * @author <b>CJMinecraft</b> - 1.8.9 source code
  * @see {@link ItemBlockMeta}
- * @see <a href="@docroot/LICENSE.txt">License</a> */
+ * @see <a href=".@docroot/LICENSE.txt">License</a> */
 public interface IMetaBlockName {
 	
 	/** Obtains the special name of the subtype/metadata value of the block. (e.g. "0")
