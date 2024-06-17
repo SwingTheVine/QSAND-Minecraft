@@ -19,93 +19,177 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockTest extends Block implements IMetaBlockName {
+/** Implements Test block calculation and physics.
+ * 
+ * @since <b>0.3.0</b>
+ * @author <b>SwingTheVine</b> - 1.8.9 source code
+ * @see <a href="@docroot/LICENSE.txt">License</a> */
+public class BlockTest extends SinkingBlock implements IMetaBlockName {
 	
-	private static final String[] types = {"0", "1", "2", "3", "4"}; // Values of the different metadata levels
+	// All the different special names of the metadata/subtype variants
+	private static final String[] types = {"0", "1", "2", "3", "4"};
+	
 	private static final boolean useOneTexture = true; // Should all metadata variants use the same texture?
-	public static final PropertyInteger SINK = PropertyInteger.create("sink", 0, 4); // Creates a metadata value for every "types" metadata value
-
-	// Constructor
-	public BlockTest(Material material) {
-		super(material);
+	
+	// Creates a metadata value for every "types" metadata value
+	public static final PropertyInteger SINK = PropertyInteger.create("sink", 0, 4);
+	
+	/** Constructor.
+	 * <p>
+	 * Constructs the Test block with the custom metadata and default state
+	 * 
+	 * @param material - The material of the block */
+	public BlockTest(final Material material) {
+		super(material); // Runs all the code in the super implementation of this constructor
 		this.setDefaultState(this.blockState.getBaseState().withProperty(SINK, Integer.valueOf(0)));
 	}
 	
-	// What to do when an entity is INSIDE the block
-	// This is the core of the quicksand calculations
-	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity triggeringEntity) {
-		// Seed: 1637864495647481288
-		//triggeringEntity.setInWeb();
-		System.out.println("Collision detected. " + state.getBlock().toString() + " with metadata " + state.getBlock().getBlockState());
+	/** What to do when an entity is INSIDE the block.
+	 * <p>
+	 * This is the core of the quicksand calculations. Most of (if not all) of the math for the calculations are in this
+	 * function.
+	 * 
+	 * @param world - The world the block is in
+	 * @param pos - The position of the block
+	 * @param state - The state of the block
+	 * @param triggeringEntity - The entity that triggered this function (and is colliding with the block)
+	 * @see {@link Block#onEntityCollidedWithBlock(World, BlockPos, IBlockState, Entity) Super Implementation} */
+	@Override
+	public void onEntityCollidedWithBlock(final World world, final BlockPos pos, final IBlockState state,
+		final Entity triggeringEntity) {
 		
+		// Prints out the name and metadata of the block to the terminal
+		System.out.println("Collision detected. " + state.getBlock().toString() + " with metadata "
+			+ state.getBlock().getBlockState());
 	}
 	
-	// Declares that this block ID has metadata values.
-	// Declares the metadata values for this block.
-	// The metadata value corrosponds with its index in "types".
-	// THIS FUNCTION IS NEEDED FOR BLOCK DECLARATION
+	/** Declares and defines the metadata/subtypes of this block.
+	 * <p>
+	 * <b>THIS FUNCTION IS NEEDED FOR BLOCK DECLARATION</b>
+	 * <br>
+	 * The metadata/subtype value corresponds with its index in "types".
+	 * 
+	 * @param block - The block (in item form) to obtain, declare, and define the metadata/subtypes for
+	 * @param tabs - The creative tab this block will be stored in
+	 * @param subtypes - A list of all the declared subtypes for this block
+	 * @see {@link Block#getSubBlocks(Item, CreativeTabs, List) Super Implementation} */
+	@Override
 	@SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item block, CreativeTabs creativeTabs, List<ItemStack> list) {
+	public void getSubBlocks(final Item block, final CreativeTabs tab, final List<ItemStack> subtypes) {
+		
+		// For every subtype defined in "types"...
 		for (int indexType = 0; indexType < types.length; indexType++) {
-			list.add(new ItemStack(block, 1, indexType));
+			subtypes.add(new ItemStack(block, 1, indexType)); // Make a new item stack of that subtype and define it
 		}
-    }
+	}
 	
-	// Obtains the block's metadata from the block's blockstate.
-	// THIS FUNCTION IS NEEDED FOR BLOCK DECLARATION
+	/** Obtains the block's metadata from the block's state
+	 * <p>
+	 * <b>THIS FUNCTION IS NEEDED FOR BLOCK DECLARATION WITH METADATA</b>
+	 * 
+	 * @param state - The state of the block
+	 * @return The metadata value as an integer
+	 * @see {@link Block#getMetaFromState(IBlockState) Super Implementation} */
 	@Override
-	public int getMetaFromState(IBlockState state) {
-        return (Integer)state.getValue(SINK).intValue();
-    }
+	public int getMetaFromState(final IBlockState state) {
+		
+		return state.getValue(SINK).intValue(); // Retrieves and returns the metadata value from the block state
+	}
 	
-	// Obtains the block's blockstate from the block's metadata.
-	// THIS FUNCTION IS NEEDED FOR BLOCK DECLARATION
+	/** Obtains the block's state from the block's metadata.
+	 * <p>
+	 * <b> THIS FUNCTION IS NEEDED FOR BLOCK DECLARATION WITH METADATA</b>
+	 * 
+	 * @param blockMetadata - The metadata value of the block
+	 * @return The state of the block as an {@link IBlockState}
+	 * @see {@link Block#getStateFromMeta(int) Super Implementation} */
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(SINK, Integer.valueOf(meta));
-    }
+	public IBlockState getStateFromMeta(final int blockMetadata) {
+		
+		// Generates the default state of the block, changes the metadata, then returns the block state
+		return getDefaultState().withProperty(SINK, Integer.valueOf(blockMetadata));
+	}
 	
-	// Obtains the block (with metadata) when the player picks it (using Middle Mouse Button)
+	/** Obtains the block when the player picks it (using Middle Mouse Button)
+	 * <p>
+	 * When the block is picked, it carries over the metadata with it.
+	 * 
+	 * @param targetBlock - Information on the (multi-)block targeted by the player
+	 * @param world - The world the block is in
+	 * @param pos - The position of the block
+	 * @param player - The player that triggered this function
+	 * @return An item stack to add to the player's inventory. Return null to add nothing.
+	 * @see {@link Block#getPickBlock(MovingObjectPosition, World, BlockPos, EntityPlayer) Super Implementation} */
 	@Override
-	public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player) {
+	public ItemStack getPickBlock(final MovingObjectPosition targetBlock, final World world, final BlockPos pos,
+		final EntityPlayer player) {
+		
+		// Generates and returns an item stack of the targeted block with the metadata from the block position
 		return new ItemStack(Item.getItemFromBlock(this), 1, this.getMetaFromState(world.getBlockState(pos)));
 	}
 	
-	// Creates a new block state for this block ID.
-	// THIS FUNCTION IS NEEDED FOR BLOCK DECLARATION
+	/** Creates a new block state for this block.
+	 * <p>
+	 * <b>THIS FUNCTION IS NEEDED FOR BLOCK DECLARATION WITH METADATA</b>
+	 * <br>
+	 * The new block state includes information about the possible metadata values.
+	 * 
+	 * @return A block state with metadata */
 	@Override
 	protected BlockState createBlockState() {
-        return new BlockState(this, new IProperty[] {SINK});
-    }
+		
+		// Creates and returns a new block state that includes metadata values
+		return new BlockState(this, new IProperty[] {SINK});
+	}
 	
-	// Obtains the metadata this block should drop.
-	// THIS FUNCTION IS NEEDED FOR BLOCK DECLARATION
+	/** Obtains the metadata this block should have when dropped as an item.
+	 * <p>
+	 * <b>THIS FUNCTION IS NEEDED FOR BLOCK DECLARATION</b>
+	 * 
+	 * @param state - The block state to obtain metadata from
+	 * @return The metadata of the block as an integer
+	 * @see {@link Block#damageDropped(IBlockState) Super Implementation} */
 	@Override
-	public int damageDropped(IBlockState state) {
+	public int damageDropped(final IBlockState state) {
+		
 		return this.getMetaFromState(state);
 	}
 	
-	// Obtains the special name of the block variant.
-	// This is used to add a custom name to a block variant in the language file
+	/** {@inheritDoc}
+	 * 
+	 * @see {@link ItemBlockMeta#getUnlocalizedName(ItemStack)} <br>
+	 * {@link IMetaBlockName#getSpecialName(ItemStack) Super Implementation} */
 	@Override
-	public String getSpecialName(ItemStack stack) {
-		return BlockTest.types[stack.getItemDamage()];
+	public String getSpecialName(final ItemStack itemStack) {
+		
+		// Returns the special name of the block metadata/subtype stored in "types"
+		// that matches the index of the damage value of the item stack
+		return BlockTest.types[itemStack.getItemDamage()];
 	}
 	
-	// Sets the tooltips that should be added to the block
-	// Leave blank for no tooltip
+	/** {@inheritDoc}
+	 * 
+	 * @see {@link IMetaBlockName#setTooltip(ItemStack, EntityPlayer, List, boolean) Super Implementation} */
 	@Override
 	public void setTooltip(final ItemStack item, final EntityPlayer player, final List list, final boolean bool) {
-		
+	
 	}
 	
-	// Returns types of metadata for the block
+	/** {@inheritDoc}
+	 * 
+	 * @see {@link SinkingBlock#getTypes() Super Implementation} */
+	@Override
 	public String[] getTypes() {
-		return types;
+		
+		return types; // Returns all possible metadata/subtype names
 	}
 	
-	// Returns if only one texture should be used for all metadata types
+	/** {@inheritDoc}
+	 * 
+	 * @see {@link SinkingBlock#getUseOneTexture() Super Implementation} */
+	@Override
 	public boolean getUseOneTexture() {
-		return useOneTexture;
+		
+		return useOneTexture; // Returns if all metadata/subtypes should use one texture
 	}
 }

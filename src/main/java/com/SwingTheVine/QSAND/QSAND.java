@@ -28,6 +28,9 @@ import net.minecraftforge.fml.relauncher.Side;
 	acceptedMinecraftVersions = ModInfo.acceptedMCVersions)
 public class QSAND {
 	
+	// Test World Seed: 1637864495647481288
+	// Entities fall at a rate of 0.076125 blocks
+	
 	// Declares proxy
 	@SidedProxy(clientSide = ModInfo.clientProxyClass, serverSide = ModInfo.serverProxyClass)
 	public static CommonProxy proxy;

@@ -1,0 +1,8 @@
+This file contains my ideas for QSAND-specific splash texts for the Minecraft main menu.
+---------------------------------------
+Now with more quicksand!
+Now with more dungeons!
+Fully commented!
+Captain Steve, this place is a bog!
+Sticky!
+Slimy!

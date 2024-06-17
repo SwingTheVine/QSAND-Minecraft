@@ -3,17 +3,21 @@
 [![Media License: CC-BY-SA-4.0](https://img.shields.io/badge/Media_License-CC--BY--SA--4.0-orange?style=flat)](https://github.com/SwingTheVine/QSAND-Minecraft/blob/master/LICENSE-MEDIA.txt)
 [![Latest Version](https://img.shields.io/badge/Latest_Version-1.8.9--0.67.0-lightblue?style=flat)]()
 [![Latest Release](https://img.shields.io/github/v/release/SwingTheVine/QSAND-Minecraft?sort=date&filter=1.8.9-*&display_name=release&style=flat&label=Latest%20Release&color=blue)](https://github.com/SwingTheVine/QSAND-Minecraft/releases)
-[![Total Patches](https://img.shields.io/badge/Total_Patches-363-black?style=flat)]()
 
-| [QuickSand And Numerous Dungeons (QSAND)](https://github.com/SwingTheVine/QSAND-Minecraft?tab=readme-ov-file#quicksand-and-numerous-dungeons) |
+[![Total Patches](https://img.shields.io/badge/Total_Patches-363-black?style=flat)]()
+[![Total Lines of Code](https://tokei.rs/b1/github/SwingTheVine/QSAND-Minecraft)]()
+[![Total Comments](https://tokei.rs/b1/github/SwingTheVine/QSAND-Minecraft?category=comments)]()
+[![Version Incrementer](https://github.com/SwingTheVine/QSAND-Minecraft/actions/workflows/version-incrementer.yml/badge.svg)]()
+
+| [QuickSand And Numerous Dungeons (QSAND)](#quicksand-and-numerous-dungeons-qsand) |
 | --- |
-| &emsp;[How versioning works](https://github.com/SwingTheVine/QSAND-Minecraft?tab=readme-ov-file#how-versioning-works) |
-| &emsp;[Licenses](https://github.com/SwingTheVine/QSAND-Minecraft?tab=readme-ov-file#licenses) |
-| &emsp;&emsp;[Overview](https://github.com/SwingTheVine/QSAND-Minecraft?tab=readme-ov-file#overview) |
-| &emsp;&emsp;[Some Examples](https://github.com/SwingTheVine/QSAND-Minecraft?tab=readme-ov-file#some-examples) |
-| &emsp;&emsp;[FAQ](https://github.com/SwingTheVine/QSAND-Minecraft?tab=readme-ov-file#faq) |
-| &emsp;[Gradle Issue](https://github.com/SwingTheVine/QSAND-Minecraft?tab=readme-ov-file#gradle-issue) |
-| &emsp;[Resources](https://github.com/SwingTheVine/QSAND-Minecraft?tab=readme-ov-file#resources) |
+| &emsp;[How versioning works](#how-versioning-works) |
+| &emsp;[Licenses](#licenses) |
+| &emsp;&emsp;[Overview](#overview) |
+| &emsp;&emsp;[Some Examples](#some-examples) |
+| &emsp;&emsp;[FAQ](#faq) |
+| &emsp;[Gradle Issue](#gradle-issue) |
+| &emsp;[Resources](#resources) |
 
 ## How versioning works
 The versioning system for this mod follows the [Semantic Versioning rules](https://semver.org/). As such, it is formatted in an `X.Y.Z` format where:
