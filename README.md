@@ -7,14 +7,73 @@ The versioning system for this mod follows the [Semantic Versioning rules](https
 * Z is the patch version. This is incremented whenever I launch Minecraft to test a patch.
 
 ## Gradle Issue
-If you encounter gradle issues with cached libraries missing, take a look at the [Repair Gradle Instructions](https://github.com/SwingTheVine/QSAND-Minecraft/blob/master/RepairGradleInstructions.txt)
+If you encounter gradle issues with cached libraries missing, take a look at the [Repair Gradle Instructions](https://github.com/SwingTheVine/QSAND-Minecraft/blob/master/RepairGradleInstructions.txt).
+
+## Licenses
+### Overview
+(Below, mentions of this "Project" is referring to this Minecraft mod)
+Most of this Project is licensed under the `GNU General Public License v3.0` (GNU GPLv3.0). All software, code, models, and libraries in this repository are licensed under the GNU GPLv3.0 license. However all media (images, videos, and sounds) in this Project is licensed under the `Creative Commons Attribution Share Alike 4.0 International` (CC-BY-SA-4.0) license. Trademarks of this Project can be used without permission from the author(s) of this Project except for when using the trademark would imply that you are connected with, or sponsored, endorsed, or granted official status by, the author(s) of this Project.
+
+Basically, you can use this Project as long as:
+* You **don't** re-upload an unmodified version of this Project.
+* You **don't** claim to be this Project or it's author(s).
+* You **don't** violate the licenses.
+* You **do** disclose that your source was this Project (and provide a reference to the Project).
+* You **do** use the same license when modifying this Project.
+* You **do** document the changes made when modifying this Project.
+
+Some common edge cases are outlined below.
+
+### Some Examples
+The Project (or any parts of the Project) can be used in this non-exhaustive list of scenarios. All mentions of "trademarks" refer to media that is used to identify the Project. All mentions of "media" in this list below include trademarks being used in a way that does not imply that you are connected with, or sponsored, endorsed, or granted official status by, the author(s) of this Project. **This list is merely an example. If there are conflicts between this list and the licenses, the licenses should be followed.**
+
+#### As A User Or Content Creator:
+* **Permitted:** You include this Project in a **modpack**. You **include a reference** to this Project.
+* **Permitted:** You use this **Project** to **display/showcase** this Project.
+* **Permitted:** You use **media** from this Project to **display/showcase** this Project. You **include the license** to the media (CC-BY-SA-4.0).
+* **Permitted:** You **distribute unmodified** copies of this Project. You **include a reference** to this Project.
+* **Permitted:** You gain a **monetary** benefit **without** violating the Project's licenses.
+
+* **Forbidden:** You include this Project in a **modpack**. You **don't add a reference** to this Project. (You must reference this Project as a source)
+* **Forbidden:** You use **media** from this Project to **display/showcase** this Project. You **don't add the license** to the media (CC-BY-SA-4.0). (A license for the media must be included somewhere)
+* **Forbidden:** You **distribute unmodified** copies of this Project. You **don't add a reference** to this Project. (You must reference this Project as a source)
+* **Forbidden:** You **upload** an **unmodified** version of this Project to a **Minecraft related website**, archive, etc. **Faithful recreations** (unmodified, updated versions) of the Project that run on a version of Minecraft the Project does not support at the time of the upload are **permitted**. (You are not permitted to use the trademarks of this Project in this manner unless it is a faithful recreation that runs on a version of Minecraft the Project does not support at the time of the upload)
+
+#### As a developer:
+* **Permitted:** You gain a **monetary** benefit **without** violating the Project's licenses.
+* **Permitted:** You create your own **open-source mod** and include parts of this Project in your mod. You license the **entire** mod under the **GNU GPLv3.0** (or a later version of this) license.
+* **Permitted:** You create your own **open-source mod** and include parts of this Project in your mod. You license the **parts of this Project** under the **GNU GPLv3.0** (or a later version of this) license. You license the **rest of the mod** under a **different** license.
+* **Permitted:** You create your own **closed-source mod** and include parts of this Project in your mod. You license the **entire** mod under the **GNU GPLv3.0** (or a later version of this) license.
+* **Permitted:** You create a **open-source derivative** (modified version) of this Project, extending the Project's functionality whilst *including the entire Project* inside your derivative. You **include a reference** to this Project. You license the **entire** derivative under the **GNU GPLv3.0** (or a later version of this) license.
+* **Permitted:** You create a **open-source derivative** (modified version) of this Project, extending the Project's functionality whilst *including the entire Project* inside your derivative. You **include a reference** to this Project. You license the **parts of this Project** under the **GNU GPLv3.0** (or a later version of this) license. You license the **rest of the derivative** under a **different** license.
+* **Permitted:** You create a **closed-source derivative** (modified version) of this Project, extending the Project's functionality whilst *including the entire Project* inside your derivative. You **include a reference** to this Project. You license the **entire** derivative under the **GNU GPLv3.0** (or a later version of this) license.
+* **Permitted:** You create a **faithful recreation** (unmodified, updated version) of this Project. The faithful recreation is **open-source**. The faithful recreation **supports a version of Minecraft** the **Project does not support**. You **include a reference** to this Project. You license the **entire** derivative under the **GNU GPLv3.0** (or a later version of this) license.
+* **Permitted:** You create a **faithful recreation** (unmodified, updated version) of this Project. The faithful recreation is **closed-source**. The faithful recreation **supports a version of Minecraft** the **Project does not support**. You **include a reference** to this Project. You license the **entire** derivative under the **GNU GPLv3.0** (or a later version of this) license.
+
+* **Forbidden:** You create your own **open-source mod** and include parts of this Project in your mod. You license the **entire** mod under a **different** license. (The unpackaged parts of the Project must be licensed under the GNU GPLv3.0 license or a later version of this license)
+* **Forbidden:** You create your own **closed-source mod** and include parts of this Project in your mod. You license the **entire** mod under the **different** license. (Since the mod is packaged, you can't license only the parts of the Project. The entire packaged mod must be licensed under the GNU GPLv3.0 license or a later version of this license)
+* **Forbidden:** You create a **open-source derivative** (modified version) of this Project, extending the Project's functionality whilst *including the entire Project* inside your derivative. You **don't add a reference** to this Project. You license the **entire** derivative under a **different** license. (You must reference this Project as a source. The unpackaged Project in your derivative must be licensed under the GNU GPLv3.0 license or a later version of this license)
+* **Forbidden:** You create a **closed-source derivative** (modified version) of this Project, extending the Project's functionality whilst *including the entire Project* inside your derivative. You **don't add a reference** to this Project. You license the **entire** derivative under a **different** license. (You must reference this Project as a source. Since the derivative is packaged, you can't license only the Project. The entire packaged derivative must be licensed under the GNU GPLv3.0 license or a later version of this license)
+* **Forbidden:** You create a **faithful recreation** (unmodified, updated version) of this Project. The faithful recreation is **open-source**. The faithful recreation **supports a version of Minecraft** the **Project does not support**. You **don't add a reference** to this Project. You license the **entire** derivative under a **different** license. (You must reference this Project as a source. Since the faithful recreation is a copy of the Project, you can not change the license. The entire faithful recreation must be licensed under the GNU GPLv3.0 license or a later version of this license)
+* **Forbidden:** You create a **faithful recreation** (unmodified, updated version) of this Project. The faithful recreation is **closed-source**. The faithful recreation **supports a version of Minecraft** the **Project does not support**. You **don't add a reference** to this Project. You license the **entire** derivative under a **different** license. (You must reference this Project as a source. Since the faithful recreation is a copy of the Project, you can not change the license. The entire faithful recreation must be licensed under the GNU GPLv3.0 license or a later version of this license)
+* **Forbidden:** You **upload** an **unmodified** version of this Project to a **Minecraft related website**, archive, etc. **Faithful recreations** (unmodified, updated versions) of the Project that run on a version of Minecraft the Project does not support at the time of the upload are **permitted**. (You are not permitted to use the trademarks of this Project in this manner unless it is a faithful recreation that runs on a version of Minecraft the Project does not support at the time of the upload)
+
+### FAQ
+#### Don't you have to use the same license as the Forge MDK?
+Nope! The Forge MDK is a software library licensed under the `GNU Lesser General Public License v2.1` (GNU LGPLv2.1). According to (section 2a of) that license, a work (Minecraft mod) based on the software library (Forge MDK) must be a software library itself in order for the license to carry over. Since this Project is not a software library, I can use a different license.
+
+#### Why does the media have two different licenses?
+There are multiple reasons.
+* First, I wanted developers looking to make their own mods to have a way to use this Project's media assets. We are programmers, not artists. Being able to reuse assets dramatically speeds up the process of creating a mod. The media assets may be of higher quality than what the developer can obtain. In this case, reusing the media assets would increase the quality of the mod and user experience.
+* Second, I wanted content creators to be able to use the media assets to showcase the Project. Content creators usually run a risk of getting a DMCA violation for using a mod's media assets. Having a different license that allows them to use media assets eliminates that risk.
+* Third, the media license explicitly states that trademark rights are not granted by the license (Section 2b2). This allows me to send DMCA violations to mods impersonating the Project whilst *simultaneously* allowing content creators and developers to use the Project's trademarks in a way that does not impersonate the Project. In addition, if development of the Project is permanently halted, it allows developers to use the media assets to make a faithful recreation of the Project and continue updating it to new versions of Minecraft.
 
 ## Resources
-An exhaustive list of references I used to make this mod. ⭐ = Exceptional resource.
-* [More Fun Quicksand Mod](https://www.curseforge.com/minecraft/mc-mods/more-fun-quicksand-mod) decompiled and deobfuscated to be used as a base. Not as easy as it sounds...
+An exhaustive list of references I used to make this mod. If you are looking to develop a 1.8.9 mod, this list will come in handy. A "⭐" icon means it is an exceptionally good resource.
 
+* [More Fun Quicksand Mod](https://www.curseforge.com/minecraft/mc-mods/more-fun-quicksand-mod) decompiled and deobfuscated to be used as a base. Not as easy as it sounds...
 * [CJMinecraft's YouTube playlist](https://www.youtube.com/watch?v=gS58vMJM_00&list=PLpKu3PfwdqHQc5F3YnUdBm3rOyfLke3sj&index=13) with an example of custom blocks with metadata
-* [radman63's Minecraft Forum thread](https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/modification-development/2451794-need-help-with-blockstates) on blockstates
+* [RadMan63's Minecraft Forum thread](https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/modification-development/2451794-need-help-with-blockstates) on blockstates
 * ⭐ [Kevin M's YouTube playlist](https://www.youtube.com/playlist?list=PLiFAb_ju1TajRzMXxLAk8P8LHe5JRNs_3) on how to create custom mob models
 * [BlueHexalon's Minecraft Forum thread](https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/modification-development/2610305-1-8-9-entities-with-custom-renderer-is-rendering) and [TheGoldCrayon's Minecraft Fourm thread](https://forums.minecraftforge.net/topic/37547-solved-189-custom-entity-help/?do=findComment&comment=199602) on troubleshooting custom model errors
 * [Jacknoshima's Minecraft Forum thread](https://forums.minecraftforge.net/topic/9327-how-do-you-get-a-spawn-egg-into-a-custom-creative-tab/) on moving spawn eggs to a custom creative tab
@@ -27,5 +86,5 @@ An exhaustive list of references I used to make this mod. ⭐ = Exceptional reso
 * ⭐ [MyCrayfish's YouTube playlist](https://www.youtube.com/watch?v=3oqZ1MNCu2Y&list=PLy11IosblXIFDFAT3wz_5Nve05wIVKFSJ&index=7) with a good example on Tile Entities
 * ⭐ [Choonster's GitHub repo](https://github.com/Choonster-Minecraft-Mods/TestMod3/blob/1.8.9/src/main/java/com/choonster/testmod3/init/ModFluids.java) with an example of custom fluids
 * ⭐ [Emasher's Minecraft Forum thread](https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/mapping-and-modding-tutorials/1571414-how-to-use-the-forge-biomedictionary) with a guide on the Forge Biome Dictionary
-* 🌟 [TehNut-Mods's GitHub repo](https://github.com/TehNut-Mods/ResourcefulCrops/blob/1.7.10/src/main/java/tehnut/resourceful/crops/ConfigHandler.java) with a functioning Config Handler
+* ⭐ [TehNut-Mods's GitHub repo](https://github.com/TehNut-Mods/ResourcefulCrops/blob/1.7.10/src/main/java/tehnut/resourceful/crops/ConfigHandler.java) with a functioning Config Handler
 * ⭐ [MCPCFanC's Minecraft Forum thread](https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/modification-development/2405990-mcmod-info-file-guide-and-help) with an explanation of every aspect of the `mcmod.info` file

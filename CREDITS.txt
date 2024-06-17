@@ -11,3 +11,6 @@ $$ $$\$$ | $$\   $$ | $$ |  $$ | $$ |\$$$ | $$ |  $$ |
 
 
 "QuickSand And Numerous Dungeons" is made by SwingTheVine
+
+Special Thanks:
+* MrBlackGoo, elix_x, CrishNate, VanderCat, and Sanic for their work on the More Fun Quicksand Mod
