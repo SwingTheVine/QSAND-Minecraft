@@ -1,19 +1,21 @@
 <project name="VersionIncrementer" default="increment-version">
     <property file="ModInfo.java"/>
     <target name="increment-version">
-        <loadfile property="fileContent" srcFile="src/main/java/com/SwingTheVine/QSAND/ModInfo.java"/>
+        <loadfile property="fileContentModInfo" srcFile="src/main/java/com/SwingTheVine/QSAND/ModInfo.java"/>
         
         <script language="javascript">
             <![CDATA[
-            var fileContent = project.getProperty("fileContent"); // Gets the content of the Ant's target file
+        	var fileContent = project.getProperty("fileContentModInfo"); // Gets the content of the ModInfo file
             var lines = fileContent.split("\n"); // All file content is in a string. This splits the string into multiple lines (a multi-line string if you will) at the delimiter of a new line character
             var newContent = []; // Will store each line as it comes across them (and potentially modifies them)
             var versionPattern = /version\s*=\s*\"(\d+)\.(\d+)\.(\d+)\"/; // A RegEx to match the three numbers in the version
-            
+            var versionPatternPatch = /totalPatches\s*=\s*\"(\d+)\"/; // A RegEx to match the total patches
+        	
         	// For every line...
             for (var i = 0; i < lines.length; i++) {
                 var currentLine = lines[i]; // Sets the current line to its own variable
                 var match = versionPattern.exec(currentLine); // (boolean) Does the line match the RegEx?
+        	    var matchPatch = versionPatternPatch.exec(currentLine); // (boolean) Does the line match the RegEx?
                 
         	    // If the RegEx matches this line...
                 if (match) {
@@ -21,10 +23,14 @@
                     var minor = parseInt(match[2]); // Stores the minor number as the second RegEx number matched
                     var patch = parseInt(match[3]) + 1; // Stores the patch number as the third RegEx number matched and adds one
                     
-                    var newVersion = 'version = "' + major + '.' + minor + '.' + patch + '";'; // Reforms the version string with the new version number
+                    var newVersion = major + '.' + minor + '.' + patch; // Reforms the version string with the new version number
                     
-                    newContent.push('\tpublic static final String ' + newVersion); // Reforms the entire line using the new version string
-                } else {
+                    newContent.push('\tpublic static final String version = "' + newVersion + '";'); // Reforms the entire line using the new version string
+                // Else If total patches RegEx matches this line...
+        	    } else if (matchPatch) {
+        	      var patchPatch = parseInt(matchPatch[1]) + 1; // Increment the total patches
+        	      newContent.push('\tpublic static final String totalPatches = "' + patchPatch + '";'); // Reform the entire line
+        	    } else {
                     newContent.push(currentLine); // This line is not the version. Add it to the new file without modifying
                 }
             }
@@ -37,4 +43,123 @@
         <echo message="${newFileContent}"/>
         <echo file="src/main/java/com/SwingTheVine/QSAND/ModInfo.java" message="${newFileContent}"/>
     </target>
+	<target name="increment-mcmod">
+        <loadfile property="fileContentMCMod" srcFile="src/main/resources/mcmod.info"/>
+		<loadfile property="fileContentModInfo2" srcFile="src/main/java/com/SwingTheVine/QSAND/ModInfo.java"/>
+                    
+            <script language="javascript">
+                <![CDATA[
+            	var fileContent2 = project.getProperty("fileContentModInfo2"); // Obtains the ModInfo file contents
+            	var lines2 = fileContent2.split("\n"); // Splits the file contents at the delimiter of a new line character
+            	var versionPattern2 = /version\s*=\s*\"(\d+)\.(\d+)\.(\d+)\"/; // Matches the version variable
+            	var major2 = 0; // Major version of version in ModInfo
+            	var minor2 = 0; // Minor version of version in ModInfo
+            	var patch2 = 0; // Patch version of version in ModInfo
+            	
+            	// For every line...
+            	for (var i = 0; i < lines2.length; i++) {
+            	  var currentLine2 = lines2[i]; // Sets the current line
+            	  var match2 = versionPattern2.exec(currentLine2); // Does it match the version RegEx?
+            	  
+            	  // If the RegEx matches...
+            	  if (match2) {
+            	    major2 = parseInt(match2[1]); // Store the major version
+            	    minor2 = parseInt(match2[2]); // Store the minor version
+            	    patch2 = parseInt(match2[3]); // Store the patch version
+            	  }
+            	}
+            	
+                var fileContent = project.getProperty("fileContentMCMod"); // Gets the content of the Ant's target file
+                var lines = fileContent.split("\n"); // All file content is in a string. This splits the string into multiple lines (a multi-line string if you will) at the delimiter of a new line character
+                var newContent = []; // Will store each line as it comes across them (and potentially modifies them)
+                var versionPattern = /\"version\"\:\s*\"(\d+)\.(\d+)\.(\d+)\",/; // A RegEx to match the three numbers in the version
+                
+                // For every line...
+                for (var i = 0; i < lines.length; i++) {
+                    var currentLine = lines[i]; // Sets the current line to its own variable
+                    var match = versionPattern.exec(currentLine); // (boolean) Does the line match the RegEx?
+                    
+                    // If the RegEx matches this line...
+                    if (match) {
+                        var newVersion = major2 + '.' + minor2 + '.' + patch2; // Reforms the version string with the new version number
+                        
+                        newContent.push('  "version": "' + newVersion + '",'); // Reforms the entire line using the new version string
+                    } else {
+                        newContent.push(currentLine); // This line is not the version. Add it to the new file without modifying
+                    }
+                }
+                var newFileContent = newContent.join("\n"); // Converts the Array into a string. Adds back the line delimiter of a new line character (except for on the last line)
+                
+                project.setProperty("newFileContent", newFileContent); // Sets the new file content as a variable in the Ant instance
+                ]]>
+            </script>
+            <echo message="New content:"/>
+            <echo message="${newFileContent}"/>
+            <echo file="src/main/resources/mcmod.info" message="${newFileContent}"/>
+    </target>
+	<target name="increment-readme">
+        <loadfile property="fileContentREADME" srcFile="README.md"/>
+		<loadfile property="fileContentModInfo" srcFile="src/main/java/com/SwingTheVine/QSAND/ModInfo.java"/>
+	                    
+	            <script language="javascript">
+	                <![CDATA[
+	            	var fileContentRead = project.getProperty("fileContentModInfo"); // Obtains the contents of the ModInfo file
+	            	var linesRead = fileContentRead.split("\n"); // Splits the file at the delimiter of a new line character
+	            	var versionPatternRead = /version\s*=\s*\"(\d+)\.(\d+)\.(\d+)\"/; // A RegEx to match the three numbers in the version
+	            	var versionPatternReadPatch = /totalPatches\s*=\s*\"(\d+)\"/; // The RegEx for total patches variable
+	            	var majorRead = 0; // Stores the major version from ModInfo
+	            	var minorRead = 0; // Stores the minor version from ModInfo
+	            	var patchRead = 0; // Stores the patch version from ModInfo
+	            	var patchReadPatch = 0; // Stores the total patch variable from ModInfo
+	            	
+	            	// For every line...
+	            	for (var i = 0; i < linesRead.length; i++) {
+	            	  var currentLineRead = linesRead[i]; // Sets the current line
+	            	  var matchRead = versionPatternRead.exec(currentLineRead); // Does the RegEx version match this line?
+	            	  var matchReadPatch = versionPatternReadPatch.exec(currentLineRead); // Does the RegEx total patches match this line?
+	            	  
+	            	  // If version is a match...
+	            	  if (matchRead) {
+	            	    majorRead = parseInt(matchRead[1]); // Store major version
+	            	    minorRead = parseInt(matchRead[2]); // Store minor version
+	            	    patchRead = parseInt(matchRead[3]) + 1; // Store and increment patch version
+	            	  // Else If the total patch is a match...
+	            	  } else if (matchReadPatch) {
+	            	    patchReadPatch = parseInt(matchReadPatch[1]) + 1; // Store and increment total patches
+	            	  }
+	            	}
+	            	
+	                var fileContent = project.getProperty("fileContentREADME"); // Gets the content of the Ant's target file
+	                var lines = fileContent.split("\n"); // All file content is in a string. This splits the string into multiple lines (a multi-line string if you will) at the delimiter of a new line character
+	                var newContent = []; // Will store each line as it comes across them (and potentially modifies them)
+	                var versionPattern = /\[!\[Latest Version\]\(https:\/\/img\.shields\.io\/badge\/Latest_Version-(\d+)\.(\d+)\.(\d+)--(\d+)\.(\d+)\.(\d+)-lightblue\?style=flat\)\]\(\)/; // A RegEx to match the three numbers in the version
+	                var versionPatternPatch = /\[!\[Total Patches\]\(https:\/\/img\.shields\.io\/badge\/Total_Patches-(\d+)-black\?style=flat\)\]\(\)/;
+	            	
+	                // For every line...
+	                for (var i = 0; i < lines.length; i++) {
+	                    var currentLine = lines[i]; // Sets the current line to its own variable
+	                    var match = versionPattern.exec(currentLine); // (boolean) Does the line match the RegEx?
+	                    var matchPatch = versionPatternPatch.exec(currentLine);
+	            	
+	                    // If the RegEx matches this line...
+	                    if (match) {
+	                        var newVersion = parseInt(match[1]) + '.' + parseInt(match[2]) + '.' + parseInt(match[3]) + '--' + majorRead + '.' + minorRead + '.' + patchRead; // Reforms the version string with the new version number
+	                        
+	                        newContent.push('[![Latest Version](https://img.shields.io/badge/Latest_Version-' + newVersion + '-lightblue?style=flat)]()'); // Reforms the entire line using the new version string
+	                    // If the total patched RegEx matches...
+	            	    } else if (matchPatch) {
+	            	      newContent.push('[![Total Patches](https://img.shields.io/badge/Total_Patches-' + patchReadPatch + '-black?style=flat)]()');
+	            	    } else {
+	                        newContent.push(currentLine); // This line is not the version. Add it to the new file without modifying
+	                    }
+	                }
+	                var newFileContent = newContent.join("\n"); // Converts the Array into a string. Adds back the line delimiter of a new line character (except for on the last line)
+	                
+	                project.setProperty("newFileContent", newFileContent); // Sets the new file content as a variable in the Ant instance
+	                ]]>
+	            </script>
+	            <echo message="New content:"/>
+	            <echo message="${newFileContent}"/>
+	            <echo file="README.md" message="${newFileContent}"/>
+	    </target>
 </project>

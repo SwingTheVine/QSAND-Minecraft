@@ -1,8 +1,11 @@
-# Quicksand And Numerous Dungeons
+# QuickSand And Numerous Dungeons (QSAND)
 [![Software License: GPL-3.0](https://img.shields.io/badge/Software_License-GPL--3.0-brightgreen?style=flat)](https://github.com/SwingTheVine/QSAND-Minecraft/blob/master/LICENSE.txt)
 [![Media License: CC-BY-SA-4.0](https://img.shields.io/badge/Media_License-CC--BY--SA--4.0-orange?style=flat)](https://github.com/SwingTheVine/QSAND-Minecraft/blob/master/LICENSE-MEDIA.txt)
+[![Latest Version](https://img.shields.io/badge/Latest_Version-1.8.9--0.63.5-lightblue?style=flat)]()
+[![Latest Release](https://img.shields.io/github/v/release/SwingTheVine/QSAND-Minecraft?sort=date&filter=1.8.9-*&display_name=release&style=flat&label=Latest%20Release&color=blue)](https://github.com/SwingTheVine/QSAND-Minecraft/releases)
+[![Total Patches](https://img.shields.io/badge/Total_Patches-363-black?style=flat)]()
 
-| [Quicksand And Numerous Dungeons](https://github.com/SwingTheVine/QSAND-Minecraft?tab=readme-ov-file#quicksand-and-numerous-dungeons) |
+| [QuickSand And Numerous Dungeons (QSAND)](https://github.com/SwingTheVine/QSAND-Minecraft?tab=readme-ov-file#quicksand-and-numerous-dungeons) |
 | --- |
 | &emsp;[How versioning works](https://github.com/SwingTheVine/QSAND-Minecraft?tab=readme-ov-file#how-versioning-works) |
 | &emsp;[Licenses](https://github.com/SwingTheVine/QSAND-Minecraft?tab=readme-ov-file#licenses) |
@@ -14,9 +17,11 @@
 
 ## How versioning works
 The versioning system for this mod follows the [Semantic Versioning rules](https://semver.org/). As such, it is formatted in an `X.Y.Z` format where:
-* X is the major version. This is incremented when a non-backward compatible update is pushed.
-* Y is the minor version. This is incremented whenever I push to GitHub.
-* Z is the patch version. This is incremented whenever I launch Minecraft to test a patch.
+* X is the major version. This is incremented when a non-backward compatible update is pushed. This is for new features.
+* Y is the minor version. This is incremented whenever I push to GitHub. This is for stable bug-fixes.
+* Z is the patch version. This is incremented whenever I launch Minecraft to test a patch. This is for unstable bug-fixes/features.
+
+The versioning system for names and releases of versions of this mod are formatted in an `A.B.C-X.Y.Z` format where `A.B.C` is the Minecraft version.
 
 ## Licenses
 ### Overview
