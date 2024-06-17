@@ -19,7 +19,7 @@ public class ModInfo {
 	public static final String description = "This mod adds a large variety of unique quicksands and custom structures to the game.";
 	
 	// Updates all mentions of the current version throughout the rest of the project using an Ant
-	public static final String version = "0.67.0";
+	public static final String version = "0.68.0";
 	public static final String totalPatches = "363";
 	
 	public static final String url = "";
