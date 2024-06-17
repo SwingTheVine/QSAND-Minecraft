@@ -1,4 +1,16 @@
 # Quicksand And Numerous Dungeons
+[![Software License: GPL-3.0](https://img.shields.io/badge/Software_License-GPL--3.0-brightgreen?style=flat)](https://github.com/SwingTheVine/QSAND-Minecraft/blob/master/LICENSE.txt)
+[![Media License: CC-BY-SA-4.0](https://img.shields.io/badge/Media_License-CC--BY--SA--4.0-orange?style=flat)](https://github.com/SwingTheVine/QSAND-Minecraft/blob/master/LICENSE-MEDIA.txt)
+
+| [Quicksand And Numerous Dungeons](https://github.com/SwingTheVine/QSAND-Minecraft?tab=readme-ov-file#quicksand-and-numerous-dungeons) |
+| --- |
+| &emsp;[How versioning works](https://github.com/SwingTheVine/QSAND-Minecraft?tab=readme-ov-file#how-versioning-works) |
+| &emsp;[Licenses](https://github.com/SwingTheVine/QSAND-Minecraft?tab=readme-ov-file#licenses) |
+| &emsp;&emsp;[Overview](https://github.com/SwingTheVine/QSAND-Minecraft?tab=readme-ov-file#overview) |
+| &emsp;&emsp;[Some Examples](https://github.com/SwingTheVine/QSAND-Minecraft?tab=readme-ov-file#some-examples) |
+| &emsp;&emsp;[FAQ](https://github.com/SwingTheVine/QSAND-Minecraft?tab=readme-ov-file#faq) |
+| &emsp;[Gradle Issue](https://github.com/SwingTheVine/QSAND-Minecraft?tab=readme-ov-file#gradle-issue) |
+| &emsp;[Resources](https://github.com/SwingTheVine/QSAND-Minecraft?tab=readme-ov-file#resources) |
 
 ## How versioning works
 The versioning system for this mod follows the [Semantic Versioning rules](https://semver.org/). As such, it is formatted in an `X.Y.Z` format where:
@@ -6,21 +18,18 @@ The versioning system for this mod follows the [Semantic Versioning rules](https
 * Y is the minor version. This is incremented whenever I push to GitHub.
 * Z is the patch version. This is incremented whenever I launch Minecraft to test a patch.
 
-## Gradle Issue
-If you encounter gradle issues with cached libraries missing, take a look at the [Repair Gradle Instructions](https://github.com/SwingTheVine/QSAND-Minecraft/blob/master/RepairGradleInstructions.txt).
-
 ## Licenses
 ### Overview
 (Below, mentions of this "Project" is referring to this Minecraft mod)
 Most of this Project is licensed under the `GNU General Public License v3.0` (GNU GPLv3.0). All software, code, models, and libraries in this repository are licensed under the GNU GPLv3.0 license. However all media (images, videos, and sounds) in this Project is licensed under the `Creative Commons Attribution Share Alike 4.0 International` (CC-BY-SA-4.0) license. Trademarks of this Project can be used without permission from the author(s) of this Project except for when using the trademark would imply that you are connected with, or sponsored, endorsed, or granted official status by, the author(s) of this Project.
 
 Basically, you can use this Project as long as:
-* You **don't** re-upload an unmodified version of this Project.
-* You **don't** claim to be this Project or it's author(s).
-* You **don't** violate the licenses.
 * You **do** disclose that your source was this Project (and provide a reference to the Project).
 * You **do** use the same license when modifying this Project.
 * You **do** document the changes made when modifying this Project.
+* You **don't** re-upload an unmodified version of this Project.
+* You **don't** claim to be this Project or it's author(s).
+* You **don't** violate the licenses.
 
 Some common edge cases are outlined below.
 
@@ -28,45 +37,73 @@ Some common edge cases are outlined below.
 The Project (or any parts of the Project) can be used in this non-exhaustive list of scenarios. All mentions of "trademarks" refer to media that is used to identify the Project. All mentions of "media" in this list below include trademarks being used in a way that does not imply that you are connected with, or sponsored, endorsed, or granted official status by, the author(s) of this Project. **This list is merely an example. If there are conflicts between this list and the licenses, the licenses should be followed.**
 
 #### As A User Or Content Creator:
-* **Permitted:** You include this Project in a **modpack**. You **include a reference** to this Project.
-* **Permitted:** You use this **Project** to **display/showcase** this Project.
-* **Permitted:** You use **media** from this Project to **display/showcase** this Project. You **include the license** to the media (CC-BY-SA-4.0).
-* **Permitted:** You **distribute unmodified** copies of this Project. You **include a reference** to this Project.
-* **Permitted:** You gain a **monetary** benefit **without** violating the Project's licenses.
+<details>
+  <summary><b>Permitted <sub>Click to expand</sub></b></summary>
+  <ui>
+    <li><b>Permitted:</b> You include this Project in a <b>modpack</b>. You <b>include a reference</b> to this Project.</li>
+    <li><b>Permitted:</b> You use this <b>Project</b> to <b>display/showcase</b> this Project.</li>
+    <li><b>Permitted:</b> You use <b>media</b> from this Project to <b>display/showcase</b> this Project. You <b>include the license</b> to the media (CC-BY-SA-4.0).</li>
+    <li><b>Permitted:</b> You <b>distribute unmodified</b> copies of this Project. You <b>include a reference</b> to this Project.</li>
+    <li><b>Permitted:</b> You gain a <b>monetary</b> benefit <b>without</b> violating the Project's licenses.</li>
+  </ui>
+</details>
 
-* **Forbidden:** You include this Project in a **modpack**. You **don't add a reference** to this Project. (You must reference this Project as a source)
-* **Forbidden:** You use **media** from this Project to **display/showcase** this Project. You **don't add the license** to the media (CC-BY-SA-4.0). (A license for the media must be included somewhere)
-* **Forbidden:** You **distribute unmodified** copies of this Project. You **don't add a reference** to this Project. (You must reference this Project as a source)
-* **Forbidden:** You **upload** an **unmodified** version of this Project to a **Minecraft related website**, archive, etc. **Faithful recreations** (unmodified, updated versions) of the Project that run on a version of Minecraft the Project does not support at the time of the upload are **permitted**. (You are not permitted to use the trademarks of this Project in this manner unless it is a faithful recreation that runs on a version of Minecraft the Project does not support at the time of the upload)
+<details>
+  <summary><b>Forbidden <sub>Click to expand</sub></b></summary>
+  <ui>
+    <li><b>Forbidden:</b> You include this Project in a <b>modpack</b>. You <b>don't add a reference</b> to this Project. (You must reference this Project as a source)</li>
+    <li><b>Forbidden:</b> You use <b>media</b> from this Project to <b>display/showcase</b> this Project. You <b>don't add the license</b> to the media (CC-BY-SA-4.0). (A license for the media must be included somewhere)</li>
+    <li><b>Forbidden:</b> You <b>distribute unmodified</b> copies of this Project. You <b>don't add a reference</b> to this Project. (You must reference this Project as a source)</li>
+    <li><b>Forbidden:</b> You <b>upload</b> an <b>unmodified</b> version of this Project to a <b>Minecraft-related website</b>, archive, etc. <b>Faithful recreations</b> (unmodified, updated versions) of the Project that run on a version of Minecraft the Project does not support at the time of the upload are <b>permitted</b>. (You are not permitted to use the trademarks of this Project in this manner unless it is a faithful recreation that runs on a version of Minecraft the Project does not support at the time of the upload)</li>
+  </ui>
+</details>
 
-#### As a developer:
-* **Permitted:** You gain a **monetary** benefit **without** violating the Project's licenses.
-* **Permitted:** You create your own **open-source mod** and include parts of this Project in your mod. You license the **entire** mod under the **GNU GPLv3.0** (or a later version of this) license.
-* **Permitted:** You create your own **open-source mod** and include parts of this Project in your mod. You license the **parts of this Project** under the **GNU GPLv3.0** (or a later version of this) license. You license the **rest of the mod** under a **different** license.
-* **Permitted:** You create your own **closed-source mod** and include parts of this Project in your mod. You license the **entire** mod under the **GNU GPLv3.0** (or a later version of this) license.
-* **Permitted:** You create a **open-source derivative** (modified version) of this Project, extending the Project's functionality whilst *including the entire Project* inside your derivative. You **include a reference** to this Project. You license the **entire** derivative under the **GNU GPLv3.0** (or a later version of this) license.
-* **Permitted:** You create a **open-source derivative** (modified version) of this Project, extending the Project's functionality whilst *including the entire Project* inside your derivative. You **include a reference** to this Project. You license the **parts of this Project** under the **GNU GPLv3.0** (or a later version of this) license. You license the **rest of the derivative** under a **different** license.
-* **Permitted:** You create a **closed-source derivative** (modified version) of this Project, extending the Project's functionality whilst *including the entire Project* inside your derivative. You **include a reference** to this Project. You license the **entire** derivative under the **GNU GPLv3.0** (or a later version of this) license.
-* **Permitted:** You create a **faithful recreation** (unmodified, updated version) of this Project. The faithful recreation is **open-source**. The faithful recreation **supports a version of Minecraft** the **Project does not support**. You **include a reference** to this Project. You license the **entire** derivative under the **GNU GPLv3.0** (or a later version of this) license.
-* **Permitted:** You create a **faithful recreation** (unmodified, updated version) of this Project. The faithful recreation is **closed-source**. The faithful recreation **supports a version of Minecraft** the **Project does not support**. You **include a reference** to this Project. You license the **entire** derivative under the **GNU GPLv3.0** (or a later version of this) license.
+#### As A Developer:
+<details>
+  <summary><b>Permitted <sub>Click to expand</sub></b></summary>
+  <ui>
+    <li><b>Permitted:</b> You gain a <b>monetary</b> benefit <b>without</b> violating the Project's licenses.</li>
+    <li><b>Permitted:</b> You create your own <b>open-source mod</b> and include parts of this Project in your mod. You license the <b>entire</b> mod under the <b>GNU GPLv3.0</b> (or a later version of this) license.</li>
+    <li><b>Permitted:</b> You create your own <b>open-source mod</b> and include parts of this Project in your mod. You license the <b>parts of this Project</b> under the <b>GNU GPLv3.0</b> (or a later version of this) license. You license the <b>rest of the mod</b> under a <b>different</b> license.</li>
+    <li><b>Permitted:</b> You create your own <b>closed-source mod</b> and include parts of this Project in your mod. You license the <b>entire</b> mod under the <b>GNU GPLv3.0</b> (or a later version of this) license.</li>
+    <li><b>Permitted:</b> You create a <b>open-source derivative</b> (modified version) of this Project, extending the Project's functionality whilst <i>including the entire Project</i> inside your derivative. You <b>include a reference</b> to this Project. You license the <b>entire</b> derivative under the <b>GNU GPLv3.0</b> (or a later version of this) license.</li>
+    <li><b>Permitted:</b> You create a <b>open-source derivative</b> (modified version) of this Project, extending the Project's functionality whilst <i>including the entire Project</i> inside your derivative. You <b>include a reference</b> to this Project. You license the <b>parts of this Project</b> under the <b>GNU GPLv3.0</b> (or a later version of this) license. You license the <b>rest of the derivative</b> under a <b>different</b> license.</li>
+    <li><b>Permitted:</b> You create a <b>closed-source derivative</b> (modified version) of this Project, extending the Project's functionality whilst <i>including the entire Project</i> inside your derivative. You <b>include a reference</b> to this Project. You license the <b>entire</b> derivative under the <b>GNU GPLv3.0</b> (or a later version of this) license.</li>
+    <li><b>Permitted:</b> You create a <b>faithful recreation</b> (unmodified, updated version) of this Project. The faithful recreation is <b>open-source</b>. The faithful recreation <b>supports a version of Minecraft</b> the <b>Project does not support</b>. You <b>include a reference</b> to this Project. You license the <b>entire</b> derivative under the <b>GNU GPLv3.0</b> (or a later version of this) license.</li>
+    <li><b>Permitted:</b> You create a <b>faithful recreation</b> (unmodified, updated version) of this Project. The faithful recreation is <b>closed-source</b>. The faithful recreation <b>supports a version of Minecraft</b> the <b>Project does not support</b>. You <b>include a reference</b> to this Project. You license the <b>entire</b> derivative under the <b>GNU GPLv3.0</b> (or a later version of this) license.</li>
+  </ui>
+</details>
 
-* **Forbidden:** You create your own **open-source mod** and include parts of this Project in your mod. You license the **entire** mod under a **different** license. (The unpackaged parts of the Project must be licensed under the GNU GPLv3.0 license or a later version of this license)
-* **Forbidden:** You create your own **closed-source mod** and include parts of this Project in your mod. You license the **entire** mod under the **different** license. (Since the mod is packaged, you can't license only the parts of the Project. The entire packaged mod must be licensed under the GNU GPLv3.0 license or a later version of this license)
-* **Forbidden:** You create a **open-source derivative** (modified version) of this Project, extending the Project's functionality whilst *including the entire Project* inside your derivative. You **don't add a reference** to this Project. You license the **entire** derivative under a **different** license. (You must reference this Project as a source. The unpackaged Project in your derivative must be licensed under the GNU GPLv3.0 license or a later version of this license)
-* **Forbidden:** You create a **closed-source derivative** (modified version) of this Project, extending the Project's functionality whilst *including the entire Project* inside your derivative. You **don't add a reference** to this Project. You license the **entire** derivative under a **different** license. (You must reference this Project as a source. Since the derivative is packaged, you can't license only the Project. The entire packaged derivative must be licensed under the GNU GPLv3.0 license or a later version of this license)
-* **Forbidden:** You create a **faithful recreation** (unmodified, updated version) of this Project. The faithful recreation is **open-source**. The faithful recreation **supports a version of Minecraft** the **Project does not support**. You **don't add a reference** to this Project. You license the **entire** derivative under a **different** license. (You must reference this Project as a source. Since the faithful recreation is a copy of the Project, you can not change the license. The entire faithful recreation must be licensed under the GNU GPLv3.0 license or a later version of this license)
-* **Forbidden:** You create a **faithful recreation** (unmodified, updated version) of this Project. The faithful recreation is **closed-source**. The faithful recreation **supports a version of Minecraft** the **Project does not support**. You **don't add a reference** to this Project. You license the **entire** derivative under a **different** license. (You must reference this Project as a source. Since the faithful recreation is a copy of the Project, you can not change the license. The entire faithful recreation must be licensed under the GNU GPLv3.0 license or a later version of this license)
-* **Forbidden:** You **upload** an **unmodified** version of this Project to a **Minecraft related website**, archive, etc. **Faithful recreations** (unmodified, updated versions) of the Project that run on a version of Minecraft the Project does not support at the time of the upload are **permitted**. (You are not permitted to use the trademarks of this Project in this manner unless it is a faithful recreation that runs on a version of Minecraft the Project does not support at the time of the upload)
+<details>
+  <summary><b>Forbidden <sub>Click to expand</sub></b></summary>
+  <ui>
+    <li><b>Forbidden:</b> You create your own <b>open-source mod</b> and include parts of this Project in your mod. You license the <b>entire</b> mod under a <b>different</b> license. (The unpackaged parts of the Project must be licensed under the GNU GPLv3.0 license or a later version of this license)</li>
+    <li><b>Forbidden:</b> You create your own <b>closed-source mod</b> and include parts of this Project in your mod. You license the <b>entire</b> mod under the <b>different</b> license. (Since the mod is packaged, you can't license only the parts of the Project. The entire packaged mod must be licensed under the GNU GPLv3.0 license or a later version of this license)</li>
+    <li><b>Forbidden:</b> You create an <b>open-source derivative</b> (modified version) of this Project, extending the Project's functionality whilst <i>including the entire Project</i> inside your derivative. You <b>don't add a reference</b> to this Project. You license the <b>entire</b> derivative under a <b>different</b> license. (You must reference this Project as a source. The unpackaged Project in your derivative must be licensed under the GNU GPLv3.0 license or a later version of this license)</li>
+    <li><b>Forbidden:</b> You create a <b>closed-source derivative</b> (modified version) of this Project, extending the Project's functionality whilst <i>including the entire Project</i> inside your derivative. You <b>don't add a reference</b> to this Project. You license the <b>entire</b> derivative under a <b>different</b> license. (You must reference this Project as a source. Since the derivative is packaged, you can't license only the Project. The entire packaged derivative must be licensed under the GNU GPLv3.0 license or a later version of this license)</li>
+    <li><b>Forbidden:</b> You create a <b>faithful recreation</b> (unmodified, updated version) of this Project. The faithful recreation is <b>open-source</b>. The faithful recreation <b>supports a version of Minecraft</b> the <b>Project does not support</b>. You <b>don't add a reference</b> to this Project. You license the <b>entire</b> derivative under a <b>different</b> license. (You must reference this Project as a source. Since the faithful recreation is a copy of the Project, you can not change the license. The entire faithful recreation must be licensed under the GNU GPLv3.0 license or a later version of this license)</li>
+    <li><b>Forbidden:</b> You create a <b>faithful recreation</b> (unmodified, updated version) of this Project. The faithful recreation is <b>closed-source</b>. The faithful recreation <b>supports a version of Minecraft</b> the <b>Project does not support</b>. You <b>don't add a reference</b> to this Project. You license the <b>entire</b> derivative under a <b>different</b> license. (You must reference this Project as a source. Since the faithful recreation is a copy of the Project, you can not change the license. The entire faithful recreation must be licensed under the GNU GPLv3.0 license or a later version of this license)</li>
+    <li><b>Forbidden:</b> You <b>upload</b> an <b>unmodified</b> version of this Project to a <b>Minecraft related website</b>, archive, etc. <b>Faithful recreations</b> (unmodified, updated versions) of the Project that run on a version of Minecraft the Project does not support at the time of the upload are <b>permitted</b>. (You are not permitted to use the trademarks of this Project in this manner unless it is a faithful recreation that runs on a version of Minecraft the Project does not support at the time of the upload)</li>
+  </ui>
+</details>
 
 ### FAQ
-#### Don't you have to use the same license as the Forge MDK?
-Nope! The Forge MDK is a software library licensed under the `GNU Lesser General Public License v2.1` (GNU LGPLv2.1). According to (section 2a of) that license, a work (Minecraft mod) based on the software library (Forge MDK) must be a software library itself in order for the license to carry over. Since this Project is not a software library, I can use a different license.
+<details>
+  <summary><b>Don't you have to use the same license as the Forge MDK? <sub>Click to expand</sub></b></summary>
+  Nope! The Forge MDK is a software library licensed under the <code>GNU Lesser General Public License v2.1</code> (GNU LGPLv2.1). According to (section 2a of) that license, a work (Minecraft mod) based on the software library (Forge MDK) must be a software library itself in order for the license to carry over. Since this Project is not a software library, I can use a different license.
+</details> 
+<details>
+  <summary><b>Why does the Project have two different licenses? <sub>Click to expand</sub></b></summary>
+  There are multiple reasons.
+  <ui>
+    <li>First, I wanted developers looking to make their own mods to have a way to use this Project's media assets. We are programmers, not artists. Being able to reuse assets dramatically speeds up the process of creating a mod. The media assets may be of higher quality than what the developer can obtain. In this case, reusing the media assets would increase the quality of the mod and user experience.</li>
+    <li>Second, I wanted content creators to be able to use the media assets to showcase the Project. Content creators usually run a risk of getting a DMCA violation for using a mod's media assets. Having a different license that allows them to use media assets eliminates that risk.</li>
+    <li>Third, the media license explicitly states that trademark rights are not granted by the license (Section 2b2). This allows me to send DMCA violations to mods impersonating the Project whilst <i>simultaneously</i> allowing content creators and developers to use the Project's trademarks in a way that does not impersonate the Project. In addition, if development of the Project is permanently halted, it allows developers to use the media assets to make a faithful recreation of the Project and continue updating it to new versions of Minecraft.</li>
+  </ui>
+</details>
 
-#### Why does the media have two different licenses?
-There are multiple reasons.
-* First, I wanted developers looking to make their own mods to have a way to use this Project's media assets. We are programmers, not artists. Being able to reuse assets dramatically speeds up the process of creating a mod. The media assets may be of higher quality than what the developer can obtain. In this case, reusing the media assets would increase the quality of the mod and user experience.
-* Second, I wanted content creators to be able to use the media assets to showcase the Project. Content creators usually run a risk of getting a DMCA violation for using a mod's media assets. Having a different license that allows them to use media assets eliminates that risk.
-* Third, the media license explicitly states that trademark rights are not granted by the license (Section 2b2). This allows me to send DMCA violations to mods impersonating the Project whilst *simultaneously* allowing content creators and developers to use the Project's trademarks in a way that does not impersonate the Project. In addition, if development of the Project is permanently halted, it allows developers to use the media assets to make a faithful recreation of the Project and continue updating it to new versions of Minecraft.
+## Gradle Issue
+If you encounter gradle issues with cached libraries missing, take a look at the [Repair Gradle Instructions](https://github.com/SwingTheVine/QSAND-Minecraft/blob/master/RepairGradleInstructions.txt).
 
 ## Resources
 An exhaustive list of references I used to make this mod. If you are looking to develop a 1.8.9 mod, this list will come in handy. A "⭐" icon means it is an exceptionally good resource.
