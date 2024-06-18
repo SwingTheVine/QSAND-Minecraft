@@ -1,11 +1,12 @@
 # QuickSand And Numerous Dungeons (QSAND)
-[![Software License: GPL-3.0](https://img.shields.io/badge/Software_License-GPL--3.0-brightgreen?style=flat)](https://github.com/SwingTheVine/QSAND-Minecraft/blob/master/LICENSE.txt)
-[![Media License: CC-BY-SA-4.0](https://img.shields.io/badge/Media_License-CC--BY--SA--4.0-orange?style=flat)](https://github.com/SwingTheVine/QSAND-Minecraft/blob/master/LICENSE-MEDIA.txt)
 [![Latest Version](https://img.shields.io/badge/Latest_Version-1.8.9--0.70.0-lightblue?style=flat)]()
 [![Latest Release](https://img.shields.io/github/v/release/SwingTheVine/QSAND-Minecraft?sort=date&filter=1.8.9-*&display_name=release&style=flat&label=Latest%20Release&color=blue)](https://github.com/SwingTheVine/QSAND-Minecraft/releases)
+[![Software License: GPL-3.0](https://img.shields.io/badge/Software_License-GPL--3.0-brightgreen?style=flat)](https://github.com/SwingTheVine/QSAND-Minecraft/blob/master/LICENSE.txt)
+[![Media License: CC-BY-SA-4.0](https://img.shields.io/badge/Media_License-CC--BY--SA--4.0-orange?style=flat)](https://github.com/SwingTheVine/QSAND-Minecraft/blob/master/LICENSE-MEDIA.txt)
 
+[![Contact Me](https://img.shields.io/badge/Contact_Me-gray?style=flat&logo=Discord&logoColor=white&logoSize=auto&labelColor=cornflowerblue)](https://discordapp.com/users/394185816370315276)
 [![Total Patches](https://img.shields.io/badge/Total_Patches-363-black?style=flat)]()
-[![Total Lines of Code](https://tokei.rs/b1/github/SwingTheVine/QSAND-Minecraft)]()
+[![Total Lines of Code](https://tokei.rs/b1/github/SwingTheVine/QSAND-Minecraft?category=code)]()
 [![Total Comments](https://tokei.rs/b1/github/SwingTheVine/QSAND-Minecraft?category=comments)]()
 [![Version Incrementer](https://github.com/SwingTheVine/QSAND-Minecraft/actions/workflows/version-incrementer.yml/badge.svg)]()
 
@@ -18,6 +19,8 @@
 | &emsp;&emsp;[FAQ](#faq) |
 | &emsp;[Gradle Issue](#gradle-issue) |
 | &emsp;[Resources](#resources) |
+
+[![Join The Discord](https://discord.com/api/guilds/796124137042608188/widget.png?style=banner4)](https://discord.gg/tpeBPy46hf)
 
 ## How versioning works
 The versioning system for this mod follows the [Semantic Versioning rules](https://semver.org/). As such, it is formatted in an `X.Y.Z` format where:

@@ -1,0 +1,50 @@
+name: Feature Request
+description: Have an idea you want added? Suggest it here!
+title: "[FEATURE] "
+labels: ["enhancement"]
+assignees: 
+  - SwingTheVine
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### Please don't ask for the mod to be updated to a later version of Minecraft
+        Thank you for taking the time to fill out this template!
+  - type: textarea
+    id: related-problem
+    attributes:
+      label: Is your feature request related to a problem? Please describe.
+      description: "Describe what the problem is."
+      placeholder: |
+      "E.g. The slimes are too difficult."
+      "E.g. I want more ways to escape quicksand."
+    validations:
+      required: false
+  - type: textarea
+    id: feature-solution
+    attributes:
+      label: Describe the solution you'd like
+      description: "Describe what you want to happen."
+      placeholder: |
+      "E.g. Make the slimes less difficult to fight."
+      "E.g. Add a grappling hook."
+    validations:
+      required: true
+  - type: textarea
+    id: feature-alternatives
+    attributes:
+      label: Describe alternatives you've considered
+      description: "Describe any alternative solutions or features you've considered."
+      placeholder: |
+      "E.g. Instead of making the slimes less difficult to fight, you could make them slower."
+      "E.g. Instead of adding a grappling hook, you could add a rope."
+    validations:
+      required: false
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: Add any other context or screenshots about the feature request here. If your feature is based on "something," please add any links relative to that "something" here.
+      placeholder: |
+      "E.g. An Imgur link to a drawing you made of your idea"
+      "E.g. A link to a Wikipedia page on grappling hooks"

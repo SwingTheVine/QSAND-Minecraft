@@ -1,0 +1,109 @@
+name: Bug Report
+description: Found a bug? Report it here!
+title: "[BUG] "
+labels: ["bug"]
+assignees: 
+  - SwingTheVine
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to fill out this template!
+        **The more information you can provide, the easier it will be to identify and squash the bug.**
+        If you want to read a guide on filing bug reports effectively, you can [find it here](https://www.chiark.greenend.org.uk/~sgtatham/bugs.html).
+  - type: checkboxes
+    id: checked-bugs
+    attributes:
+      label: Have you checked to see if this issue has already been reported?
+      options:
+        - label: This bug has not been previously reported.
+          - required: true
+    validations:
+      required: true
+  - type: textarea
+    id: describe-bug
+    attributes:
+      label: Describe The Bug
+      description: "Describe what the bug causes to happen."
+      placeholder: "E.g. When entering a bog block, the game crashes."
+    validations:
+      required: true
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior
+      description: "Describe what you expected to happen or why you think the current behavior is wrong."
+      placeholder: |
+        "E.g. When I enter a bog block, I expect the game not to crash."
+        "E.g. The game is not supposed to crash."
+    validations:
+      required: false
+  - type: textarea
+    id: things-tried
+    attributes:
+      label: Things You Tried
+      description: "Describe all of the things you tried."
+      placeholder: "E.g. I tried entering the bog block from different sides, but the game crashes no matter what side you enter from."
+    validations:
+      required: false
+  - type: textarea
+    id: reproduce-bug
+    attributes:
+      label: Reproduce The Bug
+      description: "What steps do you take to reproduce the bug?"
+      placeholder: |
+        "E.g."
+        "1. Make a superflat world."
+        "2. Find a biome bog spawns in."
+        "3. Enter the bog."
+        "4. The game should crash."
+    validations:
+      required: false
+  - type: textarea
+    id: error-message
+    attributes:
+      label: Error Message
+      description: "If applicable, add any error messages you get."
+      placeholder: "E.g. Error spawning Drowning Bubble. Could not retrieve block metadata (currently: null)"
+    validations:
+      required: false
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: "If applicable, add screenshots to help explain your problem."
+      placeholder: "E.g. An Imgur link"
+    validations:
+      required: false
+  - type: textarea
+    id: log-file
+    attributes:
+      label: Log File
+      description: "If applicable, add your log file for the game instance where the bug appeared."
+      placeholder: "E.g. A link to a Google Drive file, a Pastebin link, etc."
+    validations:
+      required: false
+  - type: textarea
+    id: system-information
+    attributes:
+      label: System Information
+      description: "Please fill out these details about your OS, Minecraft version, and mod version."
+      placeholder: |
+        "OS: (E.g. Windows)"
+        "Minecraft Version: 1.8.9"
+        "Mod Version: 12.4.18"
+      value: |
+        "OS: "
+        "Minecraft Version: "
+        "Mod Version: "
+    validations:
+      required: true
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Information
+      description: "Add any other context about the problem here."
+      placeholder: "E.g. This bug has been happening since 12.1.0"
+    validations:
+      required: false
+      
