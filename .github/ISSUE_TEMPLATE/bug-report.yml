@@ -33,8 +33,8 @@ body:
       label: Expected Behavior
       description: "Describe what you expected to happen or why you think the current behavior is wrong."
       placeholder: |
-        "E.g. When I enter a bog block, I expect the game not to crash."
-        "E.g. The game is not supposed to crash."
+        E.g. When I enter a bog block, I expect the game not to crash.
+        E.g. The game is not supposed to crash.
     validations:
       required: false
   - type: textarea
@@ -51,11 +51,11 @@ body:
       label: Reproduce The Bug
       description: "What steps do you take to reproduce the bug?"
       placeholder: |
-        "E.g."
-        "1. Make a superflat world."
-        "2. Find a biome bog spawns in."
-        "3. Enter the bog."
-        "4. The game should crash."
+        E.g.
+        1. Make a superflat world.
+        2. Find a biome bog spawns in.
+        3. Enter the bog.
+        4. The game should crash.
     validations:
       required: false
   - type: textarea
@@ -88,13 +88,14 @@ body:
       label: System Information
       description: "Please fill out these details about your OS, Minecraft version, and mod version."
       placeholder: |
-        "OS: (E.g. Windows)"
-        "Minecraft Version: 1.8.9"
-        "Mod Version: 12.4.18"
+        OS: (E.g. Windows)
+        Minecraft Version: 1.8.9
+        Mod Version: 12.4.18
+        You found an easter egg :3
       value: |
-        "OS: "
-        "Minecraft Version: "
-        "Mod Version: "
+        OS: 
+        Minecraft Version: 
+        Mod Version: 
     validations:
       required: true
   - type: textarea
