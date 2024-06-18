@@ -17,7 +17,6 @@ body:
       label: Have you checked to see if this issue has already been reported?
       options:
         - label: This bug has not been previously reported.
-          - required: true
     validations:
       required: true
   - type: textarea
