@@ -1,5 +1,5 @@
 # QuickSand And Numerous Dungeons (QSAND)
-[![Latest Version](https://img.shields.io/badge/Latest_Version-1.8.9--0.71.0-lightblue?style=flat)]()
+[![Latest Version](https://img.shields.io/badge/Latest_Version-1.8.9--0.72.0-lightblue?style=flat)]()
 [![Latest Release](https://img.shields.io/github/v/release/SwingTheVine/QSAND-Minecraft?sort=date&filter=1.8.9-*&display_name=release&style=flat&label=Latest%20Release&color=blue)](https://github.com/SwingTheVine/QSAND-Minecraft/releases)
 [![Software License: GPL-3.0](https://img.shields.io/badge/Software_License-GPL--3.0-brightgreen?style=flat)](https://github.com/SwingTheVine/QSAND-Minecraft/blob/master/LICENSE.txt)
 [![Media License: CC-BY-SA-4.0](https://img.shields.io/badge/Media_License-CC--BY--SA--4.0-orange?style=flat)](https://github.com/SwingTheVine/QSAND-Minecraft/blob/master/LICENSE-MEDIA.txt)
