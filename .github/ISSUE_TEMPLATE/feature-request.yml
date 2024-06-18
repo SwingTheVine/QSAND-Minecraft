@@ -16,8 +16,8 @@ body:
       label: Is your feature request related to a problem? Please describe.
       description: "Describe what the problem is."
       placeholder: |
-      "E.g. The slimes are too difficult."
-      "E.g. I want more ways to escape quicksand."
+        "E.g. The slimes are too difficult."
+        "E.g. I want more ways to escape quicksand."
     validations:
       required: false
   - type: textarea
@@ -26,8 +26,8 @@ body:
       label: Describe the solution you'd like
       description: "Describe what you want to happen."
       placeholder: |
-      "E.g. Make the slimes less difficult to fight."
-      "E.g. Add a grappling hook."
+        "E.g. Make the slimes less difficult to fight."
+        "E.g. Add a grappling hook."
     validations:
       required: true
   - type: textarea
@@ -36,8 +36,8 @@ body:
       label: Describe alternatives you've considered
       description: "Describe any alternative solutions or features you've considered."
       placeholder: |
-      "E.g. Instead of making the slimes less difficult to fight, you could make them slower."
-      "E.g. Instead of adding a grappling hook, you could add a rope."
+        "E.g. Instead of making the slimes less difficult to fight, you could make them slower."
+        "E.g. Instead of adding a grappling hook, you could add a rope."
     validations:
       required: false
   - type: textarea
@@ -46,5 +46,5 @@ body:
       label: Additional context
       description: Add any other context or screenshots about the feature request here. If your feature is based on "something," please add any links relative to that "something" here.
       placeholder: |
-      "E.g. An Imgur link to a drawing you made of your idea"
-      "E.g. A link to a Wikipedia page on grappling hooks"
+        "E.g. An Imgur link to a drawing you made of your idea"
+        "E.g. A link to a Wikipedia page on grappling hooks"
