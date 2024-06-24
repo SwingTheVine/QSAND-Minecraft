@@ -132,8 +132,8 @@
 	                var fileContent = project.getProperty("fileContentREADME"); // Gets the content of the Ant's target file
 	                var lines = fileContent.split("\n"); // All file content is in a string. This splits the string into multiple lines (a multi-line string if you will) at the delimiter of a new line character
 	                var newContent = []; // Will store each line as it comes across them (and potentially modifies them)
-	                var versionPattern = /\[!\[Latest Version\]\(https:\/\/img\.shields\.io\/badge\/Latest_Version-(\d+)\.(\d+)\.(\d+)--(\d+)\.(\d+)\.(\d+)-lightblue\?style=flat\)\]\(\)/; // A RegEx to match the three numbers in the version
-	                var versionPatternPatch = /\[!\[Total Patches\]\(https:\/\/img\.shields\.io\/badge\/Total_Patches-(\d+)-black\?style=flat\)\]\(\)/;
+	                var versionPattern = /Latest_Version-(\d+)\.(\d+)\.(\d+)--(\d+)\.(\d+)\.(\d+)-lightblue/; // A RegEx to match the three numbers in the version
+	                var versionPatternPatch = /Total_Patches-(\d+)-black/;
 	            	
 	                // For every line...
 	                for (var i = 0; i < lines.length; i++) {
@@ -145,10 +145,10 @@
 	                    if (match) {
 	                        var newVersion = parseInt(match[1]) + '.' + parseInt(match[2]) + '.' + parseInt(match[3]) + '--' + majorRead + '.' + minorRead + '.' + patchRead; // Reforms the version string with the new version number
 	                        
-	                        newContent.push('[![Latest Version](https://img.shields.io/badge/Latest_Version-' + newVersion + '-lightblue?style=flat)]()'); // Reforms the entire line using the new version string
+	                        newContent.push('<a href=\"\" target=\"_blank\"><img alt=\"Latest Version\" src=\"https://img.shields.io/badge/Latest_Version-' + newVersion + '-lightblue?style=flat\"></a>'); // Reforms the entire line using the new version string
 	                    // If the total patched RegEx matches...
 	            	    } else if (matchPatch) {
-	            	      newContent.push('[![Total Patches](https://img.shields.io/badge/Total_Patches-' + patchReadPatch + '-black?style=flat)]()');
+	            	      newContent.push('<a href=\"\" target=\"_blank\"><img alt=\"Total Patches\" src=\"https://img.shields.io/badge/Total_Patches-' + patchReadPatch + '-black?style=flat"></a>');
 	            	    } else {
 	                        newContent.push(currentLine); // This line is not the version. Add it to the new file without modifying
 	                    }

@@ -1,55 +1,83 @@
-# QuickSand And Numerous Dungeons (QSAND)
-[![Latest Version](https://img.shields.io/badge/Latest_Version-1.8.9--0.74.0-lightblue?style=flat)]()
-[![Latest Release](https://img.shields.io/github/v/release/SwingTheVine/QSAND-Minecraft?sort=date&filter=1.8.9-*&display_name=release&style=flat&label=Latest%20Release&color=blue)](https://github.com/SwingTheVine/QSAND-Minecraft/releases)
-[![Software License: GPL-3.0](https://img.shields.io/badge/Software_License-GPL--3.0-brightgreen?style=flat)](https://github.com/SwingTheVine/QSAND-Minecraft/blob/master/LICENSE.txt)
-[![Media License: CC-BY-SA-4.0](https://img.shields.io/badge/Media_License-CC--BY--SA--4.0-orange?style=flat)](https://github.com/SwingTheVine/QSAND-Minecraft/blob/master/LICENSE-MEDIA.txt)
+<table>
+  <tr>
+    <td><a href="quicksand-and-numerous-dungeons-qsand">QuickSand And Numerous Dungeons (QSAND)</a></td>
+    <td valign="top" rowspan="99"><a href="https://discord.gg/tpeBPy46hf"><img alt="Discord Banner" src="https://discord.com/api/guilds/796124137042608188/widget.png?style=banner4"></a></td>
+  </tr>
+  <tr>
+    <td>&emsp;<a href="#how-versioning-works">How Versioning Works</a></td>
+  </tr>
+  <tr>
+    <td>&emsp;<a href="#licenses">Licenses</a></td>
+  </tr>
+  <tr>
+    <td>&emsp;<a href="#overview">Overview</a></td>
+  </tr>
+  <tr>
+    <td>&emsp;&emsp;<a href="#overview">Overview</a></td>
+  </tr>
+  <tr>
+    <td>&emsp;&emsp;<a href="#some-examples">Some Examples</a></td>
+  </tr>
+  <tr>
+    <td>&emsp;&emsp;<a href="#faq">FAQ</a></td>
+  </tr>
+  <tr>
+    <td>&emsp;<a href="#gradle-issue">Gradle Issue</a></td>
+  </tr>
+  <tr>
+    <td>&emsp;<a href="#resources">Resources</a></td>
+  </tr>
+</table>
 
-[![Contact Me](https://img.shields.io/badge/Contact_Me-gray?style=flat&logo=Discord&logoColor=white&logoSize=auto&labelColor=cornflowerblue)](https://discordapp.com/users/394185816370315276)
-[![WakaTime](https://img.shields.io/badge/Coding_Time-142hrs_52mins-blue?style=flat&logo=wakatime&logoColor=black&logoSize=auto&labelColor=white)]()
-[![Total Patches](https://img.shields.io/badge/Total_Patches-364-black?style=flat)]()
-[![Total Lines of Code](https://tokei.rs/b1/github/SwingTheVine/QSAND-Minecraft?category=code)]()
-[![Total Comments](https://tokei.rs/b1/github/SwingTheVine/QSAND-Minecraft?category=comments)]()
-[![Version Incrementer](https://github.com/SwingTheVine/QSAND-Minecraft/actions/workflows/version-incrementer.yml/badge.svg)]()
+<h1>QuickSand And Numerous Dungeons (QSAND)</h1>
+<a href="" target="_blank"><img alt="Latest Version" src="https://img.shields.io/badge/Latest_Version-1.8.9--0.74.1-lightblue?style=flat"></a>
+<a href="https://github.com/SwingTheVine/QSAND-Minecraft/releases" target="_blank"><img alt="Latest Release" src="https://img.shields.io/github/v/release/SwingTheVine/QSAND-Minecraft?sort=date&filter=1.8.9-*&display_name=release&style=flat&label=Latest%20Release&color=blue"></a>
+<a href="https://github.com/SwingTheVine/QSAND-Minecraft/blob/master/LICENSE.txt" target="_blank"><img alt="Software License: GPL-3.0" src="https://img.shields.io/badge/Software_License-GPL--3.0-brightgreen?style=flat"></a>
+<a href="https://github.com/SwingTheVine/QSAND-Minecraft/blob/master/LICENSE-MEDIA.txt" target="_blank"><img alt="Media License: CC-BY-SA-4.0" src="https://img.shields.io/badge/Media_License-CC--BY--SA--4.0-orange?style=flat"></a>
+<br>
+<a href="https://discordapp.com/users/394185816370315276" target="_blank"><img alt="Contact Me" src="https://img.shields.io/badge/Contact_Me-gray?style=flat&logo=Discord&logoColor=white&logoSize=auto&labelColor=cornflowerblue"></a>
+<a href="" target="_blank"><img alt="WakaTime" src="https://img.shields.io/badge/Coding_Time-142hrs_52mins-blue?style=flat&logo=wakatime&logoColor=black&logoSize=auto&labelColor=white"></a>
+<a href="" target="_blank"><img alt="Total Patches" src="https://img.shields.io/badge/Total_Patches-365-black?style=flat"></a>
+<a href="" target="_blank"><img alt="Total Lines of Code" src="https://tokei.rs/b1/github/SwingTheVine/QSAND-Minecraft?category=code"></a>
+<a href="" target="_blank"><img alt="Total Comments" src="https://tokei.rs/b1/github/SwingTheVine/QSAND-Minecraft?category=comments"></a>
+<a href="" target="_blank"><img alt="Version Incrementer" src="https://github.com/SwingTheVine/QSAND-Minecraft/actions/workflows/version-incrementer.yml/badge.svg"></a>
 
-| [QuickSand And Numerous Dungeons (QSAND)](#quicksand-and-numerous-dungeons-qsand) |
-| --- |
-| &emsp;[How versioning works](#how-versioning-works) |
-| &emsp;[Licenses](#licenses) |
-| &emsp;&emsp;[Overview](#overview) |
-| &emsp;&emsp;[Some Examples](#some-examples) |
-| &emsp;&emsp;[FAQ](#faq) |
-| &emsp;[Gradle Issue](#gradle-issue) |
-| &emsp;[Resources](#resources) |
+<h2>How Versioning Works</h2>
+<p>
+  The versioning system for this mod follows the <a href="https://semver.org/" target="_blank">Semantic Versioning rules</a>. As such, it is formatted in an <code>X.Y.Z</code> format where:
+  <ul>
+    <li>X is the major version. This is incremented when a non-backward compatible update is pushed. This is for new features.</li>
+    <li>Y is the minor version. This is incremented whenever I push to GitHub. This is for stable bug-fixes.</li>
+    <li>Z is the patch version. This is incremented whenever I launch Minecraft to test a patch. This is for unstable bug-fixes/features.</li>
+  </ul>
+  The versioning system for names and releases of versions of this mod are formatted in an <code>A.B.C-X.Y.Z</code> format where <code>A.B.C</code> is the Minecraft version.
+</p>
 
-[![Join The Discord](https://discord.com/api/guilds/796124137042608188/widget.png?style=banner4)](https://discord.gg/tpeBPy46hf)
+<h2>Licenses</h2>
+<h3>Overview</h3>
+<p>
+  (Below, mentions of this "Project" is referring to this Minecraft mod) <br>
+  Most of this Project is licensed under the <code>GNU General Public License v3.0</code> (GNU GPLv3.0). All software, code, models, and libraries in this repository are licensed under the GNU GPLv3.0 license. However all media (images, videos, and sounds) in this Project is licensed under the <code>Creative Commons Attribution Share Alike 4.0 International</code> (CC-BY-SA-4.0) license. Trademarks of this Project can be used without permission from the author(s) of this Project except for when using the trademark would imply that you are connected with, or sponsored, endorsed, or granted official status by, the author(s) of this Project.
+</p>
+<p>
+  Basically, you can use this Project as long as:
+  <ul>
+    <li>You <b>do</b> disclose that your source was this Project (and provide a reference to the Project).</li>
+    <li>You <b>do</b> use the same license when modifying this Project.</li>
+    <li>You <b>do</b> document the changes made when modifying this Project.</li>
+    <li>You <b>don't</b> re-upload an unmodified version of this Project.</li>
+    <li>You <b>don't</b> claim to be this Project or it's author(s).</li>
+    <li>You <b>don't</b> violate the licenses.</li>
+  </ul>
+  Some common edge cases are outlined below.
+</p>
 
-## How versioning works
-The versioning system for this mod follows the [Semantic Versioning rules](https://semver.org/). As such, it is formatted in an `X.Y.Z` format where:
-* X is the major version. This is incremented when a non-backward compatible update is pushed. This is for new features.
-* Y is the minor version. This is incremented whenever I push to GitHub. This is for stable bug-fixes.
-* Z is the patch version. This is incremented whenever I launch Minecraft to test a patch. This is for unstable bug-fixes/features.
+<h3>Some Examples</h3>
+<p>
+  The Project (or any parts of the Project) can be used in this non-exhaustive list of scenarios. All mentions of "trademarks" refer to media that is used to identify the Project. All mentions of "media" in this list below include trademarks being used in a way that does not imply that you are connected with, or sponsored, endorsed, or granted official status by, the author(s) of this Project. <b>This list is merely an example. If there are conflicts between this list and the licenses, the licenses should be followed.</b>
+</p>
 
-The versioning system for names and releases of versions of this mod are formatted in an `A.B.C-X.Y.Z` format where `A.B.C` is the Minecraft version.
-
-## Licenses
-### Overview
-(Below, mentions of this "Project" is referring to this Minecraft mod)
-Most of this Project is licensed under the `GNU General Public License v3.0` (GNU GPLv3.0). All software, code, models, and libraries in this repository are licensed under the GNU GPLv3.0 license. However all media (images, videos, and sounds) in this Project is licensed under the `Creative Commons Attribution Share Alike 4.0 International` (CC-BY-SA-4.0) license. Trademarks of this Project can be used without permission from the author(s) of this Project except for when using the trademark would imply that you are connected with, or sponsored, endorsed, or granted official status by, the author(s) of this Project.
-
-Basically, you can use this Project as long as:
-* You **do** disclose that your source was this Project (and provide a reference to the Project).
-* You **do** use the same license when modifying this Project.
-* You **do** document the changes made when modifying this Project.
-* You **don't** re-upload an unmodified version of this Project.
-* You **don't** claim to be this Project or it's author(s).
-* You **don't** violate the licenses.
-
-Some common edge cases are outlined below.
-
-### Some Examples
-The Project (or any parts of the Project) can be used in this non-exhaustive list of scenarios. All mentions of "trademarks" refer to media that is used to identify the Project. All mentions of "media" in this list below include trademarks being used in a way that does not imply that you are connected with, or sponsored, endorsed, or granted official status by, the author(s) of this Project. **This list is merely an example. If there are conflicts between this list and the licenses, the licenses should be followed.**
-
-#### As A User Or Content Creator:
+<h4>As A User Or Content Creator:</h4>
 <details>
   <summary><b>Permitted <sub>Click to expand</sub></b></summary>
   <ui>
@@ -71,7 +99,7 @@ The Project (or any parts of the Project) can be used in this non-exhaustive lis
   </ui>
 </details>
 
-#### As A Developer:
+<h4>As A Developer:</h4>
 <details>
   <summary><b>Permitted <sub>Click to expand</sub></b></summary>
   <ui>
@@ -100,7 +128,7 @@ The Project (or any parts of the Project) can be used in this non-exhaustive lis
   </ui>
 </details>
 
-### FAQ
+<h3>FAQ</h3>
 <details>
   <summary><b>Don't you have to use the same license as the Forge MDK? <sub>Click to expand</sub></b></summary>
   Nope! The Forge MDK is a software library licensed under the <code>GNU Lesser General Public License v2.1</code> (GNU LGPLv2.1). According to (section 2a of) that license, a work (Minecraft mod) based on the software library (Forge MDK) must be a software library itself in order for the license to carry over. Since this Project is not a software library, I can use a different license.
@@ -115,26 +143,31 @@ The Project (or any parts of the Project) can be used in this non-exhaustive lis
   </ui>
 </details>
 
-## Gradle Issue
-If you encounter gradle issues with cached libraries missing, take a look at the [Repair Gradle Instructions](https://github.com/SwingTheVine/QSAND-Minecraft/blob/master/RepairGradleInstructions.txt).
+<h2>Gradle Issue</h2>
+<p>
+  If you encounter gradle issues with cached libraries missing, take a look at the <a href="https://github.com/SwingTheVine/QSAND-Minecraft/blob/master/RepairGradleInstructions.txt" target="_blank">Repair Gradle Instructions</a>.
+</p>
 
-## Resources
-An exhaustive list of references I used to make this mod. If you are looking to develop a 1.8.9 mod, this list will come in handy. A "⭐" icon means it is an exceptionally good resource.
-
-* [More Fun Quicksand Mod](https://www.curseforge.com/minecraft/mc-mods/more-fun-quicksand-mod) decompiled and deobfuscated to be used as a base. Not as easy as it sounds...
-* [CJMinecraft's YouTube playlist](https://www.youtube.com/watch?v=gS58vMJM_00&list=PLpKu3PfwdqHQc5F3YnUdBm3rOyfLke3sj&index=13) with an example of custom blocks with metadata
-* [RadMan63's Minecraft Forum thread](https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/modification-development/2451794-need-help-with-blockstates) on blockstates
-* ⭐ [Kevin M's YouTube playlist](https://www.youtube.com/playlist?list=PLiFAb_ju1TajRzMXxLAk8P8LHe5JRNs_3) on how to create custom mob models
-* [BlueHexalon's Minecraft Forum thread](https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/modification-development/2610305-1-8-9-entities-with-custom-renderer-is-rendering) and [TheGoldCrayon's Minecraft Fourm thread](https://forums.minecraftforge.net/topic/37547-solved-189-custom-entity-help/?do=findComment&comment=199602) on troubleshooting custom model errors
-* [Jacknoshima's Minecraft Forum thread](https://forums.minecraftforge.net/topic/9327-how-do-you-get-a-spawn-egg-into-a-custom-creative-tab/) on moving spawn eggs to a custom creative tab
-* ⭐ [darkk7's Minecraft Forum post](https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/2523556-mapwriter-continued-an-open-source-mini-map?page=3) with a list of changes made to the World Renderer and Tessalator
-* [Lothrazar's Minecraft Forum thread](https://forums.minecraftforge.net/topic/34975-188-111501591-looking-for-worldrenderer-functions-startdrawingquads/) with code about using World Renderer and OpenGL
-* ⭐ [WillieWillus's GitHub gist](https://gist.github.com/williewillus/57d7093efa80163e96e0) with a general overview of how the rendering engine changed between 1.7 and 1.8
-* [DragonessAtHeart's Minecraft Forum thread](https://forums.minecraftforge.net/topic/36185-189-solved-registering-a-new-mob-entity/) on IRenderFactory
-* [Lothrazar's GitHub repo](https://github.com/Lothrazar/ERZ/blob/trunk/1.12/src/main/java/teamroots/emberroot/entity/spriteling/RenderSpriteling.java) with an example of a custom rendering factory for custom entities
-* [BlueHexalon's GitHub repo](https://github.com/BlueHexalon/bluehex_housing_mod/blob/master/mod/src/main/java/com/bluehex/bh_housing/client/renderer/RenderNPC.java) with an example of an alternative rendering method for custom entities
-* ⭐ [MyCrayfish's YouTube playlist](https://www.youtube.com/watch?v=3oqZ1MNCu2Y&list=PLy11IosblXIFDFAT3wz_5Nve05wIVKFSJ&index=7) with a good example on Tile Entities
-* ⭐ [Choonster's GitHub repo](https://github.com/Choonster-Minecraft-Mods/TestMod3/blob/1.8.9/src/main/java/com/choonster/testmod3/init/ModFluids.java) with an example of custom fluids
-* ⭐ [Emasher's Minecraft Forum thread](https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/mapping-and-modding-tutorials/1571414-how-to-use-the-forge-biomedictionary) with a guide on the Forge Biome Dictionary
-* ⭐ [TehNut-Mods's GitHub repo](https://github.com/TehNut-Mods/ResourcefulCrops/blob/1.7.10/src/main/java/tehnut/resourceful/crops/ConfigHandler.java) with a functioning Config Handler
-* ⭐ [MCPCFanC's Minecraft Forum thread](https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/modification-development/2405990-mcmod-info-file-guide-and-help) with an explanation of every aspect of the `mcmod.info` file
+<h2>Resources</h2>
+<p>
+  An exhaustive list of references I used to make this mod. If you are looking to develop a 1.8.9 mod, this list will come in handy. A "⭐" icon means it is an exceptionally good resource.
+  <ul>
+    <li><a href="https://www.curseforge.com/minecraft/mc-mods/more-fun-quicksand-mod" target="_blank">More Fun Quicksand Mod</a> decompiled and deobfuscated to be used as a base. Not as easy as it sounds...</li>
+    <li><a href="https://www.youtube.com/watch?v=gS58vMJM_00&list=PLpKu3PfwdqHQc5F3YnUdBm3rOyfLke3sj&index=13" target="_blank">CJMinecraft's YouTube playlist</a> with an example of custom blocks with metadata</li>
+    <li><a href="https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/modification-development/2451794-need-help-with-blockstates" target="_blank">RadMan63's Minecraft Forum thread</a> on blockstates</li>
+    <li>⭐ <a href="https://www.youtube.com/playlist?list=PLiFAb_ju1TajRzMXxLAk8P8LHe5JRNs_3" target="_blank">Kevin M's YouTube playlist</a> on how to create custom mob models</li>
+    <li><a href="https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/modification-development/2610305-1-8-9-entities-with-custom-renderer-is-rendering" target="_blank">BlueHexalon's Minecraft Forum thread</a> and <a href="https://forums.minecraftforge.net/topic/37547-solved-189-custom-entity-help/?do=findComment&comment=199602" target="_blank">TheGoldCrayon's Minecraft Forum thread</a> on troubleshooting custom model errors</li>
+    <li><a href="https://forums.minecraftforge.net/topic/9327-how-do-you-get-a-spawn-egg-into-a-custom-creative-tab/" target="_blank">Jacknoshima's Minecraft Forum thread</a> on moving spawn eggs to a custom creative tab</li>
+    <li>⭐ <a href="https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/2523556-mapwriter-continued-an-open-source-mini-map?page=3" target="_blank">darkk7's Minecraft Forum post</a> with a list of changes made to the World Renderer and Tessalator</li>
+    <li><a href="https://forums.minecraftforge.net/topic/34975-188-111501591-looking-for-worldrenderer-functions-startdrawingquads/" target="_blank">Lothrazar's Minecraft Forum thread</a> with code about using World Renderer and OpenGL</li>
+    <li>⭐ <a href="https://gist.github.com/williewillus/57d7093efa80163e96e0" target="_blank">WillieWillus's GitHub gist</a> with a general overview of how the rendering engine changed between 1.7 and 1.8</li>
+    <li><a href="https://forums.minecraftforge.net/topic/36185-189-solved-registering-a-new-mob-entity/" target="_blank">DragonessAtHeart's Minecraft Forum thread</a> on IRenderFactory</li>
+    <li><a href="https://github.com/Lothrazar/ERZ/blob/trunk/1.12/src/main/java/teamroots/emberroot/entity/spriteling/RenderSpriteling.java" target="_blank">Lothrazar's GitHub repo</a> with an example of a custom rendering factory for custom entities</li>
+    <li><a href="https://github.com/BlueHexalon/bluehex_housing_mod/blob/master/mod/src/main/java/com/bluehex/bh_housing/client/renderer/RenderNPC.java" target="_blank">BlueHexalon's GitHub repo</a> with an example of an alternative rendering method for custom entities</li>
+    <li>⭐ <a href="https://www.youtube.com/watch?v=3oqZ1MNCu2Y&list=PLy11IosblXIFDFAT3wz_5Nve05wIVKFSJ&index=7" target="_blank">MyCrayfish's YouTube playlist</a> with a good example on Tile Entities</li>
+    <li>⭐ <a href="https://github.com/Choonster-Minecraft-Mods/TestMod3/blob/1.8.9/src/main/java/com/choonster/testmod3/init/ModFluids.java" target="_blank">Choonster's GitHub repo</a> with an example of custom fluids</li>
+    <li>⭐ <a href="https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/mapping-and-modding-tutorials/1571414-how-to-use-the-forge-biomedictionary" target="_blank">Emasher's Minecraft Forum thread</a> with a guide on the Forge Biome Dictionary</li>
+    <li>⭐ <a href="https://github.com/TehNut-Mods/ResourcefulCrops/blob/1.7.10/src/main/java/tehnut/resourceful/crops/ConfigHandler.java" target="_blank">TehNut-Mods's GitHub repo</a> with a functioning Config Handler</li>
+    <li>⭐ <a href="https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/modification-development/2405990-mcmod-info-file-guide-and-help" target="_blank">MCPCFanC's Minecraft Forum thread</a> with an explanation of every aspect of the <code>mcmod.info</code> file</li>
+  </ul>
+</p>
