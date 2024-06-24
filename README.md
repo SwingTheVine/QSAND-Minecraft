@@ -30,7 +30,7 @@
 </table>
 
 <h1>QuickSand And Numerous Dungeons (QSAND)</h1>
-<a href="" target="_blank"><img alt="Latest Version" src="https://img.shields.io/badge/Latest_Version-1.8.9--0.76.0-lightblue?style=flat"></a>
+<a href="" target="_blank"><img alt="Latest Version" src="https://img.shields.io/badge/Latest_Version-1.8.9--0.77.0-lightblue?style=flat"></a>
 <a href="https://github.com/SwingTheVine/QSAND-Minecraft/releases" target="_blank"><img alt="Latest Release" src="https://img.shields.io/github/v/release/SwingTheVine/QSAND-Minecraft?sort=date&filter=1.8.9-*&display_name=release&style=flat&label=Latest%20Release&color=blue"></a>
 <a href="https://github.com/SwingTheVine/QSAND-Minecraft/blob/master/LICENSE.txt" target="_blank"><img alt="Software License: GPL-3.0" src="https://img.shields.io/badge/Software_License-GPL--3.0-brightgreen?style=flat"></a>
 <a href="https://github.com/SwingTheVine/QSAND-Minecraft/blob/master/LICENSE-MEDIA.txt" target="_blank"><img alt="Media License: CC-BY-SA-4.0" src="https://img.shields.io/badge/Media_License-CC--BY--SA--4.0-orange?style=flat"></a>
