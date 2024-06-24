@@ -55,5 +55,5 @@ jobs:
           git add src/main/java/com/SwingTheVine/QSAND/ModInfo.java
           git add src/main/resources/mcmod.info
           git add README.md
-          git commit -m "Incremented version to ${{ steps.version_increment.outputs.new_version }} from ${{ steps.get_version.outputs.current_version }}; {{ steps.get-commit-message.outputs.MSG }}"
+          git commit -m "Incremented version to ${{ steps.version_increment.outputs.new_version }} from ${{ steps.get_version.outputs.current_version }}; ${{ steps.get-commit-message.outputs.MSG }}"
           git push
