@@ -1,6 +1,6 @@
 <table>
   <tr>
-    <td><a href="quicksand-and-numerous-dungeons-qsand">QuickSand And Numerous Dungeons (QSAND)</a></td>
+    <td><a href="#quicksand-and-numerous-dungeons-qsand">QuickSand And Numerous Dungeons (QSAND)</a></td>
     <td valign="top" rowspan="99"><a href="https://discord.gg/tpeBPy46hf"><img alt="Discord Banner" src="https://discord.com/api/guilds/796124137042608188/widget.png?style=banner4"></a></td>
   </tr>
   <tr>
