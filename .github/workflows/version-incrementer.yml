@@ -37,12 +37,16 @@ jobs:
           echo "New version: $new_version"
           echo "new_version=$new_version" >> $GITHUB_OUTPUT
 
-      - name: Update version in ModInfo.java
+      - name: Update versions in multiple files
         run: |
           new_version=${{ steps.version_increment.outputs.new_version }}
           sed -i 's/version = "[^"]*"/version = "'$new_version'"/' src/main/java/com/SwingTheVine/QSAND/ModInfo.java
           sed -i 's/"version": "[^"]*"/"version": "'$new_version'"/' src/main/resources/mcmod.info
           sed -i 's/\(Latest_Version-[0-9.]*--\)[^?]*/\1'$new_version'-lightblue/' README.md
+
+      - name: Get the previous commit message
+        id: get-commit-message
+        run: echo "::set-output name=MSG::$(git log -1 --pretty=%B)"
 
       - name: Commit changes
         run: |
@@ -51,5 +55,5 @@ jobs:
           git add src/main/java/com/SwingTheVine/QSAND/ModInfo.java
           git add src/main/resources/mcmod.info
           git add README.md
-          git commit -m "Incremented version to ${{ steps.version_increment.outputs.new_version }}"
+          git commit -m "Incremented version to ${{ steps.version_increment.outputs.new_version }} from ${{ steps.get_version.outputs.current_version }}; {{ steps.get-commit-message.outputs.MSG }}"
           git push

@@ -41,6 +41,7 @@
 <a href="" target="_blank"><img alt="Total Lines of Code" src="https://tokei.rs/b1/github/SwingTheVine/QSAND-Minecraft?category=code"></a>
 <a href="" target="_blank"><img alt="Total Comments" src="https://tokei.rs/b1/github/SwingTheVine/QSAND-Minecraft?category=comments"></a>
 <a href="" target="_blank"><img alt="Version Incrementer" src="https://github.com/SwingTheVine/QSAND-Minecraft/actions/workflows/version-incrementer.yml/badge.svg"></a>
+<a href="" target="_blank"><img alt="CodeQL" src="https://github.com/SwingTheVine/QSAND-Minecraft/actions/workflows/github-code-scanning/codeql/badge.svg"></a>
 
 <h2>How Versioning Works</h2>
 <p>
