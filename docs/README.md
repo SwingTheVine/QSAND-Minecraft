@@ -29,8 +29,8 @@
 <h1>QuickSand And Numerous Dungeons (QSAND)</h1>
 <a href="" target="_blank"><img alt="Latest Version" src="https://img.shields.io/badge/Latest_Version-1.8.9--0.79.0-lightblue?style=flat"></a>
 <a href="https://github.com/SwingTheVine/QSAND-Minecraft/releases" target="_blank"><img alt="Latest Release" src="https://img.shields.io/github/v/release/SwingTheVine/QSAND-Minecraft?sort=date&filter=1.8.9-*&display_name=release&style=flat&label=Latest%20Release&color=blue"></a>
-<a href="https://github.com/SwingTheVine/QSAND-Minecraft/blob/1.8.9/LICENSE.txt" target="_blank"><img alt="Software License: GPL-3.0" src="https://img.shields.io/badge/Software_License-GPL--3.0-brightgreen?style=flat"></a>
-<a href="https://github.com/SwingTheVine/QSAND-Minecraft/blob/1.8.9/LICENSE-MEDIA.txt" target="_blank"><img alt="Media License: CC-BY-SA-4.0" src="https://img.shields.io/badge/Media_License-CC--BY--SA--4.0-orange?style=flat"></a>
+<a href="https://github.com/SwingTheVine/QSAND-Minecraft/blob/1.8.9/docs/LICENSE.txt" target="_blank"><img alt="Software License: GPL-3.0" src="https://img.shields.io/badge/Software_License-GPL--3.0-brightgreen?style=flat"></a>
+<a href="https://github.com/SwingTheVine/QSAND-Minecraft/blob/1.8.9/docs/LICENSE-MEDIA.txt" target="_blank"><img alt="Media License: CC-BY-SA-4.0" src="https://img.shields.io/badge/Media_License-CC--BY--SA--4.0-orange?style=flat"></a>
 <br>
 <a href="https://discordapp.com/users/394185816370315276" target="_blank"><img alt="Contact Me" src="https://img.shields.io/badge/Contact_Me-gray?style=flat&logo=Discord&logoColor=white&logoSize=auto&labelColor=cornflowerblue"></a>
 <a href="" target="_blank"><img alt="WakaTime" src="https://img.shields.io/badge/Coding_Time-142hrs_52mins-blue?style=flat&logo=wakatime&logoColor=black&logoSize=auto&labelColor=white"></a>
@@ -143,7 +143,7 @@
 
 <h2>Gradle Issue</h2>
 <p>
-  If you encounter gradle issues with cached libraries missing, take a look at the <a href="https://github.com/SwingTheVine/QSAND-Minecraft/blob/1.8.9/RepairGradleInstructions.txt" target="_blank">Repair Gradle Instructions</a>.
+  If you encounter gradle issues with cached libraries missing, take a look at the <a href="https://github.com/SwingTheVine/QSAND-Minecraft/blob/1.8.9/docs/RepairGradleInstructions.txt" target="_blank">Repair Gradle Instructions</a>.
 </p>
 
 <h2>Resources</h2>

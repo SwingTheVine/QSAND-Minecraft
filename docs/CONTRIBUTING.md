@@ -33,15 +33,15 @@
 </table>
 
 <h1>Contributing</h1>
-<a href="https://github.com/SwingTheVine/QSAND-Minecraft/blob/1.8.9/LICENSE.txt"><img alt="Software License: GPL-3.0" src="https://img.shields.io/badge/Software_License-GPL--3.0-brightgreen?style=flat"></a>
-<a href="https://github.com/SwingTheVine/QSAND-Minecraft/blob/1.8.9/LICENSE-MEDIA.txt"><img alt="Media License: CC-BY-SA-4.0" src="https://img.shields.io/badge/Media_License-CC--BY--SA--4.0-orange?style=flat"></a>
+<a href="https://github.com/SwingTheVine/QSAND-Minecraft/blob/1.8.9/docs/LICENSE.txt"><img alt="Software License: GPL-3.0" src="https://img.shields.io/badge/Software_License-GPL--3.0-brightgreen?style=flat"></a>
+<a href="https://github.com/SwingTheVine/QSAND-Minecraft/blob/1.8.9/docs/LICENSE-MEDIA.txt"><img alt="Media License: CC-BY-SA-4.0" src="https://img.shields.io/badge/Media_License-CC--BY--SA--4.0-orange?style=flat"></a>
 <p>
   Thank you for wanting to contribute to the Minecraft mod "QuickSand And Numerous Dungeons"! It means a lot to me that someone likes my project enough to want to help it grow. If you haven't already done so, consider joining our Discord. You can ask questions about the mod there and receive feedback.
 </p>
 
 <h2>Resources</h2>
 <p>
-  Need help getting started? Check out the list of resources in <a href="https://github.com/SwingTheVine/QSAND-Minecraft/blob/1.8.9/README.md#resources" target="_blank">README.md</a> for guides on how the Minecraft code works. This list contains guides for creating (usually from scratch) significant aspects related to this mod. Unfortunately, most archived guides only give you clues on how to get the feature operational and don't produce a functioning feature by themselves. The best complete guide is the code in this mod. The code is commented (<img alt="Lines of comments" src="https://tokei.rs/b1/github/SwingTheVine/QSAND-Minecraft?category=comments">) and verified to function correctly.
+  Need help getting started? Check out the list of resources in <a href="https://github.com/SwingTheVine/QSAND-Minecraft/blob/1.8.9/docs/README.md#resources" target="_blank">README.md</a> for guides on how the Minecraft code works. This list contains guides for creating (usually from scratch) significant aspects related to this mod. Unfortunately, most archived guides only give you clues on how to get the feature operational and don't produce a functioning feature by themselves. The best complete guide is the code in this mod. The code is commented (<img alt="Lines of comments" src="https://tokei.rs/b1/github/SwingTheVine/QSAND-Minecraft?category=comments">) and verified to function correctly.
 </p>
 
 <h2>Why Follow Guidelines?</h2>
@@ -77,7 +77,7 @@
 <ul>
   <li><b>We will not accept pull requests that update to a later version of Minecraft</b>. We know the mod is outdated and are working as fast as possible to update it. If you would like to contribute to updating the mod to a later version of Minecraft, providing us with any "before and after" code for what changed between Minecraft versions helps a ton.</li>
   <li>Always submit a <a href="https://github.com/SwingTheVine/QSAND-Minecraft/issues/new/choose" target="_blank">feature request</a> and receive authorization to work on your contribution <i>before</i> you start working on your contribution. This will save you time if we end up rejecting the contribution. Small contributions (like fixing spelling errors) don't need a feature request.</li>
-  <li>Follow the <a href="https://github.com/SwingTheVine/QSAND-Minecraft/blob/1.8.9/CODE_OF_CONDUCT.md" target="_blank">Code of Conduct</a>. This includes both your contributions and the way you interact with this community.</li>
+  <li>Follow the <a href="https://github.com/SwingTheVine/QSAND-Minecraft/blob/1.8.9/docs/CODE_OF_CONDUCT.md" target="_blank">Code of Conduct</a>. This includes both your contributions and the way you interact with this community.</li>
   <li>Always write a clear message that explains the changes. "Added some things" does <i>not</i> explain what was changed.</li>
   <li>Different feature, different pull request. If you submit a pull request for blocks and localization together, and we want to reject the localization, your blocks are rejected along with the localization since they are the same pull request. They should be separate pull requests since they are separate features.</li>
   <li>The file structure must be maintained (unless you were authorized to change it). It is based on the file structure Minecraft uses with some minor modifications. For example, blocks go in the blocks folder, and fluid blocks go in the fluid folder.</li>
@@ -103,7 +103,7 @@
 <h2>How To Contribute</h2>
 <p>
   <ol>
-    <li>Read all of the <a href="https://github.com/SwingTheVine/QSAND-Minecraft/blob/1.8.9/CONTRIBUTING.md" target="_blank">contributing guidelines</a>.</li>
+    <li>Read all of the <a href="https://github.com/SwingTheVine/QSAND-Minecraft/blob/1.8.9/docs/CONTRIBUTING.md" target="_blank">contributing guidelines</a>.</li>
     <li>If you are contributing, submit a request <a href="https://github.com/SwingTheVine/QSAND-Minecraft/issues/new/choose" target="_blank">here</a>.</li>
     <li>If you have received authorization to start working on your contribution, set up the development environment on your device.</li>
     <li>Fork the project.</li>
