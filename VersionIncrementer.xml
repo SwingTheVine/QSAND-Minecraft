@@ -98,7 +98,7 @@
             <echo file="src/main/resources/mcmod.info" message="${newFileContent}"/>
     </target>
 	<target name="increment-readme">
-        <loadfile property="fileContentREADME" srcFile="README.md"/>
+        <loadfile property="fileContentREADME" srcFile="docs/README.md"/>
 		<loadfile property="fileContentModInfo" srcFile="src/main/java/com/SwingTheVine/QSAND/ModInfo.java"/>
 	                    
 	            <script language="javascript">
@@ -160,6 +160,6 @@
 	            </script>
 	            <echo message="New content:"/>
 	            <echo message="${newFileContent}"/>
-	            <echo file="README.md" message="${newFileContent}"/>
+	            <echo file="docs/README.md" message="${newFileContent}"/>
 	    </target>
 </project>
