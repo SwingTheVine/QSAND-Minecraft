@@ -3,7 +3,7 @@ name: Version Incrementer
 on:
   push:
     branches:
-      - master
+      - 1.8.9
 
 jobs:
   version-incrementer:

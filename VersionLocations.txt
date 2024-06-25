@@ -1,0 +1,21 @@
+This is a list of all locations that need their version changed when upgrading to a new Minecraft version.
+The list is as follows:
+* The GitHub branch that is pushed to
+* The "latest version" shield in README.md
+* The hyperlinks in the README.md file
+* The "latest release" RegEx (in the URL payload) in README.md
+* The "resources" section in README.md mentions the Minecraft version
+* The "mcversion" variable in src/main/resources/mcmod.info
+* The "acceptedMCVersions" variable in src/main/java/com/SwingTheVine/QSAND/ModInfo.java
+* The "version incrementer" GitHub workflow. Around line 6
+* The splash text
+* The CONTRIBUTING.md file in the "Development Environment" section
+* The hyperlinks in the CONTRIBUTING.md file
+* The build.gradle file, obviously
+* The bug report template on GitHub
+
+This is a list of all locations that use the version, but update automatically.
+This only applies after the versions have been changed in all locations in the list above.
+The list is as follows:
+* The "version incrementer" ANT. Specifically, the 3rd <target>.
+* The build.gradle file (in some places)
