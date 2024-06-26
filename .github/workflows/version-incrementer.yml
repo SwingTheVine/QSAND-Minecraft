@@ -40,8 +40,23 @@ jobs:
       - name: Update versions in multiple files
         run: |
           new_version=${{ steps.version_increment.outputs.new_version }}
+          if [ -f "src/main/java/com/SwingTheVine/QSAND/ModInfo.java" ]; then
+            echo "ModInfo.java exists. Modifying..."
+          else
+            echo "ModInfo.java was not found. Skipping..."
+          fi
           sed -i 's/version = "[^"]*"/version = "'$new_version'"/' src/main/java/com/SwingTheVine/QSAND/ModInfo.java
+          if [ -f "src/main/resources/mcmod.info" ]; then
+            echo "mcmod.info exists. Modifying..."
+          else
+            echo "mcmod.info was not found. Skipping..."
+          fi
           sed -i 's/"version": "[^"]*"/"version": "'$new_version'"/' src/main/resources/mcmod.info
+          if [ -f "docs/README.md" ]; then
+            echo "README.md exists. Modifying..."
+          else
+            echo "README.md was not found. Skipping..."
+          fi
           sed -i 's/\(Latest_Version-[0-9.]*--\)[^?]*/\1'$new_version'-lightblue/' docs/README.md
 
       - name: Get the previous commit message
