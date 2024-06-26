@@ -135,6 +135,8 @@
 	                var versionPattern = /Latest_Version-(\d+)\.(\d+)\.(\d+)--(\d+)\.(\d+)\.(\d+)-lightblue/; // A RegEx to match the three numbers in the version
 	                var versionPatternPatch = /Total_Patches-(\d+)-black/;
 	            	
+	            	project.setProperty("lineLength", lines.length);
+	            	
 	                // For every line...
 	                for (var i = 0; i < lines.length; i++) {
 	                    var currentLine = lines[i]; // Sets the current line to its own variable
@@ -158,6 +160,8 @@
 	                project.setProperty("newFileContent", newFileContent); // Sets the new file content as a variable in the Ant instance
 	                ]]>
 	            </script>
+                <echo message="Line Count:"/>
+	            <echo message="${lineLength}"/>
 	            <echo message="New content:"/>
 	            <echo message="${newFileContent}"/>
 	            <echo file="docs/README.md" message="${newFileContent}"/>
