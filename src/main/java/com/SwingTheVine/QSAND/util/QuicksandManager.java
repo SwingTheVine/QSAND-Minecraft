@@ -89,14 +89,9 @@ public class QuicksandManager {
 			overCor = ((((BlockFluidClassic) block).getMaxRenderHeightMeta() == -1) ? 0.0 : 0.15);
 		}
 		
-		final double triggEntityHeight = triggeringEntity.posY + triggeringEntity.getEyeHeight() - 0.075 + overCor; // How tall
-																													// the entity
-																													// is.
-																													// Measured
-																													// from camera
-																													// POV to
-																													// bottom of
-																													// entity
+		// How tall the entity is. Measured from camera POV to bottom of entity
+		final double triggEntityHeight = triggeringEntity.posY + triggeringEntity.getEyeHeight() - 0.075 + overCor;
+		
 		final int triggEntityPosX = MathHelper.floor_double(triggeringEntity.posX); // Triggering entity's X position
 		final int triggEntityMaxPosY = MathHelper.floor_float(MathHelper.floor_double(triggEntityHeight)); // Triggering entity's
 																											// maximum Y position
@@ -142,17 +137,14 @@ public class QuicksandManager {
 			overCor = ((((BlockFluidClassic) block).getMaxRenderHeightMeta() == -1) ? 0.0 : 0.15);
 		}
 		
-		final double triggEntityHeight = triggeringEntity.posY + triggeringEntity.getEyeHeight() - 0.2 + overCor; // How tall the
-																													// entity is.
-																													// Measured
-																													// from camera
-																													// POV to
-																													// bottom of
-																													// entity
+		// How tall the entity is. Measured from camera POV to bottom of entity
+		final double triggEntityHeight = triggeringEntity.posY + triggeringEntity.getEyeHeight() - 0.2 + overCor;
+		
 		final int triggEntityPosX = MathHelper.floor_double(triggeringEntity.posX); // Triggering entity's X position
-		final int triggEntityMaxPosY = MathHelper.floor_float(MathHelper.floor_double(triggEntityHeight)); // Triggering entity's
-																											// maximum Y position
-																											// floored
+		
+		// Triggering entity's maximum Y position floored
+		final int triggEntityMaxPosY = MathHelper.floor_float(MathHelper.floor_double(triggEntityHeight));
+		
 		final int triggEntityPosZ = MathHelper.floor_double(triggeringEntity.posZ); // Triggering entity's Z position
 		
 		// Checks what the block above the entity's head is (if true) or what block the entity's head is in.
@@ -182,13 +174,14 @@ public class QuicksandManager {
 	// Finds out if the entity is inside of the type of block specified
 	public static boolean isEntityInsideOfBlockM(final Entity triggeringEntity, final Block block) {
 		
-		final double triggEntityHeight = triggeringEntity.posY + triggeringEntity.getEyeHeight() - 0.2; // How tall the entity is.
-																										// Measured from camera
-																										// POV to bottom of entity
+		// Triggering entity is. Measured from camera POV to bottom of entity
+		final double triggEntityHeight = triggeringEntity.posY + triggeringEntity.getEyeHeight() - 0.2;
+		
 		final int triggEntityPosX = MathHelper.floor_double(triggeringEntity.posX); // Triggering entity's X position
-		final int triggEntityMaxPosY = MathHelper.floor_float(MathHelper.floor_double(triggEntityHeight)); // Triggering entity's
-																											// maximum Y position
-																											// floored
+		
+		// Triggering entity'smaximum Y position floored
+		final int triggEntityMaxPosY = MathHelper.floor_float(MathHelper.floor_double(triggEntityHeight));
+		
 		final int triggEntityPosZ = MathHelper.floor_double(triggeringEntity.posZ); // Triggering entity's Z position
 		
 		// What block the entity is inside of
@@ -224,8 +217,9 @@ public class QuicksandManager {
 	public static int getMudLevel(final EntityPlayer player, final double blockPosY, final World world) {
 		
 		final double eyeHeight = player.posY + player.getEyeHeight(); // The eye height of the player
-		final double deltaY = eyeHeight - blockPosY; // Difference in Y position between the eye height of the player and the
-														// block
+		
+		// Difference in Y position between the eye height of the player and the block
+		final double deltaY = eyeHeight - blockPosY;
 		
 		// If the player has sunk all but 0.7 blocks above the BOTTOM of the block...
 		if (deltaY < 0.7) {
