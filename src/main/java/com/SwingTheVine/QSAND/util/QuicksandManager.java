@@ -1073,6 +1073,9 @@ public class QuicksandManager {
 		
 		final int customDrownAir = getCustomDrownAir(entity); // Obtains the datawatcher value
 		
+		System.out.println("customDrownAir: " + customDrownAir);
+		System.out.println("isRemoteDrowning: " + entity.worldObj.isRemote);
+		
 		// If the entity is NOT on a server instance...
 		if (!entity.worldObj.isRemote) {
 			

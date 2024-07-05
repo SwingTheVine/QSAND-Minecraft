@@ -919,13 +919,12 @@ public class FluidBog extends SinkingBlockFluidClassic implements IMetaBlockName
 	// Checks to see if the entity is fully submerged in the block
 	public void runSubmergedChecks(final Entity triggeringEntity) {
 		
-		System.out.println("isDrowning: " + QuicksandManager.isDrowning(triggeringEntity));
 		// If the entity is inside of this block, AND the entity is marked as drowning...
 		if (QuicksandManager.isEntityInsideOfBlock(triggeringEntity, this)
 			&& QuicksandManager.isDrowning(triggeringEntity)) {
-			QuicksandManager.spawnDrowningBubble(triggeringEntity.worldObj, triggeringEntity, this, true); // Spawn drowning
-																											// bubbles
-			System.out.println("isRemote: " + triggeringEntity.worldObj.isRemote);
+			
+			// Spawn drowning bubbles
+			QuicksandManager.spawnDrowningBubble(triggeringEntity.worldObj, triggeringEntity, this, true);
 			
 			// ...AND the world is NOT on a server, AND the entity is marked as alive...
 			if (!triggeringEntity.worldObj.isRemote && triggeringEntity.isEntityAlive()) {
