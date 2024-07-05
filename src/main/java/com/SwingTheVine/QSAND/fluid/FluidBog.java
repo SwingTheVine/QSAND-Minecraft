@@ -265,9 +265,9 @@ public class FluidBog extends SinkingBlockFluidClassic implements IMetaBlockName
 					// chance)...
 					if (triggeringEntity instanceof EntityPlayer && world.rand.nextInt(3) == 0) {
 						QuicksandManager.spawnBodyBubbleRandom(world, triggeringEntity, pos.getX(), pos.getY(),
-							pos.getZ(), (SinkingBlock) (Block) this, false);
+							pos.getZ(), this, false);
 						QuicksandManager.spawnBodyBubbleRandom(world, triggeringEntity, pos.getX(), pos.getY(),
-							pos.getZ(), (SinkingBlock) (Block) this, false);
+							pos.getZ(), this, false);
 					}
 				}
 				
@@ -283,7 +283,7 @@ public class FluidBog extends SinkingBlockFluidClassic implements IMetaBlockName
 					// ...AND the number in the world's random number generator sequence equals 0 (1/5 chance)...
 					if (world.rand.nextInt(5) == 0) { // TODO: Mud Changed. 7 -> 5
 						QuicksandManager.spawnBodyBubbleRandom(world, triggeringEntity, pos.getX(), pos.getY(),
-							pos.getZ(), (SinkingBlock) (Block) this, false);
+							pos.getZ(), this, false);
 					}
 				}
 				
@@ -297,11 +297,11 @@ public class FluidBog extends SinkingBlockFluidClassic implements IMetaBlockName
 					// chance)...
 					if (triggeringEntity instanceof EntityPlayer && world.rand.nextInt(2) == 0) { // TODO: Mud Changed. 5 -> 2
 						QuicksandManager.spawnBodyBubbleRandom(world, triggeringEntity, pos.getX(), pos.getY(),
-							pos.getZ(), (SinkingBlock) (Block) this, false);
+							pos.getZ(), this, false);
 						QuicksandManager.spawnBodyBubbleRandom(world, triggeringEntity, pos.getX(), pos.getY(),
-							pos.getZ(), (SinkingBlock) (Block) this, false);
+							pos.getZ(), this, false);
 						QuicksandManager.spawnBodyBubbleRandom(world, triggeringEntity, pos.getX(), pos.getY(),
-							pos.getZ(), (SinkingBlock) (Block) this, false);
+							pos.getZ(), this, false);
 					}
 				}
 				
@@ -327,8 +327,8 @@ public class FluidBog extends SinkingBlockFluidClassic implements IMetaBlockName
 			// AND the remainder of the total world time divided by 16 is 0,
 			// AND the number in the world's random number generator sequence equals 0 (1/10 chance)...
 			if (!triggEntityBootsFloat && world.getTotalWorldTime() % 16L == 0L && world.rand.nextInt(10) == 0) {
-				QuicksandManager.spawnBodyBubble(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(),
-					(SinkingBlock) (Block) this, false);
+				QuicksandManager.spawnBodyBubble(world, triggeringEntity, pos.getX(), pos.getY(), pos.getZ(), this,
+					false);
 			}
 			
 			triggeringEntity.motionX = 0.0; // Make the entity stop moving

@@ -3,6 +3,7 @@ package com.SwingTheVine.QSAND.util;
 import java.util.UUID;
 
 import com.SwingTheVine.QSAND.block.SinkingBlock;
+import com.SwingTheVine.QSAND.block.SinkingBlockFluidClassic;
 import com.SwingTheVine.QSAND.client.player.CustomPlayerGUIRenderer;
 import com.SwingTheVine.QSAND.entity.effect.EntityBubble;
 import com.SwingTheVine.QSAND.entity.effect.EntityTentaclesMud;
@@ -712,14 +713,14 @@ public class QuicksandManager {
 	
 	// Spawns a bubble on a delay
 	public static void spawnBubble(final World world, final double blockPosX, final double blockPosY,
-		final double blockPosZ, final SinkingBlock block, final int metadata, final float size, final int time) {
+		final double blockPosZ, final Object block, final int metadata, final float size, final int time) {
 		
 		world.spawnEntityInWorld(new EntityBubble(world, blockPosX, blockPosY, blockPosZ, block, metadata, size, time));
 	}
 	
 	// Spawns a bubble on a delay
 	public static void spawnBubbleDelay(final World world, final double blockPosX, final double blockPosY,
-		final double blockPosZ, final SinkingBlock block, final int metadata, final float size, final int time,
+		final double blockPosZ, final Object block, final int metadata, final float size, final int time,
 		final int delay) {
 		
 		world.spawnEntityInWorld(
@@ -728,9 +729,11 @@ public class QuicksandManager {
 	
 	// Spawns a random body bubble
 	public static void spawnBodyBubble(final World world, final Entity entity, final int blockPosX, final int blockPosY,
-		final int blockPosZ, final SinkingBlock block, final boolean useMetadata) {
+		final int blockPosZ, final Object block, final boolean useMetadata) {
 		
 		int blockMetadata = 0;
+		
+		System.out.println(block.getClass().toString());
 		
 		// If the world is NOT a server instance, AND the user does NOT want to spawn singleplayer bubbles...
 		if (!world.isRemote && !ConfigHandler.spawnUnseenBubbles) {
@@ -760,8 +763,18 @@ public class QuicksandManager {
 		
 		final float bubbleSize = 1.25f - world.rand.nextFloat() * 0.5f;
 		final int bubbleTime = (int) Math.floor((1000 + world.rand.nextInt(500)) * bubbleSize);
-		spawnBubble(world, bubblePosX, blockPosY + surfaceY(block), bubblePosZ, block, blockMetadata, bubbleSize,
-			bubbleTime);
+		
+		if (block instanceof SinkingBlock) {
+			spawnBubble(world, bubblePosX, blockPosY + surfaceY((SinkingBlock) block), bubblePosZ, block, blockMetadata,
+				bubbleSize, bubbleTime);
+		} else if (block instanceof SinkingBlockFluidClassic) {
+			spawnBubble(world, bubblePosX, blockPosY + surfaceY((SinkingBlockFluidClassic) block), bubblePosZ, block,
+				blockMetadata, bubbleSize, bubbleTime);
+		} else {
+			System.out.printf("WARNING! The 'block' variable is not of the corrent type. It is currently '%s'.",
+				block.getClass().toString());
+		}
+		
 	}
 	
 	public static void spawnQSBubble(final World world, final double x, final double y, final double z,
@@ -780,7 +793,7 @@ public class QuicksandManager {
 		} else if (volume > 0.4f) {
 			final float size = 2.5f - world.rand.nextFloat() * 1.75f;
 			final int time = (int) Math.floor((1000 + world.rand.nextInt(500)) * size);
-			spawnBubble(world, x, y, z, (SinkingBlock) block, metadata, size, time);
+			spawnBubble(world, x, y, z, block, metadata, size, time);
 			return;
 		}
 		world.playSound(x, y, z, "liquid.lavapop", volume + world.rand.nextFloat() * 0.25f,
@@ -789,9 +802,11 @@ public class QuicksandManager {
 	
 	// Spawns a random body bubble
 	public static void spawnBodyBubbleRandom(final World world, final Entity entity, final int blockPosX,
-		final int blockPosY, final int blockPosZ, final SinkingBlock block, final boolean useMetadata) {
+		final int blockPosY, final int blockPosZ, final Object block, final boolean useMetadata) {
 		
 		int blockMetadata = 0;
+		
+		System.out.println(block.getClass().toString());
 		
 		// If the world is NOT a server instance, AND the user does NOT want to spawn singleplayer bubbles...
 		if (!world.isRemote && !ConfigHandler.spawnUnseenBubbles) {
@@ -821,8 +836,17 @@ public class QuicksandManager {
 		
 		final float bubbleSize = 1.25f - world.rand.nextFloat() * 0.5f;
 		final int bubbleTime = (int) Math.floor((1000 + world.rand.nextInt(500)) * bubbleSize);
-		spawnBubbleDelay(world, bubblePosX, blockPosY + surfaceY(block), bubblePosZ, block, blockMetadata, bubbleSize,
-			bubbleTime, world.rand.nextInt(20) * 100);
+		
+		if (block instanceof SinkingBlock) {
+			spawnBubbleDelay(world, bubblePosX, blockPosY + surfaceY((SinkingBlock) block), bubblePosZ, block,
+				blockMetadata, bubbleSize, bubbleTime, world.rand.nextInt(20) * 100);
+		} else if (block instanceof SinkingBlockFluidClassic) {
+			spawnBubbleDelay(world, bubblePosX, blockPosY + surfaceY((SinkingBlockFluidClassic) block), bubblePosZ,
+				block, blockMetadata, bubbleSize, bubbleTime, world.rand.nextInt(20) * 100);
+		} else {
+			System.out.printf("WARNING! The 'block' variable is not of the corrent type. It is currently '%s'.",
+				block.getClass().toString());
+		}
 	}
 	
 	// Spawns bubbles for when an entity is drowning

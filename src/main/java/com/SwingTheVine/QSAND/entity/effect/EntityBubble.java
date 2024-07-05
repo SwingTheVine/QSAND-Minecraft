@@ -4,6 +4,7 @@ import org.lwjgl.Sys;
 
 import com.SwingTheVine.QSAND.ModInfo;
 import com.SwingTheVine.QSAND.block.SinkingBlock;
+import com.SwingTheVine.QSAND.block.SinkingBlockFluidClassic;
 import com.SwingTheVine.QSAND.util.ConfigHandler;
 
 import net.minecraft.block.Block;
@@ -26,7 +27,7 @@ public class EntityBubble extends Entity {
 	public long entitySpawnTime; // When the bubble spawned
 	public int entityLiveTime; // How long the bubble should live for
 	public float size; // The size of the bubble
-	public SinkingBlock block; // The block that spawned the bubble
+	public Object block; // The block that spawned the bubble
 	public int entityMetadata; // The metadata of the bubble
 	public float randomRotation; // A randomized rotation to spawn at
 	public static final String textureLocation = ModInfo.id + ":textures/blocks/mud_0.png"; // The location of the texture used
@@ -49,7 +50,7 @@ public class EntityBubble extends Entity {
 	
 	// Constructor
 	public EntityBubble(final World world, final double bubblePosX, final double bubblePosY, final double bubblePosZ,
-		final SinkingBlock block, final int blockMetadata, final float size, final int time) {
+		final Object block, final int blockMetadata, final float size, final int time) {
 		
 		this(world); // What world the bubble is in
 		this.block = block; // What block spawned the bubble
@@ -60,6 +61,11 @@ public class EntityBubble extends Entity {
 		double maximumSpawningHeight = bubblePosY; // The maximum Y coordinate the entity can occupy
 		final int blockPosX = (int) Math.floor(bubblePosX); // X position of the block that spawned the bubble
 		final int blockPosZ = (int) Math.floor(bubblePosZ); // Z position of the block that spawned the bubble
+		
+		if (!((block instanceof SinkingBlock) || (block instanceof SinkingBlockFluidClassic))) {
+			System.out.println(
+				"WARNING! The Object variable 'block' is not of the type 'SinkingBlock' or 'SinkingBlockFluidClassic'! This will probably result in a crash.");
+		}
 		
 		// For 6 blocks...
 		for (int i = 0; i <= 5; ++i) {
@@ -98,9 +104,14 @@ public class EntityBubble extends Entity {
 	
 	// Constructor
 	public EntityBubble(final World world, final double blockPosX, final double blockPosY, final double blockPosZ,
-		final SinkingBlock block, final int metadata, final float size, final int time, final int delay) {
+		final Object block, final int metadata, final float size, final int time, final int delay) {
 		this(world, blockPosX, blockPosY, blockPosZ, block, metadata, size, time);
 		this.entitySpawnTime += delay; // Increases the time until death
+		
+		if (!((block instanceof SinkingBlock) || (block instanceof SinkingBlockFluidClassic))) {
+			System.out.println(
+				"WARNING! The Object variable 'block' is not of the type 'SinkingBlock' or 'SinkingBlockFluidClassic'! This will probably result in a crash.");
+		}
 	}
 	
 	// Bubble initialization method
@@ -155,7 +166,7 @@ public class EntityBubble extends Entity {
 				
 				// Spawns a particle
 				this.worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK, true, this.posX + bubblePosX, this.posY,
-					this.posZ + bubblePosZ, 0.0, 0.0, 0.0, Block.getIdFromBlock(this.block));
+					this.posZ + bubblePosZ, 0.0, 0.0, 0.0, Block.getIdFromBlock((Block) this.block));
 			}
 			
 			// Plays a popping sound
