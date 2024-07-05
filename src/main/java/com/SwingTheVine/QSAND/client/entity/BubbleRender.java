@@ -34,9 +34,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class BubbleRender extends Render<EntityBubble> {
 	
-	// static BubbleModel model = new BubbleModel();
-	private static ResourceLocation entityTexture = new ResourceLocation(ModInfo.id, "blocks/larvae_0"); // The texture the entity
-																											// will use
+	// The texture the entity will use
+	private static ResourceLocation entityTexture = new ResourceLocation(ModInfo.id, "blocks/larvae_0");
 	
 	// Constructor
 	public <T extends Entity> BubbleRender(final RenderManager renderManager) {
@@ -77,13 +76,14 @@ public class BubbleRender extends Render<EntityBubble> {
 				System.out.println(entityTexture);
 			} else if (bubble.block instanceof SinkingBlockFluidClassic) {
 				if (((SinkingBlockFluidClassic) bubble.block).getUseOneTexture()) {
-					entityTexture = new ResourceLocation(ModInfo.id,
-						"blocks/" + ((SinkingBlockFluidClassic) bubble.block).getUnlocalizedName().substring(5) + "_0");
+					entityTexture = new ResourceLocation(ModInfo.id, "blocks/fluids/"
+						+ ((SinkingBlockFluidClassic) bubble.block).getUnlocalizedName().substring(5) + "_still");
 				} else {
 					entityTexture = new ResourceLocation(ModInfo.id,
-						"blocks/" + ((SinkingBlockFluidClassic) bubble.block).getUnlocalizedName().substring(5) + "_"
-							+ ((SinkingBlockFluidClassic) bubble.block)
-								.getMetaFromState(bubble.worldObj.getBlockState(bubblePos)));
+						"blocks/fluids/" + ((SinkingBlockFluidClassic) bubble.block).getUnlocalizedName().substring(5)
+							+ "_" + ((SinkingBlockFluidClassic) bubble.block)
+								.getMetaFromState(bubble.worldObj.getBlockState(bubblePos))
+							+ "_still");
 				}
 				System.out.println(entityTexture);
 			} else {
@@ -126,14 +126,16 @@ public class BubbleRender extends Render<EntityBubble> {
 			try {
 				if (bubble.block == null) {
 					System.out.println("null");
-					if (bubble.block instanceof SinkingBlock) {
+					if (bubble.worldObj.getBlockState(bubblePos.down()).getBlock() instanceof SinkingBlock) {
 						intColor = ((SinkingBlock) bubble.worldObj.getBlockState(bubblePos.down()).getBlock())
 							.getQuicksandColorMultiplier(bubble.worldObj, bubblePos.down());
-					} else if (bubble.block instanceof SinkingBlockFluidClassic) {
+					} else if (bubble.worldObj.getBlockState(bubblePos.down())
+						.getBlock() instanceof SinkingBlockFluidClassic) {
 						intColor = ((SinkingBlockFluidClassic) bubble.worldObj.getBlockState(bubblePos.down())
 							.getBlock()).getQuicksandColorMultiplier(bubble.worldObj, bubblePos.down());
 					} else {
-						System.out.println("bubble.block type mismatch");
+						System.out.printf("bubble.block type mismatch. Type is currently '%s'.\n",
+							bubble.worldObj.getBlockState(bubblePos.down()).getBlock().toString());
 					}
 					
 					System.out.println(intColor);

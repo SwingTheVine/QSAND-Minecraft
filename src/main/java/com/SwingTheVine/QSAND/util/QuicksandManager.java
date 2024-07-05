@@ -733,8 +733,6 @@ public class QuicksandManager {
 		
 		int blockMetadata = 0;
 		
-		System.out.println(block.getClass().toString());
-		
 		// If the world is NOT a server instance, AND the user does NOT want to spawn singleplayer bubbles...
 		if (!world.isRemote && !ConfigHandler.spawnUnseenBubbles) {
 			// The user will never see these bubbles normally in singleplayer.
@@ -806,8 +804,6 @@ public class QuicksandManager {
 		
 		int blockMetadata = 0;
 		
-		System.out.println(block.getClass().toString());
-		
 		// If the world is NOT a server instance, AND the user does NOT want to spawn singleplayer bubbles...
 		if (!world.isRemote && !ConfigHandler.spawnUnseenBubbles) {
 			// The user will never see these bubbles normally in singleplayer.
@@ -850,7 +846,7 @@ public class QuicksandManager {
 	}
 	
 	// Spawns bubbles for when an entity is drowning
-	public static void spawnDrowningBubble(final World world, final Entity entity, final SinkingBlock block,
+	public static void spawnDrowningBubble(final World world, final Entity entity, final Object block,
 		final boolean useMetadata) {
 		
 		int blockMetadata = 0; // False = 0; True = -1
@@ -917,8 +913,18 @@ public class QuicksandManager {
 				
 				final float bubbleSize = 1.25f - world.rand.nextFloat() * 1.0f;
 				final int bubbleTime = (int) Math.floor((1000 + world.rand.nextInt(500)) * bubbleSize);
-				spawnBubbleDelay(world, bubblePosX, blockPosY + surfaceY(block), bubblePosZ, block, blockMetadata,
-					bubbleSize, bubbleTime, i * 100 + world.rand.nextInt(40) * 100);
+				
+				if (block instanceof SinkingBlock) {
+					spawnBubbleDelay(world, bubblePosX, blockPosY + surfaceY((SinkingBlock) block), bubblePosZ, block,
+						blockMetadata, bubbleSize, bubbleTime, i * 100 + world.rand.nextInt(40) * 100);
+				} else if (block instanceof SinkingBlockFluidClassic) {
+					spawnBubbleDelay(world, bubblePosX, blockPosY + surfaceY((SinkingBlockFluidClassic) block),
+						bubblePosZ, block, blockMetadata, bubbleSize, bubbleTime,
+						i * 100 + world.rand.nextInt(40) * 100);
+				} else {
+					System.out.printf("WARNING! The 'block' variable is not of the corrent type. It is currently '%s'.",
+						block.getClass().toString());
+				}
 			}
 		}
 	}

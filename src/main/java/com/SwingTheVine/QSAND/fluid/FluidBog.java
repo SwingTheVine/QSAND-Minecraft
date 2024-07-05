@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Random;
 
 import com.SwingTheVine.QSAND.block.IMetaBlockName;
-import com.SwingTheVine.QSAND.block.SinkingBlock;
 import com.SwingTheVine.QSAND.block.SinkingBlockFluidClassic;
 import com.SwingTheVine.QSAND.client.player.PlayerMudManager;
 import com.SwingTheVine.QSAND.entity.monster.EntitySlimeMud;
@@ -917,13 +916,23 @@ public class FluidBog extends SinkingBlockFluidClassic implements IMetaBlockName
 		return false;
 	}
 	
-	public void runSubmergedChecks(final Entity ent) {
+	// Checks to see if the entity is fully submerged in the block
+	public void runSubmergedChecks(final Entity triggeringEntity) {
 		
-		if (QuicksandManager.isEntityInsideOfBlock(ent, this) && QuicksandManager.isDrowning(ent)) {
-			QuicksandManager.spawnDrowningBubble(ent.worldObj, ent, (SinkingBlock) (Block) this, false);
-			if (!ent.worldObj.isRemote && ent.isEntityAlive()) {
-				ent.attackEntityFrom(DamageSource.drown,
-					Math.max(((EntityLivingBase) ent).getMaxHealth() * 0.1f, 2.0f));
+		System.out.println("isDrowning: " + QuicksandManager.isDrowning(triggeringEntity));
+		// If the entity is inside of this block, AND the entity is marked as drowning...
+		if (QuicksandManager.isEntityInsideOfBlock(triggeringEntity, this)
+			&& QuicksandManager.isDrowning(triggeringEntity)) {
+			QuicksandManager.spawnDrowningBubble(triggeringEntity.worldObj, triggeringEntity, this, true); // Spawn drowning
+																											// bubbles
+			System.out.println("isRemote: " + triggeringEntity.worldObj.isRemote);
+			
+			// ...AND the world is NOT on a server, AND the entity is marked as alive...
+			if (!triggeringEntity.worldObj.isRemote && triggeringEntity.isEntityAlive()) {
+				
+				// Deals 10% of max health or 2hp in damage. Whichever is greater
+				triggeringEntity.attackEntityFrom(DamageSource.drown,
+					Math.max(((EntityLivingBase) triggeringEntity).getMaxHealth() * 0.1f, 2.0f));
 			}
 		}
 	}
