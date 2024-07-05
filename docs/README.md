@@ -27,14 +27,14 @@
 </table>
 
 <h1>QuickSand And Numerous Dungeons (QSAND)</h1>
-<a href="" target="_blank"><img alt="Latest Version" src="https://img.shields.io/badge/Latest_Version-1.8.9--0.87.0-lightblue?style=flat"></a>
+<a href="" target="_blank"><img alt="Latest Version" src="https://img.shields.io/badge/Latest_Version-1.8.9--0.87.2-lightblue?style=flat"></a>
 <a href="https://github.com/SwingTheVine/QSAND-Minecraft/releases" target="_blank"><img alt="Latest Release" src="https://img.shields.io/github/v/release/SwingTheVine/QSAND-Minecraft?sort=date&filter=1.8.9-*&display_name=release&style=flat&label=Latest%20Release&color=blue"></a>
 <a href="https://github.com/SwingTheVine/QSAND-Minecraft/blob/1.8.9/docs/LICENSE.txt" target="_blank"><img alt="Software License: GPL-3.0" src="https://img.shields.io/badge/Software_License-GPL--3.0-brightgreen?style=flat"></a>
 <a href="https://github.com/SwingTheVine/QSAND-Minecraft/blob/1.8.9/docs/LICENSE-MEDIA.txt" target="_blank"><img alt="Media License: CC-BY-SA-4.0" src="https://img.shields.io/badge/Media_License-CC--BY--SA--4.0-orange?style=flat"></a>
 <br>
 <a href="https://discordapp.com/users/394185816370315276" target="_blank"><img alt="Contact Me" src="https://img.shields.io/badge/Contact_Me-gray?style=flat&logo=Discord&logoColor=white&logoSize=auto&labelColor=cornflowerblue"></a>
-<a href="" target="_blank"><img alt="WakaTime" src="https://img.shields.io/badge/Coding_Time-142hrs_52mins-blue?style=flat&logo=wakatime&logoColor=black&logoSize=auto&labelColor=white"></a>
-<a href="" target="_blank"><img alt="Total Patches" src="https://img.shields.io/badge/Total_Patches-396-black?style=flat"></a>
+<a href="" target="_blank"><img alt="WakaTime" src="https://img.shields.io/badge/Coding_Time-150hrs_50mins-blue?style=flat&logo=wakatime&logoColor=black&logoSize=auto&labelColor=white"></a>
+<a href="" target="_blank"><img alt="Total Patches" src="https://img.shields.io/badge/Total_Patches-398-black?style=flat"></a>
 <a href="" target="_blank"><img alt="Total Lines of Code" src="https://tokei.rs/b1/github/SwingTheVine/QSAND-Minecraft?category=code"></a>
 <a href="" target="_blank"><img alt="Total Comments" src="https://tokei.rs/b1/github/SwingTheVine/QSAND-Minecraft?category=comments"></a>
 <a href="" target="_blank"><img alt="Version Incrementer" src="https://github.com/SwingTheVine/QSAND-Minecraft/actions/workflows/version-incrementer.yml/badge.svg"></a>
