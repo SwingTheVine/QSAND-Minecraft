@@ -24,13 +24,14 @@ import net.minecraft.util.ResourceLocation;
  * @author <b>SwingTheVine</b> - Improved and updated MrBlackGoo's code to 1.8.9
  * @author <b>MrBlackGoo</b> - 1.7.10 source code
  * @see <a href=".@docroot/LICENSE.txt">License</a> */
-public class TileEntityRenderer extends TileEntitySpecialRenderer {
+public class TileEntityLarvaeRenderer extends TileEntitySpecialRenderer {
 	
 	private static final ResourceLocation entityTexture = new ResourceLocation(ModInfo.id, "blocks/larvae_0"); // The texture the
-																												// entity will use
 	
 	public void renderLarvae(final TileEntityLarvae par1TileEntityLarvae, final double par2, final double par4,
 		final double par6, final float par8) {
+		
+		System.out.println("Beacon 1");
 		
 		final double x = 0.0;
 		final double y = 0.0;
@@ -59,6 +60,8 @@ public class TileEntityRenderer extends TileEntitySpecialRenderer {
 		z_dec = ((BlockLarvae) QSAND_Blocks.larvae).shouldSideBeRendered2(par1TileEntityLarvae.getWorld(),
 			par1TileEntityLarvae.getPos().getX(), par1TileEntityLarvae.getPos().getY(),
 			par1TileEntityLarvae.getPos().getZ() - 1, 0);
+		System.out.printf("x_inc = %s x_dec = %s\ny_inc = %s y_dec = %s\nz_inc = %s z_dec = %s\n", x_inc, x_dec, y_inc,
+			y_dec, z_inc, z_dec);
 		if (!x_inc && !x_dec && !y_inc && !y_dec && !z_inc && !z_dec) {
 			return;
 		}

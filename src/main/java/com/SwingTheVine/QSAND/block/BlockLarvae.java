@@ -45,9 +45,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @see <a href=".@docroot/LICENSE.txt">License</a> */
 public class BlockLarvae extends SinkingBlock implements IMetaBlockName {
 	
-	private static final String[] types = {"0"}; // Values of the different metadata levels
+	private static final String[] types = { "0" }; // Values of the different metadata levels
 	private static final boolean useOneTexture = true; // Should all metadata variants use the same texture?
-	private static final float[] sinkTypes = {1.00F}; // The maximum sink level for each metadata variant
+	private static final float[] sinkTypes = { 1.00F }; // The maximum sink level for each metadata variant
 	private final BeaconHandler beacon = new BeaconHandler(false); // Constructs a beacon handler. Enabled if "true" passed in
 	
 	// Constructor
@@ -60,7 +60,9 @@ public class BlockLarvae extends SinkingBlock implements IMetaBlockName {
 	
 	public TileEntity createNewTileEntity(final World world, final int i) {
 		
+		System.out.println("Beacon 4");
 		if (world.isRemote) {
+			System.out.println("Beacon 3");
 			final TileEntityLarvae TE = new TileEntityLarvae();
 			TE.phase = world.rand.nextDouble() * 6.28318 * 2.0;
 			return TE;
@@ -88,6 +90,7 @@ public class BlockLarvae extends SinkingBlock implements IMetaBlockName {
 	@SideOnly(Side.CLIENT)
 	public boolean shouldSideBeRendered(final IBlockAccess worldIn, final BlockPos pos, final EnumFacing side) {
 		
+		// return shouldSideBeRendered2(worldIn, pos.getX(), pos.getY(), pos.getZ(), side.getIndex());
 		return side.getIndex() == 1;
 		// return true;
 	}
@@ -97,17 +100,24 @@ public class BlockLarvae extends SinkingBlock implements IMetaBlockName {
 		final int par4, final int par5) {
 		
 		switch (par5) {
-		case 0: {
+		case 0: { // CASE: DOWN
+			
+			// Returns true if the block is NOT an opaque cube, AND the block is NOT a larvae block,
+			// OR the block is a larvae block, AND the block block above is NOT a larvae block
 			return (!par1IBlockAccess.getBlockState(new BlockPos(par2, par3, par4)).getBlock().isOpaqueCube()
 				&& par1IBlockAccess.getBlockState(new BlockPos(par2, par3, par4)).getBlock() != QSAND_Blocks.larvae)
 				|| (par1IBlockAccess.getBlockState(new BlockPos(par2, par3, par4)).getBlock() == QSAND_Blocks.larvae
 					&& par1IBlockAccess.getBlockState(new BlockPos(par2, par3 + 1, par4))
 						.getBlock() != QSAND_Blocks.larvae);
 		}
-		case 1: {
+		case 1: { // CASE: UP
+			
+			// Returns true if the block above this one is NOT a larvae block
 			return par1IBlockAccess.getBlockState(new BlockPos(par2, par3 + 1, par4)).getBlock() != QSAND_Blocks.larvae;
 		}
 		default: {
+			
+			// Returns true if the block below this one is opaque, AND the block below this one is NOT a larvae block
 			return !par1IBlockAccess.getBlockState(new BlockPos(par2, par3 - 1, par4)).getBlock().isOpaqueCube()
 				&& par1IBlockAccess.getBlockState(new BlockPos(par2, par3 - 1, par4)).getBlock() != QSAND_Blocks.larvae;
 		}

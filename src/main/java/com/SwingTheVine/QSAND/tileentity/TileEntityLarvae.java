@@ -19,6 +19,7 @@ public class TileEntityLarvae extends TileEntity {
 	// Constructor
 	public TileEntityLarvae() {
 		this.phase = 0.0;
+		System.out.println("Beacon 2");
 	}
 	
 	@Override
