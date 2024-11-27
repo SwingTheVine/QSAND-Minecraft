@@ -13,10 +13,13 @@ import com.SwingTheVine.QSAND.entity.monster.EntitySlimeTar;
 import com.SwingTheVine.QSAND.entity.monster.EntitySlimeVoid;
 import com.SwingTheVine.QSAND.init.QSAND_Blocks;
 import com.SwingTheVine.QSAND.init.QSAND_Items;
+import com.SwingTheVine.QSAND.tileentity.TileEntityLarvae;
+import com.SwingTheVine.QSAND.tileentity.TileEntityLarvaeRenderer;
 
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
 /** Implements client-side rendering
@@ -62,5 +65,12 @@ public class ClientProxy extends CommonProxy {
 		// Registers the different renders/skins for each item variant/metadata
 		ModelBakery.registerItemVariants(Item.getItemFromBlock(QSAND_Blocks.test_block),
 			new ResourceLocation("QSAND:test_block"));
+	}
+	
+	// Registers the special renderers for the tile entities
+	@Override
+	public void registerTileEntityRenderers() {
+		
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLarvae.class, new TileEntityLarvaeRenderer());
 	}
 }

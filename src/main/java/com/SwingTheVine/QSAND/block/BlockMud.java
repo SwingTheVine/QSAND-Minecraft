@@ -41,8 +41,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @see <a href=".@docroot/LICENSE.txt">License</a> */
 public class BlockMud extends SinkingBlock implements IMetaBlockName {
 	
-	private static final String[] types = {"0", "1", "2", "3"}; // Names of all metadata variants
-	private static final float[] sinkTypes = {0.35F, 0.50F, 0.75F, 1.00F}; // The maximum sink level for each metadata variant
+	private static final String[] types = { "0", "1", "2", "3" }; // Names of all metadata variants
+	private static final float[] sinkTypes = { 0.35F, 0.50F, 0.75F, 1.00F }; // The maximum sink level for each metadata variant
 	private static final boolean useOneTexture = true; // Should all metadata variants use the same texture?
 	
 	// Creates a metadata value for every "types" metadata value
@@ -183,7 +183,7 @@ public class BlockMud extends SinkingBlock implements IMetaBlockName {
 				
 				triggEntityMoving = true; // The entity is moving
 				
-				// Finds the hypotenuse of the distance traveled.
+				// Finds the hypotenuse/magnitude of the distance traveled.
 				// This is the actual distance traveled on a radical plane
 				triggEntityMovingDistance_movDis = Math
 					.pow(Math.pow(triggeringEntity.prevPosX - triggeringEntity.posX, 2.0)
@@ -868,7 +868,7 @@ public class BlockMud extends SinkingBlock implements IMetaBlockName {
 	@Override
 	protected BlockState createBlockState() {
 		
-		return new BlockState(this, new IProperty[] {SINK});
+		return new BlockState(this, new IProperty[] { SINK });
 	}
 	
 	// Obtains the metadata this block should drop.

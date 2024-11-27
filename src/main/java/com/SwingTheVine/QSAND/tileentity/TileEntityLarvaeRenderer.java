@@ -14,7 +14,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 
@@ -24,14 +23,14 @@ import net.minecraft.util.ResourceLocation;
  * @author <b>SwingTheVine</b> - Improved and updated MrBlackGoo's code to 1.8.9
  * @author <b>MrBlackGoo</b> - 1.7.10 source code
  * @see <a href=".@docroot/LICENSE.txt">License</a> */
-public class TileEntityLarvaeRenderer extends TileEntitySpecialRenderer {
+public class TileEntityLarvaeRenderer extends TileEntitySpecialRenderer<TileEntityLarvae> {
 	
 	private static final ResourceLocation entityTexture = new ResourceLocation(ModInfo.id, "blocks/larvae_0"); // The texture the
 	
 	public void renderLarvae(final TileEntityLarvae par1TileEntityLarvae, final double par2, final double par4,
 		final double par6, final float par8) {
 		
-		System.out.println("Beacon 1");
+		System.out.println("Beacon 1 (Render Larvae Constructed)");
 		
 		final double x = 0.0;
 		final double y = 0.0;
@@ -154,9 +153,9 @@ public class TileEntityLarvaeRenderer extends TileEntitySpecialRenderer {
 	}
 	
 	@Override
-	public void renderTileEntityAt(final TileEntity par1TileEntity, final double par2, final double par4,
-		final double par6, final float par8, final int destroyStage) {
+	public void renderTileEntityAt(final TileEntityLarvae te, final double x, final double y, final double z,
+		final float partialTicks, final int destroyStage) {
 		
-		this.renderLarvae((TileEntityLarvae) par1TileEntity, par2, par4, par6, par8);
+		this.renderLarvae(te, x, y, z, partialTicks);
 	}
 }

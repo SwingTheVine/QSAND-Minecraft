@@ -25,4 +25,8 @@ public class CommonProxy {
 	public void registerItemModels() {
 	
 	}
+	
+	public void registerTileEntityRenderers() {
+	
+	}
 }

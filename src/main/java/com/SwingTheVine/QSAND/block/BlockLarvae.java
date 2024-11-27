@@ -11,6 +11,7 @@ import com.SwingTheVine.QSAND.util.ConfigHandler;
 import com.SwingTheVine.QSAND.util.QuicksandManager;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -43,7 +44,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @author <b>SwingTheVine</b> - Improved and updated MrBlackGoo's code to 1.8.9
  * @author <b>MrBlackGoo</b> - 1.7.10 source code
  * @see <a href=".@docroot/LICENSE.txt">License</a> */
-public class BlockLarvae extends SinkingBlock implements IMetaBlockName {
+public class BlockLarvae extends SinkingBlock implements IMetaBlockName, ITileEntityProvider {
 	
 	private static final String[] types = { "0" }; // Values of the different metadata levels
 	private static final boolean useOneTexture = true; // Should all metadata variants use the same texture?
@@ -58,13 +59,15 @@ public class BlockLarvae extends SinkingBlock implements IMetaBlockName {
 		this.setStepSound(Block.soundTypeGrass); // Sets the sound that plays when the block is stepped on
 	}
 	
+	@Override
 	public TileEntity createNewTileEntity(final World world, final int i) {
 		
-		System.out.println("Beacon 4");
+		System.out.println("Beacon 3 (Checking if this is the client)");
 		if (world.isRemote) {
-			System.out.println("Beacon 3");
+			System.out.println("Beacon 4 (This is the client. Creating tile entity...)");
 			final TileEntityLarvae TE = new TileEntityLarvae();
 			TE.phase = world.rand.nextDouble() * 6.28318 * 2.0;
+			System.out.println("Beacon 5 (Tile entity created with a phase of " + TE.phase + ".)");
 			return TE;
 		}
 		return null;
@@ -209,7 +212,7 @@ public class BlockLarvae extends SinkingBlock implements IMetaBlockName {
 				
 				triggEntityMoving = true; // The entity is moving
 				
-				// Finds the hypotenuse of the distance traveled.
+				// Finds the hypotenuse/magnitude of the distance traveled.
 				// This is the actual distance traveled on a radical plane
 				triggEntityMovingDistance_movDis = Math
 					.pow(Math.pow(triggeringEntity.prevPosX - triggeringEntity.posX, 2.0)

@@ -43,13 +43,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @see <a href=".@docroot/LICENSE.txt">License</a> */
 public class BlockSnowSoft extends SinkingBlock implements IMetaBlockName {
 	
-	private static final String[] types = {"0", "1"}; // Values of the different metadata levels
+	private static final String[] types = { "0", "1" }; // Values of the different metadata levels
 	private static final boolean useOneTexture = true; // Should all metadata variants use the same texture?
 	
 	// Creates a metadata value for every "types" metadata value
 	public static final PropertyInteger SINK = PropertyInteger.create("sink", 0, Integer.valueOf(types.length - 1));
 	
-	private static final float[] sinkTypes = {1.00F, 1.00F}; // The maximum sink level for each metadata variant
+	private static final float[] sinkTypes = { 1.00F, 1.00F }; // The maximum sink level for each metadata variant
 	private final BeaconHandler beacon = new BeaconHandler(false); // Constructs a beacon handler. Enabled if "true" passed in
 	
 	// Constructor
@@ -441,7 +441,7 @@ public class BlockSnowSoft extends SinkingBlock implements IMetaBlockName {
 								// TODO: Quicksand changed equation
 								triggeringEntity.motionY += thicknessHigher;
 							}
-						} else { // TODO: Quciksand changed. Removed else if
+						} else { // TODO: Quicksand changed. Removed else if
 							beacon.logBeacon("MotionY", "10");
 							// TODO: Quicksand changed equation
 							triggeringEntity.motionY += thicknessHigher;
@@ -724,7 +724,7 @@ public class BlockSnowSoft extends SinkingBlock implements IMetaBlockName {
 	@Override
 	protected BlockState createBlockState() {
 		
-		return new BlockState(this, new IProperty[] {SINK});
+		return new BlockState(this, new IProperty[] { SINK });
 	}
 	
 	// Obtains the block's metadata from the block's blockstate.

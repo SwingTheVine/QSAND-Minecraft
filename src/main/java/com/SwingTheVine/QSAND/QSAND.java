@@ -9,6 +9,7 @@ import com.SwingTheVine.QSAND.init.QSAND_Blocks;
 import com.SwingTheVine.QSAND.init.QSAND_Entities;
 import com.SwingTheVine.QSAND.init.QSAND_Fluids;
 import com.SwingTheVine.QSAND.init.QSAND_Items;
+import com.SwingTheVine.QSAND.init.QSAND_TileEntities;
 import com.SwingTheVine.QSAND.proxy.CommonProxy;
 import com.SwingTheVine.QSAND.util.ConfigHandler;
 import com.SwingTheVine.QSAND.util.PlayerManager;
@@ -53,7 +54,7 @@ public class QSAND {
 	@EventHandler
 	public void preInit(final FMLPreInitializationEvent event) {
 		
-		ModInfo.init(event); // Overwrites the mcmodinfo with the latest information
+		ModInfo.init(event); // Overwrites the mcmodinfo file with the latest information
 		ConfigHandler.init(new File(event.getModConfigurationDirectory() + "/QSAND.cfg"));
 		QSAND_Blocks.init(); // Initializes the blocks
 		QSAND_Blocks.registerBlocks(); // Registers the blocks in the game registry
@@ -61,7 +62,9 @@ public class QSAND {
 		QSAND_Items.init(); // Initializes the items
 		QSAND_Items.registerItems(); // Registers the items in the game registry
 		QSAND_Entities.registerEntities(); // Registers the entities
+		QSAND_TileEntities.registerTileEntities(); // Registers the tile entities
 		proxy.registerEntityRenders(); // Registers the render models for all entities
+		proxy.registerTileEntityRenderers(); // Registers the special renderers for all tile entities
 		proxy.registerFluidModels();
 		
 		// If the user has enabled skin overlays...
