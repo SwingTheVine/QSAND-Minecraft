@@ -30,7 +30,7 @@ public class TileEntityLarvaeRenderer extends TileEntitySpecialRenderer<TileEnti
 	public void renderLarvae(final TileEntityLarvae par1TileEntityLarvae, final double par2, final double par4,
 		final double par6, final float par8) {
 		
-		System.out.println("Beacon 1 (Render Larvae Constructed)");
+		// System.out.println("Beacon 1 (Render Larvae Constructed)");
 		
 		final double x = 0.0;
 		final double y = 0.0;
@@ -59,17 +59,18 @@ public class TileEntityLarvaeRenderer extends TileEntitySpecialRenderer<TileEnti
 		z_dec = ((BlockLarvae) QSAND_Blocks.larvae).shouldSideBeRendered2(par1TileEntityLarvae.getWorld(),
 			par1TileEntityLarvae.getPos().getX(), par1TileEntityLarvae.getPos().getY(),
 			par1TileEntityLarvae.getPos().getZ() - 1, 0);
-		System.out.printf("x_inc = %s x_dec = %s\ny_inc = %s y_dec = %s\nz_inc = %s z_dec = %s\n", x_inc, x_dec, y_inc,
-			y_dec, z_inc, z_dec);
+		// System.out.printf("x_inc = %s x_dec = %s\ny_inc = %s y_dec = %s\nz_inc = %s z_dec = %s\n", x_inc, x_dec, y_inc,
+		// y_dec, z_inc, z_dec);
 		if (!x_inc && !x_dec && !y_inc && !y_dec && !z_inc && !z_dec) {
 			return;
 		}
 		final Tessellator tessellator = Tessellator.getInstance();
-		final int lightValue = QSAND_Blocks.larvae.getMixedBrightnessForBlock(par1TileEntityLarvae.getWorld(),
-			par1TileEntityLarvae.getPos());
+		// final int lightValue = QSAND_Blocks.larvae.getMixedBrightnessForBlock(par1TileEntityLarvae.getWorld(),
+		// par1TileEntityLarvae.getPos());
+		// System.out.printf("Beacon. Light Value: %d\n", lightValue);
 		final WorldRenderer worldRenderer = tessellator.getWorldRenderer(); // Obtains the world renderer
-		worldRenderer.putBrightness4(lightValue, lightValue, lightValue, lightValue);
-		worldRenderer.color(1.0f, 1.0f, 1.0f, 1.0f);
+		// worldRenderer.putBrightness4(lightValue, lightValue, lightValue, lightValue); // TODO: Reimplement light values
+		// worldRenderer.color(1.0f, 1.0f, 1.0f, 1.0f);
 		final TextureAtlasSprite texture = Minecraft.getMinecraft().getTextureMapBlocks()
 			.getAtlasSprite(entityTexture.toString());
 		this.bindTexture(TextureMap.locationBlocksTexture);
@@ -144,7 +145,7 @@ public class TileEntityLarvaeRenderer extends TileEntitySpecialRenderer<TileEnti
 			// tessellator.setNormal(1.0f, 0.0f, 0.0f);
 			worldRenderer.pos(x + 1.0, y, z).tex(minU, minV).endVertex();
 			worldRenderer.pos(x + 1.0, y + height, z).tex(minU, maxV).endVertex();
-			worldRenderer.pos(x + 1.0, y + height, z).tex(maxU, maxV).endVertex();
+			worldRenderer.pos(x + 1.0, y + height, z + 1.0).tex(maxU, maxV).endVertex();
 			worldRenderer.pos(x + 1.0, y, z + 1.0).tex(maxU, minV).endVertex();
 			tessellator.getInstance().draw(); // Draw the quadrilateral
 		}

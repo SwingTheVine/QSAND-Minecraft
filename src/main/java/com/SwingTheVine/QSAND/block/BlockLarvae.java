@@ -67,7 +67,7 @@ public class BlockLarvae extends SinkingBlock implements IMetaBlockName, ITileEn
 			System.out.println("Beacon 4 (This is the client. Creating tile entity...)");
 			final TileEntityLarvae TE = new TileEntityLarvae();
 			TE.phase = world.rand.nextDouble() * 6.28318 * 2.0;
-			System.out.println("Beacon 5 (Tile entity created with a phase of " + TE.phase + ".)");
+			System.out.println("Beacon 5 (Tile entity created with a phase of " + TE.phase + ")");
 			return TE;
 		}
 		return null;
@@ -77,16 +77,16 @@ public class BlockLarvae extends SinkingBlock implements IMetaBlockName, ITileEn
 	@SideOnly(Side.CLIENT)
 	public void setBlockBoundsForItemRender() {
 		
-		final float f = 0.75f;
-		this.setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, f, 1.0f);
+		final float maxY = 0.75f;
+		this.setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, maxY, 1.0f);
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void setBlockBoundsBasedOnState(final IBlockAccess worldIn, final BlockPos pos) {
 		
-		final float f = 0.75f;
-		this.setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, f, 1.0f);
+		final float maxY = 0.75f;
+		this.setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, maxY, 1.0f);
 	}
 	
 	@Override
@@ -98,6 +98,7 @@ public class BlockLarvae extends SinkingBlock implements IMetaBlockName, ITileEn
 		// return true;
 	}
 	
+	// Checks if the side should be rendered based on the block adjacent to that side
 	@SideOnly(Side.CLIENT)
 	public boolean shouldSideBeRendered2(final IBlockAccess par1IBlockAccess, final int par2, final int par3,
 		final int par4, final int par5) {
@@ -105,8 +106,11 @@ public class BlockLarvae extends SinkingBlock implements IMetaBlockName, ITileEn
 		switch (par5) {
 		case 0: { // CASE: DOWN
 			
+			// Does not render the bottom if the block is opaque AND the block is NOT a larvae block (e.g. a torch)
+			// Renders the bottom if the block is a larvae block AND we are not a larvae block
+			
 			// Returns true if the block is NOT an opaque cube, AND the block is NOT a larvae block,
-			// OR the block is a larvae block, AND the block block above is NOT a larvae block
+			// OR the block is a larvae block, AND the block above is NOT a larvae block
 			return (!par1IBlockAccess.getBlockState(new BlockPos(par2, par3, par4)).getBlock().isOpaqueCube()
 				&& par1IBlockAccess.getBlockState(new BlockPos(par2, par3, par4)).getBlock() != QSAND_Blocks.larvae)
 				|| (par1IBlockAccess.getBlockState(new BlockPos(par2, par3, par4)).getBlock() == QSAND_Blocks.larvae

@@ -34,7 +34,7 @@ public class ModdedModelManager {
 	private static final String fluidPath = ModInfo.id + ":fluids";
 	
 	// Constructor
-	private void registerModels() {
+	private ModdedModelManager() {
 	
 	}
 	

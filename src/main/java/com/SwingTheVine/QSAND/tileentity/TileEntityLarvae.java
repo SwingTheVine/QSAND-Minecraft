@@ -43,7 +43,7 @@ public class TileEntityLarvae extends TileEntity {
 	@SideOnly(Side.CLIENT)
 	public AxisAlignedBB getRenderBoundingBox() {
 		
-		System.out.println("Beacon 3 (getRenderBoundingBox)");
+		// System.out.println("Beacon 3 (getRenderBoundingBox)");
 		AxisAlignedBB bb = TileEntityLarvae.INFINITE_EXTENT_AABB;
 		bb = AxisAlignedBB.fromBounds(this.pos.getX(), this.pos.getY(), this.pos.getZ(), this.pos.getX() + 1,
 			this.pos.getY() + 1, this.pos.getZ() + 1);
