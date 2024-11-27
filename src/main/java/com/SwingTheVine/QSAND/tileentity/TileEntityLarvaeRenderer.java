@@ -65,12 +65,9 @@ public class TileEntityLarvaeRenderer extends TileEntitySpecialRenderer<TileEnti
 			return;
 		}
 		final Tessellator tessellator = Tessellator.getInstance();
-		// final int lightValue = QSAND_Blocks.larvae.getMixedBrightnessForBlock(par1TileEntityLarvae.getWorld(),
-		// par1TileEntityLarvae.getPos());
-		// System.out.printf("Beacon. Light Value: %d\n", lightValue);
+		final int lightValue = QSAND_Blocks.larvae.getMixedBrightnessForBlock(par1TileEntityLarvae.getWorld(),
+			par1TileEntityLarvae.getPos());
 		final WorldRenderer worldRenderer = tessellator.getWorldRenderer(); // Obtains the world renderer
-		// worldRenderer.putBrightness4(lightValue, lightValue, lightValue, lightValue); // TODO: Reimplement light values
-		// worldRenderer.color(1.0f, 1.0f, 1.0f, 1.0f);
 		final TextureAtlasSprite texture = Minecraft.getMinecraft().getTextureMapBlocks()
 			.getAtlasSprite(entityTexture.toString());
 		this.bindTexture(TextureMap.locationBlocksTexture);
@@ -90,8 +87,9 @@ public class TileEntityLarvaeRenderer extends TileEntitySpecialRenderer<TileEnti
 			height = 0.8 + MathHelper.sin(timf) * 0.025;
 		}
 		if (height != 1.0) {
-			worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX); // Start drawing a quadrilateral in the OpenGL
-																					// engine
+			worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX); // Start drawing a quadrilateral in the
+																					// OpenGL engine
+			
 			// tessellator.setNormal(0.0f, 1.0f, 0.0f);
 			worldRenderer.pos(x, y + height, z).tex(maxU, minV).endVertex();
 			worldRenderer.pos(x, y + height, z + 1.0).tex(maxU, maxV).endVertex();
